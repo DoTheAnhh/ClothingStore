@@ -1,0 +1,36 @@
+.pagination {
+  margin-top: 10px;
+
+  .spe {
+    margin-left: 20px;
+  }
+
+  .total-size {
+    margin-left: 20px;
+  }
+
+  .select-pagesize {
+    border: none;
+    cursor: pointer;
+    outline: none;
+    margin-left: 20px;
+  }
+
+  .page-number {
+    float: right;
+    margin-top: -20px;
+    display: flex;
+
+    .span-page-number {
+      margin: 0px 20px;
+    }
+    .right {
+      margin-right: 20px;
+      margin-left: 20px;
+    }
+    .left.disabled {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+  }
+}
