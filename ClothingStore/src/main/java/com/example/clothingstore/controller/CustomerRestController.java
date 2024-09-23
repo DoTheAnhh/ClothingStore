@@ -1,8 +1,7 @@
 package com.example.clothingstore.controller;
 
-import com.example.clothingstore.dto.request.CustomerRequest;
-import com.example.clothingstore.dto.response.CustomerResponse;
-import com.example.clothingstore.entity.Customer;
+import com.example.clothingstore.dto.customer.CustomerRequest;
+import com.example.clothingstore.dto.customer.CustomerResponse;
 import com.example.clothingstore.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

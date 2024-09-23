@@ -1,8 +1,8 @@
 package com.example.clothingstore.controller;
 
-import com.example.clothingstore.dto.request.ProductDetailRequest;
-import com.example.clothingstore.dto.response.ProductDetailResponse;
-import com.example.clothingstore.dto.request.QRCodeUpdateRequest;
+import com.example.clothingstore.dto.product_detail.ProductDetailRequest;
+import com.example.clothingstore.dto.product_detail.ProductDetailResponse;
+import com.example.clothingstore.dto.qrcode_update.QRCodeUpdateRequest;
 import com.example.clothingstore.entity.ProductDetail;
 import com.example.clothingstore.service.ProductDetailService;
 import org.springframework.beans.factory.annotation.Autowired;

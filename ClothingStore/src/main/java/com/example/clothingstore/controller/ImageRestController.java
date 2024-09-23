@@ -1,7 +1,7 @@
 package com.example.clothingstore.controller;
 
-import com.example.clothingstore.dto.request.ImageRequest;
-import com.example.clothingstore.dto.response.ImageResponse;
+import com.example.clothingstore.dto.image.ImageRequest;
+import com.example.clothingstore.dto.image.ImageResponse;
 import com.example.clothingstore.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

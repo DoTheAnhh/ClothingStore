@@ -2,6 +2,7 @@ package com.example.clothingstore.entity;
 
 import com.example.clothingstore.entity.base.PrimaryEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,13 +40,15 @@ public class Customer extends PrimaryEntity implements UserDetails {
     private String location;
 
     @Column(name = "email", unique = true, nullable = false)
+    @NotNull(message = "Email không được để trống")
     private String email;
 
     @Column(name = "password")
+    @NotNull(message = "Password không được để trống")
     private String password;
 
     @Column(name = "role")
-    private String role;
+    private String role = "USER";
 
     @Column(name = "reset_token")
     private String resetToken;

@@ -1,7 +1,7 @@
 package com.example.clothingstore.mapper;
 
-import com.example.clothingstore.dto.request.BrandRequest;
-import com.example.clothingstore.dto.response.BrandResponse;
+import com.example.clothingstore.dto.brand.BrandRequest;
+import com.example.clothingstore.dto.brand.BrandResponse;
 import com.example.clothingstore.entity.Brand;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

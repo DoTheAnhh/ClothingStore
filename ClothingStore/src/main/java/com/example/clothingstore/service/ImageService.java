@@ -1,7 +1,7 @@
 package com.example.clothingstore.service;
 
-import com.example.clothingstore.dto.request.ImageRequest;
-import com.example.clothingstore.dto.response.ImageResponse;
+import com.example.clothingstore.dto.image.ImageRequest;
+import com.example.clothingstore.dto.image.ImageResponse;
 
 import java.io.IOException;
 import java.util.List;

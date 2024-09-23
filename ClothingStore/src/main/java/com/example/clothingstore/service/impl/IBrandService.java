@@ -1,7 +1,7 @@
 package com.example.clothingstore.service.impl;
 
-import com.example.clothingstore.dto.request.BrandRequest;
-import com.example.clothingstore.dto.response.BrandResponse;
+import com.example.clothingstore.dto.brand.BrandRequest;
+import com.example.clothingstore.dto.brand.BrandResponse;
 import com.example.clothingstore.entity.Brand;
 import com.example.clothingstore.mapper.BrandMapper;
 import com.example.clothingstore.repository.BrandRepository;

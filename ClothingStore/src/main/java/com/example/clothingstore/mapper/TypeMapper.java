@@ -1,7 +1,7 @@
 package com.example.clothingstore.mapper;
 
-import com.example.clothingstore.dto.request.TypeRequest;
-import com.example.clothingstore.dto.response.TypeResponse;
+import com.example.clothingstore.dto.type.TypeRequest;
+import com.example.clothingstore.dto.type.TypeResponse;
 import com.example.clothingstore.entity.Type;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

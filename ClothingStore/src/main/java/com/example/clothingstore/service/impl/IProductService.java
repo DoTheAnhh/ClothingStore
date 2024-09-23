@@ -1,9 +1,8 @@
 package com.example.clothingstore.service.impl;
 
-import com.example.clothingstore.dto.request.ProductRequest;
-import com.example.clothingstore.dto.response.ProductResponse;
+import com.example.clothingstore.dto.product.ProductRequest;
+import com.example.clothingstore.dto.product.ProductResponse;
 import com.example.clothingstore.entity.Brand;
-import com.example.clothingstore.entity.Color;
 import com.example.clothingstore.entity.Product;
 import com.example.clothingstore.entity.Type;
 import com.example.clothingstore.mapper.ProductMapper;
@@ -66,7 +65,7 @@ public class IProductService implements ProductService {
             existingProduct.setProductDescription(productRequest.getProductDescription());
             existingProduct.setBrand(brand);
             existingProduct.setType(type);
-            
+
             productRepository.save(existingProduct);
         }
     }

@@ -1,7 +1,7 @@
 package com.example.clothingstore.mapper;
 
-import com.example.clothingstore.dto.request.ImageRequest;
-import com.example.clothingstore.dto.response.ImageResponse;
+import com.example.clothingstore.dto.image.ImageRequest;
+import com.example.clothingstore.dto.image.ImageResponse;
 import com.example.clothingstore.entity.Image;
 import com.example.clothingstore.entity.ProductDetail;
 import org.mapstruct.Mapper;

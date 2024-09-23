@@ -58,6 +58,8 @@ public class SecurityConfig {
                                 .requestMatchers("/customer").permitAll()
                                 .requestMatchers("/customer/*").permitAll()
 
+                                .requestMatchers("/v3/api-docs/**", "/v3/api-docs.yaml", "/swagger-ui.html", "/swagger-ui/**").permitAll()
+
                                 //ADMIN
                                 .requestMatchers("/product/insert").hasAnyAuthority("ADMIN")
                                 .requestMatchers("/product/edit/*").hasAnyAuthority("ADMIN")

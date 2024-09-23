@@ -1,8 +1,7 @@
 package com.example.clothingstore.service.impl;
 
-import com.example.clothingstore.dto.request.TypeRequest;
-import com.example.clothingstore.dto.response.TypeResponse;
-import com.example.clothingstore.entity.Size;
+import com.example.clothingstore.dto.type.TypeRequest;
+import com.example.clothingstore.dto.type.TypeResponse;
 import com.example.clothingstore.entity.Type;
 import com.example.clothingstore.mapper.TypeMapper;
 import com.example.clothingstore.repository.TypeRepository;

@@ -1,7 +1,7 @@
 package com.example.clothingstore.service.impl;
 
-import com.example.clothingstore.dto.request.ColorRequest;
-import com.example.clothingstore.dto.response.ColorResponse;
+import com.example.clothingstore.dto.color.ColorRequest;
+import com.example.clothingstore.dto.color.ColorResponse;
 import com.example.clothingstore.entity.Color;
 import com.example.clothingstore.mapper.ColorMapper;
 import com.example.clothingstore.repository.ColorRepository;

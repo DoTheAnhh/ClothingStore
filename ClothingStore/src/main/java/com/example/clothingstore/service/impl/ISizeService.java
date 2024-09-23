@@ -1,7 +1,7 @@
 package com.example.clothingstore.service.impl;
 
-import com.example.clothingstore.dto.request.SizeRequest;
-import com.example.clothingstore.dto.response.SizeResponse;
+import com.example.clothingstore.dto.size.SizeRequest;
+import com.example.clothingstore.dto.size.SizeResponse;
 import com.example.clothingstore.entity.Size;
 import com.example.clothingstore.mapper.SizeMapper;
 import com.example.clothingstore.repository.SizeRepository;

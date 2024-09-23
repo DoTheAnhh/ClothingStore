@@ -78,6 +78,7 @@ export interface TypeResponse {
 
 export interface TypeRequest {
   typeName?: string;
+  error?: string;
 }
 
 export interface BrandResponse {

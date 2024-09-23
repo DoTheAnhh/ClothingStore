@@ -1,7 +1,7 @@
 package com.example.clothingstore.service.impl;
 
-import com.example.clothingstore.dto.request.ProductDetailRequest;
-import com.example.clothingstore.dto.response.ProductDetailResponse;
+import com.example.clothingstore.dto.product_detail.ProductDetailRequest;
+import com.example.clothingstore.dto.product_detail.ProductDetailResponse;
 import com.example.clothingstore.entity.Color;
 import com.example.clothingstore.entity.Product;
 import com.example.clothingstore.entity.ProductDetail;

@@ -1,11 +1,9 @@
 package com.example.clothingstore.service.impl;
 
-import com.example.clothingstore.dto.request.CustomerRequest;
-import com.example.clothingstore.dto.response.CustomerResponse;
+import com.example.clothingstore.dto.customer.CustomerRequest;
+import com.example.clothingstore.dto.customer.CustomerResponse;
 import com.example.clothingstore.entity.Customer;
-import com.example.clothingstore.entity.ProductDetail;
 import com.example.clothingstore.mapper.CustomerMapper;
-import com.example.clothingstore.mapper.ProductMapper;
 import com.example.clothingstore.repository.CustomerRepository;
 import com.example.clothingstore.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;

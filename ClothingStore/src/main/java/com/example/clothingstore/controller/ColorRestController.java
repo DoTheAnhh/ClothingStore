@@ -1,7 +1,7 @@
 package com.example.clothingstore.controller;
 
-import com.example.clothingstore.dto.request.ColorRequest;
-import com.example.clothingstore.dto.response.ColorResponse;
+import com.example.clothingstore.dto.color.ColorRequest;
+import com.example.clothingstore.dto.color.ColorResponse;
 import com.example.clothingstore.service.ColorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
 package com.example.clothingstore.mapper;
 
-import com.example.clothingstore.dto.request.SizeRequest;
-import com.example.clothingstore.dto.response.SizeResponse;
+import com.example.clothingstore.dto.size.SizeRequest;
+import com.example.clothingstore.dto.size.SizeResponse;
 import com.example.clothingstore.entity.Size;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

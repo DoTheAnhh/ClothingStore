@@ -1,7 +1,14 @@
 package com.example.clothingstore.config.Security;
 
 import com.example.clothingstore.config.Mail.EmailService;
-import com.example.clothingstore.dto.request.TokenRequest;
+import com.example.clothingstore.dto.forgot_password.ForgotPasswordResponse;
+import com.example.clothingstore.dto.login.LoginRequest;
+import com.example.clothingstore.dto.refresh_token.RefreshTokenRequest;
+import com.example.clothingstore.dto.login.LoginResponse;
+import com.example.clothingstore.dto.refresh_token.RefreshTokenResponse;
+import com.example.clothingstore.dto.register.RegisterRequest;
+import com.example.clothingstore.dto.register.RegisterResponse;
+import com.example.clothingstore.dto.reset_password.ResetPasswordResponse;
 import com.example.clothingstore.entity.Customer;
 import com.example.clothingstore.repository.CustomerRepository;
 import com.example.clothingstore.service.CustomerService;
@@ -30,45 +37,51 @@ public class AuthService {
     @Autowired
     private EmailService emailService;
 
-    public TokenRequest signUp(TokenRequest registrationRequest) {
-        TokenRequest resp = new TokenRequest();
+    public RegisterResponse signUp(RegisterRequest registerRequest) {
+        RegisterResponse resp = new RegisterResponse();
         try {
-            if (customerRepository.findByEmail(registrationRequest.getEmail()).isPresent()) {
+            if (customerRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
                 resp.setStatusCode(400);
                 resp.setMessage("Email already exists");
                 return resp;
             }
             Customer customer = new Customer();
-            customer.setEmail(registrationRequest.getEmail());
-            customer.setPassword(passwordEncoder.encode(registrationRequest.getPassword())); // Mã hóa mật khẩu
-            customer.setRole(registrationRequest.getRole());
+            customer.setEmail(registerRequest.getEmail());
+            customer.setPassword(passwordEncoder.encode(registerRequest.getPassword())); // Mã hóa mật khẩu
             Customer customerResult = customerRepository.save(customer);
+
+            var jwt = jwtUtils.generateToken(customer);
+            var refreshToken = jwtUtils.generateRefreshToken(new HashMap<>(), customer);
+
             if (customerResult != null && customerResult.getId() > 0) {
-                resp.setCustomer(customerResult);
+                resp.setEmail(customer.getEmail());
+                resp.setRole(customer.getRole());
+                resp.setToken(jwt);
+                resp.setRefreshToken(refreshToken);
                 resp.setMessage("User Saved Successfully");
                 resp.setStatusCode(200);
+                resp.setExpirationTime("15M");
             }
         } catch (Exception e) {
             resp.setStatusCode(500);
-            resp.setError(e.getMessage());
+            resp.setMessage(e.getMessage());
         }
         return resp;
     }
 
 
-    public TokenRequest signIn(TokenRequest signInRequest) {
-        TokenRequest response = new TokenRequest();
+    public LoginResponse signIn(LoginRequest loginRequest) {
+        LoginResponse response = new LoginResponse();
         try {
-            // Tìm khách hàng bằng email
-            Customer customer = customerRepository.findByEmail(signInRequest.getEmail()).orElseThrow(() ->
-                    new RuntimeException("User not found with email: " + signInRequest.getEmail()));
+            Customer customer = customerRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() ->
+                    new RuntimeException("User not found with email: " + loginRequest.getEmail()));
 
             String passwordInDatabase = customer.getPassword();
 
-            boolean passwordMatches = passwordEncoder.matches(signInRequest.getPassword(), passwordInDatabase);
+            boolean passwordMatches = passwordEncoder.matches(loginRequest.getPassword(), passwordInDatabase);
 
             if (!passwordMatches) {
-                passwordMatches = signInRequest.getPassword().equals(passwordInDatabase);
+                passwordMatches = loginRequest.getPassword().equals(passwordInDatabase);
             }
 
             if (!passwordMatches) {
@@ -80,20 +93,22 @@ public class AuthService {
             var jwt = jwtUtils.generateToken(customer);
             var refreshToken = jwtUtils.generateRefreshToken(new HashMap<>(), customer);
 
+            response.setEmail(customer.getEmail());
+            response.setRole(customer.getRole());
             response.setStatusCode(200);
             response.setToken(jwt);
             response.setRefreshToken(refreshToken);
-            response.setExpirationTime("24Hr");
+            response.setExpirationTime("15M");
             response.setMessage("Successfully Sign In");
         } catch (Exception e) {
             response.setStatusCode(500);
-            response.setError(e.getMessage());
+            response.setMessage(e.getMessage());
         }
         return response;
     }
 
-    public TokenRequest refreshToken(TokenRequest refreshTokenRequest) {
-        TokenRequest response = new TokenRequest();
+    public RefreshTokenResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
+        RefreshTokenResponse response = new RefreshTokenResponse();
         String ourEmail = jwtUtils.extractUsername(refreshTokenRequest.getToken());
         Customer customer = customerRepository.findByEmail(ourEmail).orElseThrow();
         if (jwtUtils.isTokenValid(refreshTokenRequest.getToken(), customer)) {
@@ -103,13 +118,14 @@ public class AuthService {
             response.setRefreshToken(refreshTokenRequest.getToken());
             response.setExpirationTime("24hr");
             response.setMessage("Succesfully Refresh Token");
+        } else {
+            response.setStatusCode(500);
         }
-        response.setStatusCode(500);
         return response;
     }
 
-    public TokenRequest forgotPassword(String email) {
-        TokenRequest response = new TokenRequest();
+    public ForgotPasswordResponse forgotPassword(String email) {
+        ForgotPasswordResponse response = new ForgotPasswordResponse();
         try {
             Customer customer = customerRepository.findByEmail(email)
                     .orElseThrow(() -> new RuntimeException("Email không tồn tại"));
@@ -129,7 +145,7 @@ public class AuthService {
             response.setToken(token);
         } catch (Exception e) {
             response.setStatusCode(500);
-            response.setError(e.getMessage());
+            response.setMessage(e.getMessage());
         }
         return response;
     }
@@ -142,8 +158,8 @@ public class AuthService {
         emailService.sendEmail(email, subject, body);
     }
 
-    public TokenRequest resetPassword(String token, String newPassword) {
-        TokenRequest response = new TokenRequest();
+    public ResetPasswordResponse resetPassword(String token, String newPassword) {
+        ResetPasswordResponse response = new ResetPasswordResponse();
         try {
             String cleanedToken = token.trim().replace("\n", "");
 

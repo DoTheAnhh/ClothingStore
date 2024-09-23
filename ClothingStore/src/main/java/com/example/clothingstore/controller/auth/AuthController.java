@@ -1,7 +1,15 @@
 package com.example.clothingstore.controller.auth;
 
 import com.example.clothingstore.config.Security.AuthService;
-import com.example.clothingstore.dto.request.TokenRequest;
+import com.example.clothingstore.dto.forgot_password.ForgotPasswordRequest;
+import com.example.clothingstore.dto.forgot_password.ForgotPasswordResponse;
+import com.example.clothingstore.dto.login.LoginRequest;
+import com.example.clothingstore.dto.refresh_token.RefreshTokenRequest;
+import com.example.clothingstore.dto.login.LoginResponse;
+import com.example.clothingstore.dto.refresh_token.RefreshTokenResponse;
+import com.example.clothingstore.dto.register.RegisterRequest;
+import com.example.clothingstore.dto.register.RegisterResponse;
+import com.example.clothingstore.dto.reset_password.ResetPasswordResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,27 +22,27 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<TokenRequest> signUp(@RequestBody TokenRequest signUpRequest) {
-        return ResponseEntity.ok(authService.signUp(signUpRequest));
+    public ResponseEntity<RegisterResponse> signUp(@RequestBody RegisterRequest registerRequest) {
+        return ResponseEntity.ok(authService.signUp(registerRequest));
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<TokenRequest> signIn(@RequestBody TokenRequest signInRequest) {
-        return ResponseEntity.ok(authService.signIn(signInRequest));
+    public ResponseEntity<LoginResponse> signIn(@RequestBody LoginRequest loginRequest) {
+        return ResponseEntity.ok(authService.signIn(loginRequest));
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<TokenRequest> refreshToken(@RequestBody TokenRequest refreshTokenRequest) {
+    public ResponseEntity<RefreshTokenResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
         return ResponseEntity.ok(authService.refreshToken(refreshTokenRequest));
     }
 
     @PostMapping("/forgot-password")
-    public TokenRequest forgotPassword(@RequestBody TokenRequest request) {
-        return authService.forgotPassword(request.getEmail());
+    public ForgotPasswordResponse forgotPassword(@RequestBody ForgotPasswordRequest forgotPasswordRequest) {
+        return authService.forgotPassword(forgotPasswordRequest.getEmail());
     }
 
     @PostMapping("/reset-password")
-    public TokenRequest resetPassword(@RequestParam String token, @RequestBody TokenRequest request) {
-        return authService.resetPassword(token, request.getPassword());
+    public ResetPasswordResponse resetPassword(@RequestParam String token, @RequestParam String password) {
+        return authService.resetPassword(token, password);
     }
 }

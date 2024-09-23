@@ -1,9 +1,7 @@
 package com.example.clothingstore.controller;
 
-import com.example.clothingstore.dto.request.SizeRequest;
-import com.example.clothingstore.dto.request.TypeRequest;
-import com.example.clothingstore.dto.response.SizeResponse;
-import com.example.clothingstore.dto.response.TypeResponse;
+import com.example.clothingstore.dto.type.TypeRequest;
+import com.example.clothingstore.dto.type.TypeResponse;
 import com.example.clothingstore.service.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

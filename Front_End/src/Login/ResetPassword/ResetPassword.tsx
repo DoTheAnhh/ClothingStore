@@ -15,19 +15,20 @@ const ResetPassword: React.FC = () => {
 
     const onFinish = async (values: { password: string }) => {
         if (!token) {
-            console.log(token);
             message.error('Token không hợp lệ.');
             return;
         }
-
+    
         setLoading(true);
-        
-        
+    
         try {
-            const response = await axios.post(LOCALHOST + '/auth/reset-password', { password: values.password }, {
-                params: { token }
+            const response = await axios.post(LOCALHOST + '/auth/reset-password', null, {
+                params: {
+                    token: token,
+                    password: values.password,
+                }
             });
-
+    
             if (response.data.statusCode === 200) {
                 message.success('Đặt lại mật khẩu thành công.');
                 window.location.href = '/';
@@ -39,7 +40,7 @@ const ResetPassword: React.FC = () => {
         } finally {
             setLoading(false);
         }
-    };
+    };    
 
     return (
         <Form
