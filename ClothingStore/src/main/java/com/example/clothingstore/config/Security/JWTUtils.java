@@ -31,6 +31,7 @@ public class JWTUtils {
         claims.put("name", customer.getName());
         claims.put("role", customer.getRole());
         claims.put("id", customer.getId());
+        claims.put("email", customer.getEmail());
         return Jwts.builder()
                 .claims(claims)
                 .subject(customer.getUsername())
@@ -44,6 +45,7 @@ public class JWTUtils {
         claims.put("role", customer.getRole());
         claims.put("id", customer.getId());
         claims.put("name", customer.getName());
+        claims.put("email", customer.getEmail());
         return Jwts.builder()
                 .claims(claims)
                 .subject(customer.getUsername())

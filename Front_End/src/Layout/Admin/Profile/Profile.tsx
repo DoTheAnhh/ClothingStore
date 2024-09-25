@@ -76,14 +76,17 @@ const Profile: React.FC = () => {
         await axios.put(LOCALHOST + MAPPING_URL.CUSTOMER + API_URL.CUSTOMER.EDIT + `/${userId}`, customer, config);
         toast.success('Updated customer successfully', {
           autoClose: 5000,
-        })
+        });
+
+        await getCustomerById();
       }
     } catch (e) {
       toast.error("Error update", {
         autoClose: 5000,
-      })
+      });
     }
-  }
+  };
+
 
   const clearField = () => {
     setCustomer(undefined)
@@ -104,6 +107,20 @@ const Profile: React.FC = () => {
       handleChangeSingleField("age")(calculatedAge);
     }
   };
+
+  const formatDate = (dateString: any) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('vi-VN', {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+    });
+  };
+
 
   useEffect(() => {
     getCustomerById()
@@ -131,7 +148,7 @@ const Profile: React.FC = () => {
                   ></Input>
                 </Form.Item>
 
-                <Form.Item label="Password" required>
+                <Form.Item label="Password" required style={{ display: 'none' }}>
                   <Input
                     value={customer?.password}
                     onChange={(e) => handleChangeSingleField("password")(e.target.value)}
@@ -156,9 +173,7 @@ const Profile: React.FC = () => {
                     <Radio value={false}>Nữ</Radio>
                   </Radio.Group>
                 </Form.Item>
-              </Col>
 
-              <Col span={12}>
                 <Form.Item label="Birthday">
                   <Input
                     type="date"
@@ -166,8 +181,10 @@ const Profile: React.FC = () => {
                     onChange={(e) => handleBirthdayChange(e.target.value)}
                   />
                 </Form.Item>
+              </Col>
 
-                <Form.Item label="Age" required>
+              <Col span={12}>
+                <Form.Item label="Age">
                   <Input
                     value={customer?.age}
                     type="number"
@@ -175,7 +192,7 @@ const Profile: React.FC = () => {
                   />
                 </Form.Item>
 
-                <Form.Item label="Location" required>
+                <Form.Item label="Location">
                   <Input
                     value={customer?.location}
                     onChange={(e) => handleChangeSingleField("location")(e.target.value)}
@@ -192,9 +209,24 @@ const Profile: React.FC = () => {
                     <Radio value={"USER"}>USER</Radio>
                   </Radio.Group>
                 </Form.Item>
+
+                <Form.Item label="Create Date">
+                  <Input
+                    value={formatDate(customer?.createDate)}
+                    disabled
+                  />
+                </Form.Item>
+
+                <Form.Item label="Update Date">
+                  <Input
+                    value={formatDate(customer?.updateDate)}
+                    disabled
+                  />
+                </Form.Item>
+
               </Col>
             </Row>
-            <Form.Item style={{marginLeft: 260}}>
+            <Form.Item style={{ marginLeft: 260 }}>
               <Row gutter={16} justify="center">
                 <Col>
                   <Popconfirm

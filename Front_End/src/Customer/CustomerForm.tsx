@@ -164,7 +164,7 @@ const CustomerForm: React.FC<CustomerProps> = ({ handleCancelCustomerModal, sele
               onChange={(e) => handleChangeSingleField("email")(e.target.value)}
             ></Input>
           </Form.Item>
-          <Form.Item label="Password" required>
+          <Form.Item label="Password" required style={{ display: 'none' }}>
             <Input
               value={customer?.password}
               onChange={(e) => handleChangeSingleField("password")(e.target.value)}

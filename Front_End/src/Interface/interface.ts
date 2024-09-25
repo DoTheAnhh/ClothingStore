@@ -115,4 +115,6 @@ export interface CustomerRequest {
   email?: string;
   password?: string;
   role?: string;
+  createDate?: string;
+  updateDate?: string;
 }

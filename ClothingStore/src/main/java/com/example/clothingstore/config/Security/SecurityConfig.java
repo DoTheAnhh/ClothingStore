@@ -58,6 +58,7 @@ public class SecurityConfig {
                                 .requestMatchers("/customer").permitAll()
                                 .requestMatchers("/customer/*").permitAll()
                                 .requestMatchers("/customer/edit-reset-token-for-customer/*").permitAll()
+                                .requestMatchers("/customer/check-password").permitAll()
 
                                 .requestMatchers("/cart").permitAll()
                                 .requestMatchers("/cart/add-product-to-cart").permitAll()

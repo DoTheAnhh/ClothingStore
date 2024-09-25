@@ -14,7 +14,7 @@ const HeaderLayoutAdmin: React.FC = () => {
       localStorage.removeItem("user")
       navigate('/');
     } else if (key === 'changePassword') {
-      navigate('/reset-password');
+      navigate('/change-password');
     } else if (key === 'profile') {
       navigate('/admin/account/profile');
     }

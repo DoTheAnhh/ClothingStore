@@ -11,6 +11,7 @@ import LayoutUser from './Layout/User/LayoutUser';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Profile from './Layout/Admin/Profile/Profile';
+import ChangePassword from './Login/ChangePassword/ChangePassword';
 
 interface RouteComponent {
   path: string;
@@ -36,6 +37,10 @@ function App() {
     {
       path: '/reset-password',
       element: <ResetPassword />
+    },
+    {
+      path: '/change-password',
+      element: <ChangePassword />
     },
     {
       path: '/admin/*',

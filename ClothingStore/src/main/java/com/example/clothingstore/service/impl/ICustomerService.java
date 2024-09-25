@@ -2,6 +2,7 @@ package com.example.clothingstore.service.impl;
 
 import com.example.clothingstore.dto.customer.CustomerRequest;
 import com.example.clothingstore.dto.customer.CustomerResponse;
+import com.example.clothingstore.dto.login.CheckPasswordRequest;
 import com.example.clothingstore.dto.product_detail.ProductDetailRequest;
 import com.example.clothingstore.entity.Customer;
 import com.example.clothingstore.mapper.CustomerMapper;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +25,8 @@ public class ICustomerService implements CustomerService {
     CustomerRepository customerRepository;
 
     private final CustomerMapper customerMapper = CustomerMapper.INSTANCE;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Page<CustomerResponse> findAll(Pageable pageable) {
@@ -91,5 +95,23 @@ public class ICustomerService implements CustomerService {
         } else {
             throw new RuntimeException("Customer not found");
         }
+    }
+
+    @Override
+    public boolean checkPassword(CheckPasswordRequest request) {
+        Customer customer = customerRepository.findByEmail(request.getEmail()).orElseThrow(() ->
+                new RuntimeException("User not found with email: " + request.getEmail()));
+        String passwordInDatabase = customer.getPassword();
+
+        boolean passwordMatches = passwordEncoder.matches(request.getPassword(), passwordInDatabase);
+
+        if (!passwordMatches) {
+            passwordMatches = request.getPassword().equals(passwordInDatabase);
+        }
+
+        if (!passwordMatches) {
+            return passwordEncoder.matches(request.getPassword(), passwordInDatabase);
+        }
+        return passwordMatches;
     }
 }
