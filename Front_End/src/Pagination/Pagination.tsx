@@ -41,7 +41,7 @@ const Pagination: React.FC<PaginationProps> = ({
         }
     }, [currentPage, totalPages, handlePageChange]);
 
-    const pageSizeOptions = [5, 10, 20, 50, 75, 100];
+    const pageSizeOptions = [1, 5, 10, 20, 50, 75, 100];
     const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
     const startRecord = (currentPage - 1) * pageSize + 1;
     const endRecord = Math.min(currentPage * pageSize, totalBuyOption);

@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
-import { Button, Form, Input, message, Spin } from 'antd';
+import { Button, Form, Input, Spin } from 'antd';
 import './css/index.css';
 import axios from 'axios';
 import { LOCALHOST } from '../../APIs/API';
+import { toast } from 'react-toastify';
 
 const ResetPassword: React.FC = () => {
     const [loading, setLoading] = React.useState(false);
@@ -15,12 +16,14 @@ const ResetPassword: React.FC = () => {
 
     const onFinish = async (values: { password: string }) => {
         if (!token) {
-            message.error('Token không hợp lệ.');
+            toast.error('Token không hợp lệ.', {
+                autoClose: 5000,
+            })
             return;
         }
-    
+
         setLoading(true);
-    
+
         try {
             const response = await axios.post(LOCALHOST + '/auth/reset-password', null, {
                 params: {
@@ -28,19 +31,23 @@ const ResetPassword: React.FC = () => {
                     password: values.password,
                 }
             });
-    
+
             if (response.data.statusCode === 200) {
-                message.success('Đặt lại mật khẩu thành công.');
+                localStorage.setItem('toastMessage', 'Password reset successful.');
+                localStorage.setItem('toastType', 'success');
                 window.location.href = '/';
             } else {
-                message.error(response.data.message || 'Có lỗi xảy ra.');
+                localStorage.setItem('toastMessage', response.data.message || 'An error occurred.');
+                localStorage.setItem('toastType', 'error');
             }
         } catch (error) {
-            message.error('Có lỗi xảy ra.');
+            toast.error('An error occurred.', {
+                autoClose: 5000,
+            })
         } finally {
             setLoading(false);
         }
-    };    
+    };
 
     return (
         <Form

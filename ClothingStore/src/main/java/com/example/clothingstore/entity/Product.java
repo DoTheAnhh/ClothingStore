@@ -24,10 +24,6 @@ public class Product extends PrimaryEntity {
     @NotNull(message = "Tên sản phẩm không được để trống")
     private String productName;
 
-    @Column(name = "product_price")
-    @NotNull(message = "Giá sản phẩm không được để trống")
-    private float productPrice;
-
     @Column(name = "product_description")
     private String productDescription;
 

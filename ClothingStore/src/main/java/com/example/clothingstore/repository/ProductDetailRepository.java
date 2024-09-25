@@ -8,14 +8,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface ProductDetailRepository extends JpaRepository<ProductDetail, Long> {
-
-    @Query("SELECT p FROM ProductDetail p")
-    List<ProductDetail> findAll();
 
     @Query(value = "select * from product_detail pd where pd.id = :id", nativeQuery = true)
     Optional<ProductDetail> findProductDetailById(@Param("id") Long id);

@@ -18,8 +18,6 @@ public class ProductResponse {
 
     private String productName;
 
-    private float productPrice;
-
     private String productDescription;
 
     private String brandName;

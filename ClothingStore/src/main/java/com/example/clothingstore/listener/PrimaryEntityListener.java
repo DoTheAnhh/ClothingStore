@@ -12,7 +12,6 @@ public class PrimaryEntityListener {
     private void onCreate(PrimaryEntity entity) {
         entity.setCreateDate(new Date());
         entity.setUpdateDate(new Date());
-        entity.setDeleted(false);
     }
 
     @PreUpdate

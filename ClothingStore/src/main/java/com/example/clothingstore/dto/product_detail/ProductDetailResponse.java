@@ -25,11 +25,11 @@ public class ProductDetailResponse {
 
     private String sizeName;
 
+    private float productPrice;
+
     private String productName;
 
     private Date createDate;
 
     private Date updateDate;
-
-    private Boolean deleted;
 }

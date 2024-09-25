@@ -40,10 +40,6 @@ const ListProduct: React.FC = () => {
     findAllProduct();
   }
 
-  const formatPrice = (price: number) => {
-    return price.toLocaleString('vi-VN')
-  }
-
   const columns: ColumnsType<ProductResponse> = [
     {
       title: 'Code',
@@ -54,12 +50,6 @@ const ListProduct: React.FC = () => {
       title: 'Name',
       dataIndex: 'productName',
       key: 'productName'
-    },
-    {
-      title: 'Price',
-      dataIndex: 'productPrice',
-      key: 'productPrice',
-      render: (price: number) => formatPrice(price)
     },
     {
       title: 'Description',

@@ -2,6 +2,7 @@ package com.example.clothingstore.service.impl;
 
 import com.example.clothingstore.dto.customer.CustomerRequest;
 import com.example.clothingstore.dto.customer.CustomerResponse;
+import com.example.clothingstore.dto.product_detail.ProductDetailRequest;
 import com.example.clothingstore.entity.Customer;
 import com.example.clothingstore.mapper.CustomerMapper;
 import com.example.clothingstore.repository.CustomerRepository;
@@ -71,6 +72,24 @@ public class ICustomerService implements CustomerService {
             customerRepository.save(existingCustomer);
         } else {
             throw new RuntimeException("Customer not found with id: " + id);
+        }
+    }
+
+
+    @Override
+    public Long editResetTokenForCustomer(String resetToken, Long id) {
+        Optional<Customer> existingCustomerOptional = customerRepository.findById(id);
+
+        if (existingCustomerOptional.isPresent()) {
+            Customer existingCustomer = existingCustomerOptional.get();
+
+            existingCustomer.setResetToken(resetToken);
+
+            Customer updatedCustomer = customerRepository.save(existingCustomer);
+
+            return updatedCustomer.getId();
+        } else {
+            throw new RuntimeException("Customer not found");
         }
     }
 }

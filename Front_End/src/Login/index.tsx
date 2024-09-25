@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Checkbox, Form, Input, message, Spin } from 'antd';
 import { LockOutlined, MailOutlined, EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './css/index.css';
 import { useUserContext } from '../Context/UserContext';
-import { LOCALHOST } from '../APIs/API';
+import { API_URL, LOCALHOST, MAPPING_URL } from '../APIs/API';
+import { toast } from 'react-toastify';
 
 interface LoginResponse {
   token: string;
@@ -19,6 +20,10 @@ const Login: React.FC = () => {
   const { setUser } = useUserContext();
 
   const [passwordVisible, setPasswordVisible] = React.useState(false);
+
+  const editResetTokenForCustomer = async (resetToken: string, customerId: number) => {
+    await axios.put(LOCALHOST + MAPPING_URL.CUSTOMER + API_URL.CUSTOMER.EDIT_RESET_TOKEN_FOR_CUSTOMER + `/${customerId}?resetToken=${encodeURIComponent(resetToken)}`)
+  }
 
   const decodeJwt = (token: string) => {
     const base64Url = token.split('.')[1];
@@ -44,8 +49,12 @@ const Login: React.FC = () => {
 
         const decodedToken = decodeJwt(response.data.token);
         const user = { name: decodedToken.name, role: decodedToken.role };
-        localStorage.setItem('user', JSON.stringify(user));
 
+        const userId = decodedToken.id;
+
+        editResetTokenForCustomer(response.data.token, userId);
+
+        localStorage.setItem('user', JSON.stringify(user));
         setUser(user);
 
         if (decodedToken.role === 'ADMIN') {
@@ -54,17 +63,41 @@ const Login: React.FC = () => {
           navigate('/user');
         }
 
-        message.success('Login successful!');
+        toast.success('Login successfully', {
+          autoClose: 5000,
+        });
       } else {
-        message.error('Login failed!');
+        toast.error('Login failed', {
+          autoClose: 5000,
+        });
       }
     } catch (error: any) {
       const errorMessage = error.response?.data?.message || 'An error occurred during login!';
-      message.error(errorMessage);
+      toast.error(errorMessage, {
+        autoClose: 5000,
+      });
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const toastMessage = localStorage.getItem('toastMessage');
+    const toastType = localStorage.getItem('toastType');
+
+    if (toastMessage) {
+      if (toastType === 'success') {
+        toast.success(toastMessage, { autoClose: 5000 });
+      } else if (toastType === 'error') {
+        toast.error(toastMessage, { autoClose: 5000 });
+      }
+
+      setTimeout(() => {
+        localStorage.removeItem('toastMessage');
+        localStorage.removeItem('toastType');
+      }, 5500);
+    }
+  }, []);
 
   return (
     <Form
@@ -95,7 +128,7 @@ const Login: React.FC = () => {
               type="text"
               icon={passwordVisible ? <EyeInvisibleOutlined /> : <EyeOutlined />}
               onClick={togglePasswordVisibility}
-              style={{height: 10}}
+              style={{ height: 10 }}
             />
           }
         />

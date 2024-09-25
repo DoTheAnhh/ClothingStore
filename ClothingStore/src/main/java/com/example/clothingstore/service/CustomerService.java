@@ -16,4 +16,6 @@ public interface CustomerService {
     void insert(CustomerRequest customerRequest);
 
     void edit(CustomerRequest customerRequest, Long id);
+
+    Long editResetTokenForCustomer(String resetToken, Long id);
 }

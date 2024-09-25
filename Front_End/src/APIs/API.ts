@@ -1,4 +1,4 @@
-export const LOCALHOST = 'http://10.15.184.120:8080' //IP máy BE
+export const LOCALHOST = 'http://localhost:8080' //IP máy BE
 
 export const MAPPING_URL = {
     PRODUCT: '/product',
@@ -51,6 +51,7 @@ export const API_URL = {
     CUSTOMER: {
         FIND_ALL_CUSTOMER: '',
         EDIT: '/edit',
+        EDIT_RESET_TOKEN_FOR_CUSTOMER: '/edit-reset-token-for-customer',
         INSERT: '/insert'
     },
 }

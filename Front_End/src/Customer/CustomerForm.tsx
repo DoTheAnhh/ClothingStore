@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { CustomerRequest } from '../Interface/interface';
 import axios from 'axios';
 import { API_URL, LOCALHOST, MAPPING_URL } from '../APIs/API';
-import { Button, Col, Form, Input, Popconfirm, Radio, Row, Select } from 'antd';
-import { Option } from 'antd/es/mentions';
+import { Button, Col, Form, Input, Popconfirm, Radio, Row } from 'antd';
+import { toast } from 'react-toastify';
 interface CustomerProps {
   handleCancelCustomerModal: () => void;
   selectedCustomer: number | null;
@@ -79,12 +79,20 @@ const CustomerForm: React.FC<CustomerProps> = ({ handleCancelCustomerModal, sele
 
       if (selectedCustomer) {
         await axios.put(LOCALHOST + MAPPING_URL.CUSTOMER + API_URL.CUSTOMER.EDIT + `/${selectedCustomer}`, customer, config);
+        toast.success('Updated customer successfully', {
+          autoClose: 5000,
+        })
       } else {
         await axios.post(LOCALHOST + MAPPING_URL.CUSTOMER + API_URL.CUSTOMER.INSERT, customer, config)
+        toast.success('Insert customer successfully', {
+          autoClose: 5000,
+        })
       }
       handleCancelCustomerModal()
     } catch (e) {
-      console.error(e);
+      toast.error("Error insert/update", {
+        autoClose: 5000,
+      })
     }
   }
 

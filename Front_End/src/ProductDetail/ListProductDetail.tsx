@@ -16,7 +16,7 @@ interface ImageResponse {
 const ListProductDetail: React.FC = () => {
     const [productDetails, setProductDetails] = useState<ProductDetailResponse[]>([]);
     const [loadedImages, setLoadedImages] = useState<number[]>([]);
-    
+
     const [isModalOpenProductDetail, setIsModalProductDetail] = useState(false);
     const [selectedProductDetail, setSelectedProductDetail] = useState<number | null>(null);
 
@@ -61,10 +61,14 @@ const ListProductDetail: React.FC = () => {
                     size: size,
                 },
             });
-            setTotalProductDetail(res.data.totalElements);
-            setTotalPages(Math.ceil(res.data.totalElements / size));
+    
+            const { content, page: pagination } = res.data;
+            const totalElements = pagination.totalElements ?? 0;
+            setTotalProductDetail(totalElements);
+            setTotalPages(pagination.totalPages);
+    
             const productDetailsWithImages = await Promise.all(
-                res.data.content.map(async (productDetail: ProductDetailResponse) => {
+                content.map(async (productDetail: ProductDetailResponse) => {
                     const imageResponse = await findAllImageByProductDetailId(productDetail.id) ?? [];
                     return {
                         ...productDetail,
@@ -76,8 +80,7 @@ const ListProductDetail: React.FC = () => {
         } catch (err) {
             console.error(err);
         }
-    }, []);
-    
+    }, []);    
 
     const findAllImageByProductDetailId = useCallback(async (productDetailId: number) => {
         try {
@@ -93,6 +96,10 @@ const ListProductDetail: React.FC = () => {
         }
     }, [loadedImages]);
 
+    const formatPrice = (price: number) => {
+        return price.toLocaleString('vi-VN')
+    }
+
     useEffect(() => {
         findAllProductDetail(currentPage, pageSize);
     }, [currentPage, pageSize]);
@@ -101,6 +108,7 @@ const ListProductDetail: React.FC = () => {
         {
             title: 'Image',
             key: 'imageUrl',
+            align: 'center',
             render: (record: { imageUrl: string }) => (
                 <img
                     src={record.imageUrl}
@@ -110,62 +118,78 @@ const ListProductDetail: React.FC = () => {
             ),
         },
         {
-            title: 'Product',
+            title: 'Product name',
             dataIndex: 'productName',
+            align: 'center',
             key: 'productName',
         },
         {
             title: 'Color',
             dataIndex: 'colorName',
+            align: 'center',
             key: 'colorName',
         },
         {
             title: 'Size',
             dataIndex: 'sizeName',
+            align: 'center',
             key: 'sizeName',
         },
         {
             title: 'Create date',
             dataIndex: 'createDate',
+            align: 'center',
             key: 'createDate',
             render: (date: string) => moment(date).format('DD/MM/YYYY HH:mm'),
         },
         {
             title: 'Update date',
             dataIndex: 'updateDate',
+            align: 'center',
             key: 'updateDate',
             render: (date: string) => moment(date).format('DD/MM/YYYY HH:mm'),
         },
         {
             title: 'Quantity',
             dataIndex: 'quantity',
+            align: 'center',
             key: 'quantity',
+        },
+        {
+            title: 'Price',
+            dataIndex: 'productPrice',
+            key: 'productPrice',
+            align: 'center',
+            render: (price: number) => formatPrice(price) + " VND"
         },
         {
             title: 'Status',
             dataIndex: 'status',
+            align: 'center',
             key: 'status',
             render: (status: boolean) => (status ? 'Còn bán' : 'Không còn bán'),
         },
         {
             title: 'QR code',
             dataIndex: 'qrcode',
+            align: 'center',
             key: 'qrcode',
             render: (qrcode: string) => (
                 qrcode ? (
                     <img src={qrcode} alt="QR Code" style={{ width: 50, height: 50 }} />
                 ) : (
-                    <span>QR code not available</span>
+                    <img src="https://www.qrcodepress.com/wp-content/uploads/2014/09/QR-code-detective-when-not-to-use.jpg" alt="QR Code" style={{ width: 50, height: 50 }} />
                 )
             ),
         },
         {
             title: 'Action',
             key: 'action',
+            align: 'center',
             render: (record) => (
                 <span>
                     <EditOutlined
-                        style={{ cursor: 'pointer', float: 'left' }}
+                        style={{ cursor: 'pointer'}}
                         onClick={() => showModalProductDetailById(record)}
                     />
                 </span>

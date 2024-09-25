@@ -41,9 +41,8 @@ public class IProductDetailService implements ProductDetailService {
     @Override
     public Page<ProductDetailResponse> findAllProductDetails(Pageable pageable) {
         Page<ProductDetail> productDetailsPage = productDetailRepository.findAll(pageable);
-        List<ProductDetailResponse> productDetailResponses = productDetailMapper.toDtoList(productDetailsPage.getContent());
 
-        return new PageImpl<>(productDetailResponses, pageable, productDetailsPage.getTotalElements());
+        return productDetailsPage.map(productDetailMapper::toDto);
     }
 
     @Override
@@ -60,7 +59,7 @@ public class IProductDetailService implements ProductDetailService {
     }
 
     @Override
-    public Optional<ProductDetail> editProductDetail(ProductDetailRequest productDetailRequest, Long id) {
+    public Optional<ProductDetailResponse> editProductDetail(ProductDetailRequest productDetailRequest, Long id) {
         Optional<ProductDetail> existingProductDetailOptional = productDetailRepository.findById(id);
 
         if (existingProductDetailOptional.isPresent()) {
@@ -77,15 +76,18 @@ public class IProductDetailService implements ProductDetailService {
             existingProductDetail.setStatus(productDetailRequest.getStatus());
             existingProductDetail.setColor(color);
             existingProductDetail.setSize(size);
+            existingProductDetail.setProductPrice(productDetailRequest.getProductPrice());
             existingProductDetail.setProduct(product);
 
             ProductDetail updatedProductDetail = productDetailRepository.save(existingProductDetail);
 
-            return Optional.of(updatedProductDetail);
+            ProductDetailResponse response = productDetailMapper.toDto(updatedProductDetail);
+            return Optional.of(response);
         } else {
             return Optional.empty();
         }
     }
+
 
     @Override
     public void updateQRCode(Long id, String qrcode) {

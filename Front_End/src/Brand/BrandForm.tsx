@@ -3,6 +3,7 @@ import { BrandRequest } from '../Interface/interface';
 import axios from 'axios';
 import { API_URL, LOCALHOST, MAPPING_URL } from '../APIs/API';
 import { Button, Col, Form, Input, Popconfirm, Row } from 'antd';
+import { toast } from 'react-toastify';
 
 interface BrandProps {
     handleCancelBrandModal: () => void;
@@ -77,15 +78,23 @@ const BrandForm: React.FC<BrandProps> = ({ handleCancelBrandModal, selectedBrand
             const config = {
                 headers: { Authorization: `Bearer ${token}` }
             };
-            
+
             if (selectedBrand) {
                 await axios.put(LOCALHOST + MAPPING_URL.BRAND + API_URL.BRAND.EDIT + `/${selectedBrand}`, brand, config);
+                toast.success('Updated brand successfully', {
+                    autoClose: 5000,
+                })
             } else {
                 await axios.post(LOCALHOST + MAPPING_URL.BRAND + API_URL.BRAND.INSERT, brand, config)
+                toast.success('Insert brand successfully', {
+                    autoClose: 5000,
+                })
             }
             handleCancelBrandModal()
         } catch (e) {
-            console.error(e);
+            toast.error("Error insert/update", {
+                autoClose: 5000,
+            })
         }
     }
 

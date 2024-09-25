@@ -16,7 +16,7 @@ public interface ProductDetailService {
 
     Long insertProductDetail(ProductDetailRequest productDetailRequest);
 
-    Optional<ProductDetail> editProductDetail(ProductDetailRequest productDetailRequest, Long id);
+    Optional<ProductDetailResponse> editProductDetail(ProductDetailRequest productDetailRequest, Long id);
 
     void updateQRCode(Long id, String qrcode);
 }

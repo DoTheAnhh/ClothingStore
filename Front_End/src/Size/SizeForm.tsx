@@ -3,6 +3,7 @@ import { SizeRequest } from '../Interface/interface'
 import axios from 'axios';
 import { API_URL, LOCALHOST, MAPPING_URL } from '../APIs/API';
 import { Button, Col, Form, Input, Popconfirm, Row } from 'antd';
+import { toast } from 'react-toastify';
 
 interface SizeProps {
   handleCancelSizeModal: () => void;
@@ -79,12 +80,20 @@ const SizeForm: React.FC<SizeProps> = ({ handleCancelSizeModal, selectedSize }) 
 
       if (selectedSize) {
         await axios.put(LOCALHOST + MAPPING_URL.SIZE + API_URL.SIZE.EDIT + `/${selectedSize}`, size, config);
+        toast.success('Updated size successfully', {
+          autoClose: 5000,
+        })
       } else {
         await axios.post(LOCALHOST + MAPPING_URL.SIZE + API_URL.SIZE.INSERT, size, config)
+        toast.success('Insert size successfully', {
+          autoClose: 5000,
+        })
       }
       handleCancelSizeModal()
     } catch (e) {
-      console.error(e);
+      toast.error("Error insert/update", {
+        autoClose: 5000,
+      })
     }
   }
 

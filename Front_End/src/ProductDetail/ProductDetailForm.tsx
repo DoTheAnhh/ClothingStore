@@ -7,6 +7,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import ListProduct from '../Product/ListProduct';
 import ListSize from '../Size/ListSize';
 import ListColor from '../Color/ListColor';
+import { toast } from 'react-toastify';
 
 
 interface ProductDetailProps {
@@ -53,7 +54,7 @@ const ProductDetailForm: React.FC<ProductDetailProps> = ({ handleCancelProductDe
         findAllProduct();
     }, []);
 
-    const uploadImage = async (productDetailId: number): Promise<string | null> => {
+    const uploadImage = async (productDetailId: number, token: string): Promise<string | null> => {
         if (file) {
             const formData = new FormData();
             formData.append('file', file);
@@ -66,6 +67,7 @@ const ProductDetailForm: React.FC<ProductDetailProps> = ({ handleCancelProductDe
                     {
                         headers: {
                             'Content-Type': 'multipart/form-data',
+                            'Authorization': `Bearer ${token}`, // Thêm token vào headers
                         },
                     }
                 );
@@ -79,6 +81,7 @@ const ProductDetailForm: React.FC<ProductDetailProps> = ({ handleCancelProductDe
         return null;
     };
 
+
     const findProductDetailById = async () => {
         try {
             if (selectedProductDetail) {
@@ -91,6 +94,7 @@ const ProductDetailForm: React.FC<ProductDetailProps> = ({ handleCancelProductDe
                     quantity: data.quantity,
                     productId: data.productName,
                     sizeId: data.sizeName,
+                    productPrice: data.productPrice,
                     colorId: data.colorName,
                     qrcode: data.qrcode,
                     status: data.status,
@@ -183,6 +187,9 @@ const ProductDetailForm: React.FC<ProductDetailProps> = ({ handleCancelProductDe
                     productDetailForInsertOrUpdate,
                     config
                 );
+                toast.success('Updated product detail successfully', {
+                    autoClose: 5000,
+                })
                 id = selectedProductDetail;
             } else {
                 const response = await axios.post(
@@ -190,10 +197,13 @@ const ProductDetailForm: React.FC<ProductDetailProps> = ({ handleCancelProductDe
                     productDetailForInsertOrUpdate,
                     config
                 );
+                toast.success('Insert product detail successfully', {
+                    autoClose: 5000,
+                })
                 id = response.data;
             }
 
-            const imageUrl = await uploadImage(id);
+            const imageUrl = await uploadImage(id, token);
             if (imageUrl) {
                 await axios.put(
                     LOCALHOST + MAPPING_URL.IMAGE + API_URL.IMAGE.EDIT + `/${id}`,
@@ -222,7 +232,9 @@ const ProductDetailForm: React.FC<ProductDetailProps> = ({ handleCancelProductDe
                 handleCancelProductDetailModal();
             };
         } catch (error) {
-            console.error('Error submitting data:', error);
+            toast.error("Error insert/update", {
+                autoClose: 5000,
+            })
         }
     };
 
@@ -371,6 +383,12 @@ const ProductDetailForm: React.FC<ProductDetailProps> = ({ handleCancelProductDe
                             onChange={(e) => handleChangeSingleField("quantity")(e.target.value)}
                         />
                     </Form.Item>
+                    <Form.Item label="Product price" required>
+                        <Input
+                            value={productDetail?.productPrice}
+                            onChange={(e) => handleChangeSingleField("productPrice")(e.target.value)}
+                        ></Input>
+                    </Form.Item>
                     <Form.Item label="Image" required>
                         <Input type='file' onChange={onFileChange} />
                         {imageUrl && (
@@ -384,16 +402,18 @@ const ProductDetailForm: React.FC<ProductDetailProps> = ({ handleCancelProductDe
                         )}
                     </Form.Item>
                 </Col>
-                <Form.Item>
-                    <Popconfirm
-                        title="Are you sure you want to submit this product detail?"
-                        onConfirm={() => handleInsertOrUpdate()}
-                        okText="Yes"
-                        cancelText="No"
-                    >
-                        <Button type="primary">Submit</Button>
-                    </Popconfirm>
-                </Form.Item>
+                <Col span={24} style={{ textAlign: 'center' }}>
+                    <Form.Item>
+                        <Popconfirm
+                            title="Are you sure you want to submit this product detail?"
+                            onConfirm={() => handleInsertOrUpdate()}
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                            <Button type="primary">Submit</Button>
+                        </Popconfirm>
+                    </Form.Item>
+                </Col>
             </Row>
         </Form>
     );

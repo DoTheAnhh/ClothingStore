@@ -4,6 +4,7 @@ import { MailOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import './css/index.css'
 import { LOCALHOST } from '../../APIs/API';
+import { toast } from 'react-toastify';
 
 const ForgotPassword: React.FC = () => {
     const [loading, setLoading] = React.useState(false);
@@ -14,13 +15,19 @@ const ForgotPassword: React.FC = () => {
             const response = await axios.post(LOCALHOST + '/auth/forgot-password', { email: values.email });
 
             if (response.data.statusCode === 200) {
-                message.success('Email đặt lại mật khẩu đã được gửi.');
+                toast.success('Email đặt lại mật khẩu đã được gửi', {
+                    autoClose: 5000,
+                })
             } else {
-                message.error(response.data.message || 'Email không chính xác');
+                toast.error(response.data.message || 'Email không chính xác', {
+                    autoClose: 5000,
+                })
             }
             localStorage.setItem('token', response.data.token)
         } catch (error) {
-            message.error('Có lỗi xảy ra.');
+            toast.error('Có lỗi xảy ra', {
+                autoClose: 5000,
+            })
         } finally {
             setLoading(false);
         }

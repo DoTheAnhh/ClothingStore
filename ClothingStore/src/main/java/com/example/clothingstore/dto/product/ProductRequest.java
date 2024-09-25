@@ -14,9 +14,7 @@ public class ProductRequest {
     private String productCode;
 
     private String productName;
-
-    private float productPrice;
-
+    
     private String productDescription;
 
     private Long brandId;

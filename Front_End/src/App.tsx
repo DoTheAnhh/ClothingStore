@@ -8,6 +8,9 @@ import ForgotPassword from './Login/ForgotPassword/ForgotPassword';
 import Register from './Login/Register/register';
 import Login from './Login';
 import LayoutUser from './Layout/User/LayoutUser';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Profile from './Layout/Admin/Profile/Profile';
 
 interface RouteComponent {
   path: string;
@@ -42,6 +45,10 @@ function App() {
       path: '/user/*',
       element: <ProtectedRoute element={<LayoutUser />} requiredRole="USER" />,
     },
+    {
+      path: '/admin/account/profile',
+      element: <ProtectedRoute element={<Profile />} requiredRole="ADMIN" />,
+    },
   ];
 
   const renderRoutes = (children: RouteComponent[] = [], path = '') => {
@@ -60,11 +67,16 @@ function App() {
   };
 
   return (
-    <UserProvider>
-      <Routes>
-        {renderRoutes(routes)}
-      </Routes>
-    </UserProvider>
+    <>
+      <UserProvider>
+        <Routes>
+          {renderRoutes(routes)}
+        </Routes>
+      </UserProvider>
+      <div>
+        <ToastContainer />
+      </div>
+    </>
   );
 }
 

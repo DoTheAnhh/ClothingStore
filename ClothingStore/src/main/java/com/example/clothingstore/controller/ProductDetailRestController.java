@@ -22,7 +22,7 @@ public class ProductDetailRestController {
     private ProductDetailService productDetailService;
 
     @GetMapping
-    public Page<ProductDetailResponse> findAllProductDetails(@PageableDefault(size = 10) Pageable pageable) {
+    public Page<ProductDetailResponse> findAllProductDetail(@PageableDefault Pageable pageable) {
         return productDetailService.findAllProductDetails(pageable);
     }
 
@@ -39,10 +39,10 @@ public class ProductDetailRestController {
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<ProductDetail> updateProductDetail(
+    public ResponseEntity<ProductDetailResponse> updateProductDetail(
             @PathVariable Long id,
             @RequestBody ProductDetailRequest productDetailRequest) {
-        Optional<ProductDetail> updatedProductDetail = productDetailService.editProductDetail(productDetailRequest, id);
+        Optional<ProductDetailResponse> updatedProductDetail = productDetailService.editProductDetail(productDetailRequest, id);
         return updatedProductDetail.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 

@@ -42,4 +42,9 @@ public class CustomerRestController {
     public void editCustomer(@PathVariable Long id, @RequestBody CustomerRequest customerRequest) {
         customerService.edit(customerRequest, id);
     }
+
+    @PutMapping("/edit-reset-token-for-customer/{id}")
+    public Long editResetTokenForCustomer(@RequestParam String resetToken, @PathVariable Long id) {
+        return customerService.editResetTokenForCustomer(resetToken, id);
+    }
 }

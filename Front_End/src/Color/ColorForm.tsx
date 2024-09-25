@@ -3,6 +3,7 @@ import { ColorRequest } from '../Interface/interface';
 import axios from 'axios';
 import { API_URL, LOCALHOST, MAPPING_URL } from '../APIs/API';
 import { Button, Col, Form, Input, Popconfirm, Row } from 'antd';
+import { toast } from 'react-toastify';
 
 interface ColorProps {
     handleCancelColorModal: () => void;
@@ -76,15 +77,23 @@ const ColorForm: React.FC<ColorProps> = ({ handleCancelColorModal, selectedColor
             const config = {
                 headers: { Authorization: `Bearer ${token}` }
             };
-            
+
             if (selectedColor) {
                 await axios.put(LOCALHOST + MAPPING_URL.COLOR + API_URL.COLOR.EDIT + `/${selectedColor}`, color, config);
+                toast.success('Updated color successfully', {
+                    autoClose: 5000,
+                })
             } else {
                 await axios.post(LOCALHOST + MAPPING_URL.COLOR + API_URL.COLOR.INSERT, color, config)
+                toast.success('Insert color successfully', {
+                    autoClose: 5000,
+                })
             }
             handleCancelColorModal()
         } catch (e) {
-            console.error(e);
+            toast.error("Error insert/update", {
+                autoClose: 5000,
+            })
         }
     }
 

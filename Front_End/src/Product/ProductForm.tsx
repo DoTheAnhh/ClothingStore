@@ -6,6 +6,7 @@ import { Button, Col, Form, Input, Modal, Popconfirm, Row, Select } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import ListType from '../Type/ListType';
 import ListBrand from '../Brand/ListBrand';
+import { toast } from 'react-toastify';
 
 interface ProductProps {
     handleCancelProductModal: () => void;
@@ -49,7 +50,6 @@ const ProductForm: React.FC<ProductProps> = ({ handleCancelProductModal, selecte
                 setProduct({
                     productCode: data.productCode,
                     productName: data.productName,
-                    productPrice: data.productPrice,
                     productDescription: data.productDescription,
                     typeId: data.typeName,
                     brandId: data.brandName,
@@ -133,12 +133,20 @@ const ProductForm: React.FC<ProductProps> = ({ handleCancelProductModal, selecte
 
             if (selectedProduct) {
                 await axios.put(LOCALHOST + MAPPING_URL.PRODUCT + API_URL.PRODUCT.EDIT + `/${selectedProduct}`, productForInsertOrUpdate, config);
+                toast.success('Updated product successfully', {
+                    autoClose: 5000,
+                })
             } else {
                 await axios.post(LOCALHOST + MAPPING_URL.PRODUCT + API_URL.PRODUCT.INSERT, productForInsertOrUpdate, config)
+                toast.success('Insert product successfully', {
+                    autoClose: 5000,
+                  })
             }
             handleCancelProductModal()
         } catch (e) {
-            console.error(e);
+            toast.error("Error insert/update", {
+                autoClose: 5000,
+              })
         }
     }
 
@@ -166,12 +174,6 @@ const ProductForm: React.FC<ProductProps> = ({ handleCancelProductModal, selecte
                         <Input
                             value={product?.productName}
                             onChange={(e) => handleChangeSingleField("productName")(e.target.value)}
-                        ></Input>
-                    </Form.Item>
-                    <Form.Item label="Product price" required>
-                        <Input
-                            value={product?.productPrice}
-                            onChange={(e) => handleChangeSingleField("productPrice")(e.target.value)}
                         ></Input>
                     </Form.Item>
                 </Col>

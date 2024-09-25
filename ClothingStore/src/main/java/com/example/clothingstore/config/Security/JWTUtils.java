@@ -17,7 +17,7 @@ public class JWTUtils {
 
     private SecretKey Key;
 
-    private static final long EXPIRATION_TIME_TOKEN = 900000; // 15 phút
+    private static final long EXPIRATION_TIME_TOKEN = 604800000;
     private static final long EXPIRATION_TIME_REFRESH_TOKEN = 604800000; // 1 tuần
 
     public JWTUtils() {

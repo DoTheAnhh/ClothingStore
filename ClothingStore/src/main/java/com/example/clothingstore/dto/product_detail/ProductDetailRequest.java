@@ -20,5 +20,7 @@ public class ProductDetailRequest {
     private Long sizeId;
 
     private Long productId;
+
+    private float productPrice;
 }
 

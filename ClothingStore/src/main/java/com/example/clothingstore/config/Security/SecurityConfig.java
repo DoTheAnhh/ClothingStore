@@ -57,6 +57,11 @@ public class SecurityConfig {
 
                                 .requestMatchers("/customer").permitAll()
                                 .requestMatchers("/customer/*").permitAll()
+                                .requestMatchers("/customer/edit-reset-token-for-customer/*").permitAll()
+
+                                .requestMatchers("/cart").permitAll()
+                                .requestMatchers("/cart/add-product-to-cart").permitAll()
+
 
                                 .requestMatchers("/v3/api-docs/**", "/v3/api-docs.yaml", "/swagger-ui.html", "/swagger-ui/**").permitAll()
 

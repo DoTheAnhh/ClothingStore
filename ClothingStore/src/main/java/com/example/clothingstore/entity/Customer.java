@@ -34,7 +34,7 @@ public class Customer extends PrimaryEntity implements UserDetails {
     private Date birthday;
 
     @Column(name = "gender")
-    private boolean gender;
+    private boolean gender = true;
 
     @Column(name = "location")
     private String location;

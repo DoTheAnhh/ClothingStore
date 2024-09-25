@@ -6,7 +6,6 @@ export interface ProductResponse {
   id: number;
   productCode: string;
   productName: string;
-  productPrice: number;
   productDescription: string;
   brandName: string;
   typeName: string;
@@ -17,7 +16,6 @@ export interface ProductResponse {
 export interface ProductRequest {
   productCode?: string;
   productName?: string;
-  productPrice?: number;
   productDescription?: string;
   brandId?: string;
   typeId?: string;
@@ -33,6 +31,7 @@ export interface ProductDetailResponse {
   productName: string;
   createDate: string;
   updateDate: string;
+  productPrice: number;
   qrcode: string;
 }
 
@@ -43,6 +42,7 @@ export interface ProductDetailRequest {
   colorId?: string;
   sizeId?: string;
   productId?: string;
+  productPrice?: number;
   qrcode?: string;
   imageUrl?: string;
 }

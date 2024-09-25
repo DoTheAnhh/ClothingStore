@@ -23,7 +23,4 @@ public class PrimaryEntity {
 
     @Column(name = "update_date")
     private Date updateDate;
-
-    @Column(name = "deleted")
-    private Boolean deleted;
 }

@@ -4,6 +4,7 @@ import { LockOutlined, MailOutlined, EyeOutlined, EyeInvisibleOutlined } from '@
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './css/index.css';
+import { toast } from 'react-toastify';
 
 interface RegisterResponse {
   token: string;
@@ -27,12 +28,16 @@ const Register: React.FC = () => {
         password: values.password,
         role: 'USER'
       });
-      message.success("Register successfully !")
+      toast.success("Register successfully !", {
+        autoClose: 5000,
+      })
       navigate('/');
 
     } catch (error: any) {
       const errorMessage = error.response?.data?.message || 'An error occurred during registration!';
-      message.error(errorMessage);
+      toast.error(errorMessage, {
+        autoClose: 5000,
+      })
     } finally {
       setLoading(false);
     }
@@ -83,7 +88,7 @@ const Register: React.FC = () => {
               type="text"
               icon={passwordVisible ? <EyeInvisibleOutlined /> : <EyeOutlined />}
               onClick={togglePasswordVisibility}
-              style={{height: 10}}
+              style={{ height: 10 }}
             />
           }
         />
@@ -104,7 +109,7 @@ const Register: React.FC = () => {
               type="text"
               icon={confirmPasswordVisible ? <EyeInvisibleOutlined /> : <EyeOutlined />}
               onClick={toggleConfirmPasswordVisibility}
-              style={{height: 10}}
+              style={{ height: 10 }}
             />
           }
         />

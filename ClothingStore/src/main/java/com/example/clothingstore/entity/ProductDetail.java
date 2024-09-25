@@ -20,6 +20,10 @@ public class ProductDetail extends PrimaryEntity {
     @NotNull(message = "Số lượng không được để trống")
     private int quantity;
 
+    @Column(name = "product_price")
+    @NotNull(message = "Giá sản phẩm không được để trống")
+    private float productPrice;
+
     @Column(name = "QRcode", columnDefinition = "LONGTEXT")
     private String QRcode;
 
