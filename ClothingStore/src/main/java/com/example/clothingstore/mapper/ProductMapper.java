@@ -2,12 +2,16 @@ package com.example.clothingstore.mapper;
 
 import com.example.clothingstore.dto.product.ProductRequest;
 import com.example.clothingstore.dto.product.ProductResponse;
+import com.example.clothingstore.entity.Image;
 import com.example.clothingstore.entity.Product;
+import com.example.clothingstore.entity.ProductDetail;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper
 public interface ProductMapper {
@@ -16,6 +20,10 @@ public interface ProductMapper {
 
     @Mapping(source = "brand.brandName", target = "brandName")
     @Mapping(source = "type.typeName", target = "typeName")
+    @Mapping(target = "imageUrls", expression = "java(mapAllImageUrls(product))")
+    @Mapping(target = "colors", expression = "java(mapAllColors(product))")
+    @Mapping(target = "sizes", expression = "java(mapAllSizes(product))")
+    @Mapping(target = "firstProductPrice", expression = "java(mapFirstProductPrice(product))")
     ProductResponse toDto(Product product);
 
     @Mapping(source = "brandId", target = "brand.id")
@@ -24,5 +32,41 @@ public interface ProductMapper {
 
     List<ProductResponse> toDtoList(List<Product> products);
 
-    List<Product> toEntityList(List<ProductRequest> productRequest);
+    default List<String> mapAllImageUrls(Product product) {
+        List<String> imageUrls = new ArrayList<>();
+        if (product.getProductDetail() != null) {
+            for (ProductDetail detail : product.getProductDetail()) {
+                if (detail.getImages() != null) {
+                    for (Image image : detail.getImages()) {
+                        imageUrls.add(image.getImageUrl());
+                    }
+                }
+            }
+        }
+        return imageUrls;
+    }
+
+    default Float mapFirstProductPrice(Product product) {
+        return product.getProductDetail().stream()
+                .filter(detail -> detail.getProductPrice() != null) // Kiểm tra nếu giá sản phẩm không null
+                .map(ProductDetail::getProductPrice) // Lấy giá sản phẩm
+                .findFirst() // Lấy giá đầu tiên
+                .orElse(null); // Trả về null nếu không có giá
+    }
+
+    default List<String> mapAllSizes(Product product) {
+        return product.getProductDetail().stream()
+                .filter(detail -> detail.getSize() != null)
+                .map(detail -> detail.getSize().getSizeName())
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
+    default List<String> mapAllColors(Product product) {
+        return product.getProductDetail().stream()
+                .filter(detail -> detail.getColor() != null)
+                .map(detail -> detail.getColor().getColorName())
+                .distinct()
+                .collect(Collectors.toList());
+    }
 }

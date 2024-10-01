@@ -46,8 +46,9 @@ public class CustomerRestController {
     }
 
     @PostMapping("/insert")
-    public void insertCustomer(@RequestBody CustomerRequest customerRequest) {
-        customerService.insert(customerRequest);
+    public ResponseEntity<Long> insertCustomer(@RequestBody CustomerRequest customerRequest) {
+        Long id = customerService.insert(customerRequest);
+        return ResponseEntity.ok(id);
     }
 
     @PutMapping("/edit/{id}")

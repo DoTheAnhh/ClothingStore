@@ -8,7 +8,7 @@ const MenuBar: React.FC = () => {
   const navigator = useNavigate()
 
   const items: MenuProps['items'] = [
-    { label: 'Dash board', key: '/admin/dash-board', icon: <DashboardOutlined />},
+    { label: 'Dash board', key: '/admin/dash-board', icon: <DashboardOutlined /> },
     { label: 'Product detail', key: '/admin/product-details', icon: <ProductFilled /> },
     { label: 'Customer', key: '/admin/customers', icon: <UserOutlined /> },
   ];
@@ -16,6 +16,7 @@ const MenuBar: React.FC = () => {
   return (
     <>
       <Menu
+        style={{ display: 'block' }}
         onClick={({ key }) => {
           if (key === 'sign-out') {
             // Xử lý đăng xuất

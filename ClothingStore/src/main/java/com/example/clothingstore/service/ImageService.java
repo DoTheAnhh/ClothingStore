@@ -1,15 +1,19 @@
 package com.example.clothingstore.service;
 
-import com.example.clothingstore.dto.image.ImageRequest;
-import com.example.clothingstore.dto.image.ImageResponse;
+import com.example.clothingstore.dto.image.ImageCustomerRequest;
+import com.example.clothingstore.dto.image.ImageCustomerResponse;
+import com.example.clothingstore.dto.image.ImageProductDetailRequest;
+import com.example.clothingstore.dto.image.ImageProductDetailResponse;
 
 import java.io.IOException;
 import java.util.List;
 
 public interface ImageService {
-    List<ImageResponse> getImagesByProductDetailId(Long productDetailId);
+    List<ImageProductDetailResponse> getImagesByProductDetailId(Long productDetailId);
 
-    void insertImage(ImageRequest imageRequest) throws IOException;
+    void uploadImageProductDetail(ImageProductDetailRequest imageProductDetailRequest);
 
-    void updateImage(ImageRequest imageRequest);
+    List<ImageCustomerResponse> getImagesByCustomerId(Long customerId);
+
+    void uploadImageCustomer(ImageCustomerRequest imageCustomerRequest);
 }

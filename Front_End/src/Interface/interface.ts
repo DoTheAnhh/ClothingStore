@@ -11,6 +11,10 @@ export interface ProductResponse {
   typeName: string;
   createDate: string;
   updateDate: string;
+  imageUrls: string[]
+  colors: string[]
+  sizes: string[]
+  firstProductPrice: number
 }
 
 export interface ProductRequest {

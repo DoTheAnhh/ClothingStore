@@ -10,8 +10,9 @@ import Login from './Login';
 import LayoutUser from './Layout/User/LayoutUser';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Profile from './Layout/Admin/Profile/Profile';
 import ChangePassword from './Login/ChangePassword/ChangePassword';
+import UserPageProductDetail from './Layout/User/ProductDetail/UserPageProductDetail';
+import Profile from './Layout/Profile/Profile';
 
 interface RouteComponent {
   path: string;
@@ -47,12 +48,16 @@ function App() {
       element: <ProtectedRoute element={<LayoutAdmin />} requiredRole="ADMIN" />,
     },
     {
-      path: '/user/*',
+      path: '/user',
       element: <ProtectedRoute element={<LayoutUser />} requiredRole="USER" />,
     },
     {
-      path: '/admin/account/profile',
-      element: <ProtectedRoute element={<Profile />} requiredRole="ADMIN" />,
+      path: '/user/product-detail/:id',
+      element: <UserPageProductDetail />,
+    },
+    {
+      path: '/account/profile',
+      element: <Profile />,
     },
   ];
 

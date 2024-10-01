@@ -1,18 +1,18 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { CustomerRequest, CustomerResponse } from '../../../Interface/interface'
 import axios from 'axios'
-import { API_URL, LOCALHOST, MAPPING_URL } from '../../../APIs/API'
-import { Avatar, Button, Col, Form, Input, Popconfirm, Radio, Row, Upload } from 'antd'
-import { UploadOutlined, UserOutlined } from '@ant-design/icons'
-import HeaderLayoutAdmin from '../Header/HeaderLayoutAdmin'
+import { Button, Col, Form, Input, Popconfirm, Radio, Row } from 'antd'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
+import { CustomerRequest, ImageResponse } from '../../Interface/interface'
+import { API_URL, LOCALHOST, MAPPING_URL } from '../../APIs/API'
 
 const Profile: React.FC = () => {
 
   const nagigator = useNavigate()
 
   const [customer, setCustomer] = useState<CustomerRequest>()
+  const [file, setFile] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   const decodeJwt = (token: string) => {
     try {
@@ -45,6 +45,7 @@ const Profile: React.FC = () => {
   const getCustomerById = async () => {
     const res = await axios.get(LOCALHOST + MAPPING_URL.CUSTOMER + API_URL.CUSTOMER.FIND_ALL_CUSTOMER + `/${userId}`)
     setCustomer(res.data)
+    await findAllImageByCustomerlId(res.data.id)
   }
 
   const handleChangeSingleField = useCallback(
@@ -78,6 +79,7 @@ const Profile: React.FC = () => {
           autoClose: 5000,
         });
 
+        await uploadImage(userId, token);
         await getCustomerById();
       }
     } catch (e) {
@@ -93,7 +95,11 @@ const Profile: React.FC = () => {
   }
 
   const back = () => {
-    nagigator("/admin")
+    const customerRole = decodedToken.role;
+    if (customerRole == "ADMIN")
+      nagigator("/admin")
+    else if (customerRole == "USER")
+      nagigator("/user")
   }
 
   const handleBirthdayChange = (value: string) => {
@@ -121,6 +127,59 @@ const Profile: React.FC = () => {
     });
   };
 
+  const uploadImage = async (customerId: number, token: string): Promise<string | null> => {
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('customerId', customerId.toString());
+
+      try {
+        const response = await axios.post(
+          `${LOCALHOST}${MAPPING_URL.IMAGE}${API_URL.IMAGE.UPLOAD_IMG_CUSTOMER}`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'Authorization': `Bearer ${token}`,
+            },
+          }
+        );
+        return response.data.imageUrl || null;
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        return null;
+      }
+    }
+    return null;
+  };
+
+  const findAllImageByCustomerlId = async (customerId: number) => {
+    try {
+      const url = `${LOCALHOST}${MAPPING_URL.IMAGE}${API_URL.IMAGE.FIND_IMAGE_BY_CUSTOMER_ID}/${customerId}`;
+      const response = await axios.get<ImageResponse[]>(url);
+      const newImageUrl = response.data[0]?.imageUrl || null;
+      setImageUrl(newImageUrl);
+    } catch (error) {
+      console.error('Error fetching images:', error);
+    }
+  };
+
+  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setFile(file);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  useEffect(() => {
+    findAllImageByCustomerlId(userId);
+  }, []);
 
   useEffect(() => {
     getCustomerById()
@@ -129,15 +188,11 @@ const Profile: React.FC = () => {
 
   return (
     <>
-      <HeaderLayoutAdmin />
       <div style={{ padding: '24px', maxWidth: '800px', margin: '0 auto', display: 'flex' }}>
         <div style={{ flex: 1 }}>
           <h2>Hồ Sơ Của Tôi</h2>
           <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
-          <Form
-            layout="vertical"
-            style={{ marginTop: 80 }}
-          >
+          <Form layout="vertical" style={{ marginTop: 80 }}>
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item label="Email">
@@ -145,7 +200,7 @@ const Profile: React.FC = () => {
                     value={customer?.email}
                     onChange={(e) => handleChangeSingleField("email")(e.target.value)}
                     disabled
-                  ></Input>
+                  />
                 </Form.Item>
 
                 <Form.Item label="Password" required style={{ display: 'none' }}>
@@ -154,14 +209,14 @@ const Profile: React.FC = () => {
                     onChange={(e) => handleChangeSingleField("password")(e.target.value)}
                     disabled
                     type='password'
-                  ></Input>
+                  />
                 </Form.Item>
 
                 <Form.Item label="Name">
                   <Input
                     value={customer?.name}
                     onChange={(e) => handleChangeSingleField("name")(e.target.value)}
-                  ></Input>
+                  />
                 </Form.Item>
 
                 <Form.Item label="Gender">
@@ -181,9 +236,7 @@ const Profile: React.FC = () => {
                     onChange={(e) => handleBirthdayChange(e.target.value)}
                   />
                 </Form.Item>
-              </Col>
 
-              <Col span={12}>
                 <Form.Item label="Age">
                   <Input
                     value={customer?.age}
@@ -192,12 +245,10 @@ const Profile: React.FC = () => {
                   />
                 </Form.Item>
 
-                <Form.Item label="Location">
-                  <Input
-                    value={customer?.location}
-                    onChange={(e) => handleChangeSingleField("location")(e.target.value)}
-                  ></Input>
-                </Form.Item>
+
+              </Col>
+
+              <Col span={12}>
 
                 <Form.Item label="Role" required>
                   <Radio.Group
@@ -210,22 +261,28 @@ const Profile: React.FC = () => {
                   </Radio.Group>
                 </Form.Item>
 
+                <Form.Item label="Location">
+                  <Input
+                    value={customer?.location}
+                    onChange={(e) => handleChangeSingleField("location")(e.target.value)}
+                  />
+                </Form.Item>
+
                 <Form.Item label="Create Date">
                   <Input
                     value={formatDate(customer?.createDate)}
                     disabled
                   />
                 </Form.Item>
-
                 <Form.Item label="Update Date">
                   <Input
                     value={formatDate(customer?.updateDate)}
                     disabled
                   />
                 </Form.Item>
-
               </Col>
             </Row>
+
             <Form.Item style={{ marginLeft: 260 }}>
               <Row gutter={16} justify="center">
                 <Col>
@@ -254,20 +311,26 @@ const Profile: React.FC = () => {
           </Form>
         </div>
 
-        <div style={{ textAlign: 'center', position: 'relative', top: '180px', marginLeft: '60px' }}>
-          <Avatar size={100} icon={<UserOutlined />} />
-          <div style={{ marginTop: '20px' }}>
-            <Upload maxCount={1} accept="image/*" showUploadList={false}>
-              <Button style={{ marginBottom: 10 }}>Chọn Ảnh</Button>
-            </Upload>
-          </div>
-          <p>Dung lượng file tối đa 1 MB</p>
-          <p>Định dạng: JPEG, PNG</p>
+        <div style={{ textAlign: 'center', position: 'relative', top: '180px', marginLeft: '60px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          {imageUrl && (
+            <div style={{ marginBottom: 16 }}>
+              <img
+                src={imageUrl}
+                alt="Preview"
+                style={{ width: 150, height: 150, objectFit: 'cover', borderRadius: "50%", marginLeft: 50 }}
+              />
+            </div>
+          )}
+          <label style={{ display: 'inline-block', backgroundColor: '#ffff', border: "1px solid black", color: 'black', padding: '8px 16px', cursor: 'pointer', borderRadius: '30px', marginLeft: 55 }}>
+            Thay đổi ảnh
+            <input type="file" onChange={onFileChange} style={{ display: 'none' }} />
+          </label>
         </div>
 
-      </div >
+      </div>
     </>
-  )
+  );
+
 }
 
 export default Profile

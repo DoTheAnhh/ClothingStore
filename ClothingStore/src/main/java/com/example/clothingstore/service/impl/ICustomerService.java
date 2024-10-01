@@ -42,12 +42,13 @@ public class ICustomerService implements CustomerService {
     }
 
     @Override
-    public void insert(CustomerRequest customerRequest) {
+    public Long insert(CustomerRequest customerRequest) {
         if (customerRepository.findByEmail(customerRequest.getEmail()).isPresent()) {
             throw new RuntimeException("Email already exists: " + customerRequest.getEmail());
         }
         Customer customer = customerMapper.toEntity(customerRequest);
-        customerRepository.save(customer);
+        Customer saveCustomer = customerRepository.save(customer);
+        return saveCustomer.getId();
     }
 
     @Override

@@ -48,6 +48,7 @@ public class SecurityConfig {
                                 .requestMatchers("/color/*").permitAll()
 
                                 .requestMatchers("/image/product-detail/*").permitAll()
+                                .requestMatchers("/image/customer/*").permitAll()
 
                                 .requestMatchers("/size").permitAll()
                                 .requestMatchers("/size/*").permitAll()
@@ -80,8 +81,9 @@ public class SecurityConfig {
                                 .requestMatchers("/color/insert").hasAnyAuthority("ADMIN")
                                 .requestMatchers("/color/edit/*").hasAnyAuthority("ADMIN")
 
-                                .requestMatchers("/image/upload").hasAnyAuthority("ADMIN")
-                                .requestMatchers("/image/edit").hasAnyAuthority("ADMIN")
+                                .requestMatchers("/image/upload-image-product-detail").hasAnyAuthority("ADMIN")
+
+                                .requestMatchers("/image/upload-image-customer").hasAnyAuthority("ADMIN")
 
                                 .requestMatchers("/size/insert").hasAnyAuthority("ADMIN")
                                 .requestMatchers("/size/edit/*").hasAnyAuthority("ADMIN")

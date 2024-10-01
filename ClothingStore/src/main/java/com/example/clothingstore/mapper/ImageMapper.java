@@ -1,7 +1,10 @@
 package com.example.clothingstore.mapper;
 
-import com.example.clothingstore.dto.image.ImageRequest;
-import com.example.clothingstore.dto.image.ImageResponse;
+import com.example.clothingstore.dto.image.ImageCustomerRequest;
+import com.example.clothingstore.dto.image.ImageCustomerResponse;
+import com.example.clothingstore.dto.image.ImageProductDetailRequest;
+import com.example.clothingstore.dto.image.ImageProductDetailResponse;
+import com.example.clothingstore.entity.Customer;
 import com.example.clothingstore.entity.Image;
 import com.example.clothingstore.entity.ProductDetail;
 import org.mapstruct.Mapper;
@@ -16,18 +19,27 @@ public interface ImageMapper {
 
     ImageMapper INSTANCE = Mappers.getMapper(ImageMapper.class);
 
-    ImageResponse toDto(Image image);
-
     @Mapping(target = "productDetail", source = "productDetailId", qualifiedByName = "mapProductDetailById")
-    Image toEntity(ImageRequest imageRequest);
+    Image toEntity(ImageProductDetailRequest imageProductDetailRequest);
 
-    List<ImageResponse> toDtoList(List<Image> images);
-
-    List<Image> toEntityList(List<ImageRequest> imageRequests);
+    List<ImageProductDetailResponse> toDtoList(List<Image> images);
 
     @Named("mapProductDetailById")
     default ProductDetail mapProductDetailById(Long productDetailId) {
         if (productDetailId == null) {
+            return null;
+        }
+        return null;
+    }
+
+    @Mapping(target = "customer", source = "customerId", qualifiedByName = "mapCustomerById")
+    Image toEntity(ImageCustomerRequest imageCustomerRequest);
+
+    List<ImageCustomerResponse> toDtoListCustomer(List<Image> images);
+
+    @Named("mapCustomerById")
+    default Customer mapCustomerById(Long customerId) {
+        if (customerId == null) {
             return null;
         }
         return null;

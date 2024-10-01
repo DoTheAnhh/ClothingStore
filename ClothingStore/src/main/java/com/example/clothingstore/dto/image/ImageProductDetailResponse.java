@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ImageResponse {
+public class ImageProductDetailResponse {
 
     private String imageUrl;
 }

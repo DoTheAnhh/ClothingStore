@@ -25,8 +25,9 @@ export const API_URL = {
     },
     IMAGE: {
         FIND_IMAGE_BY_PRODUCT_DETAIL_ID: '/product-detail',
-        UPLOAD: '/upload',
-        EDIT: '/edit'
+        UPLOAD: '/upload-image-product-detail',
+        FIND_IMAGE_BY_CUSTOMER_ID: '/customer',
+        UPLOAD_IMG_CUSTOMER: '/upload-image-customer',
     },
     COLOR: {
         FIND_ALL_COLOR: '',

@@ -14,7 +14,7 @@ public interface CustomerService {
 
     Optional<CustomerResponse> findById(Long id);
 
-    void insert(CustomerRequest customerRequest);
+    Long insert(CustomerRequest customerRequest);
 
     void edit(CustomerRequest customerRequest, Long id);
 

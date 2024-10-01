@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { CustomerRequest } from '../Interface/interface';
+import { CustomerRequest, ImageResponse } from '../Interface/interface';
 import axios from 'axios';
 import { API_URL, LOCALHOST, MAPPING_URL } from '../APIs/API';
 import { Button, Col, Form, Input, Popconfirm, Radio, Row } from 'antd';
@@ -13,6 +13,9 @@ const CustomerForm: React.FC<CustomerProps> = ({ handleCancelCustomerModal, sele
 
   const [customer, setCustomer] = useState<CustomerRequest>()
 
+  const [file, setFile] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+
   const findCustomerById = async () => {
     try {
       if (selectedCustomer) {
@@ -20,11 +23,23 @@ const CustomerForm: React.FC<CustomerProps> = ({ handleCancelCustomerModal, sele
           LOCALHOST + MAPPING_URL.CUSTOMER + API_URL.CUSTOMER.FIND_ALL_CUSTOMER + `/${selectedCustomer}`
         )
         setCustomer(res.data)
+        await findAllImageByCustomerlId(res.data.id)
       }
     } catch (e) {
       console.error(e);
     }
   }
+
+  const findAllImageByCustomerlId = async (customerId: number) => {
+    try {
+      const url = `${LOCALHOST}${MAPPING_URL.IMAGE}${API_URL.IMAGE.FIND_IMAGE_BY_CUSTOMER_ID}/${customerId}`;
+      const response = await axios.get<ImageResponse[]>(url);
+      const newImageUrl = response.data[0]?.imageUrl || null;
+      setImageUrl(newImageUrl);
+    } catch (error) {
+      console.error('Error fetching images:', error);
+    }
+  };
 
   const handleChangeSingleField = useCallback(
     (field: string) => {
@@ -37,6 +52,45 @@ const CustomerForm: React.FC<CustomerProps> = ({ handleCancelCustomerModal, sele
     },
     []
   );
+
+  const uploadImage = async (customerId: number, token: string): Promise<string | null> => {
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('customerId', customerId.toString());
+
+      try {
+        const response = await axios.post(
+          `${LOCALHOST}${MAPPING_URL.IMAGE}${API_URL.IMAGE.UPLOAD_IMG_CUSTOMER}`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'Authorization': `Bearer ${token}`,
+            },
+          }
+        );
+        return response.data.imageUrl || null;
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        return null;
+      }
+    }
+    return null;
+  };
+
+  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setFile(file);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const decodeJwt = (token: string) => {
     try {
@@ -54,6 +108,7 @@ const CustomerForm: React.FC<CustomerProps> = ({ handleCancelCustomerModal, sele
 
   const handleInsertOrUpdate = async () => {
     try {
+      let id: number;
       const token = localStorage.getItem('token');
       if (!token) {
         console.error('No token found');
@@ -82,12 +137,21 @@ const CustomerForm: React.FC<CustomerProps> = ({ handleCancelCustomerModal, sele
         toast.success('Updated customer successfully', {
           autoClose: 5000,
         })
+        id = selectedCustomer;
       } else {
-        await axios.post(LOCALHOST + MAPPING_URL.CUSTOMER + API_URL.CUSTOMER.INSERT, customer, config)
+        const customerWithPass = {
+          ...customer,
+          password: '123',
+        };
+        const response = await axios.post(LOCALHOST + MAPPING_URL.CUSTOMER + API_URL.CUSTOMER.INSERT, customerWithPass, config)
         toast.success('Insert customer successfully', {
           autoClose: 5000,
         })
+        id = response.data;
       }
+
+      await uploadImage(id, token);
+
       handleCancelCustomerModal()
     } catch (e) {
       toast.error("Error insert/update", {
@@ -98,6 +162,7 @@ const CustomerForm: React.FC<CustomerProps> = ({ handleCancelCustomerModal, sele
 
   const clearField = () => {
     setCustomer(undefined)
+    setImageUrl(null);
   }
 
   const handleBirthdayChange = (value: string) => {
@@ -179,7 +244,18 @@ const CustomerForm: React.FC<CustomerProps> = ({ handleCancelCustomerModal, sele
               <Radio value={"USER"}>USER</Radio>
             </Radio.Group>
           </Form.Item>
-
+          <Form.Item label="Image" required>
+            <Input type='file' onChange={onFileChange} />
+            {imageUrl && (
+              <div style={{ marginTop: 16 }}>
+                <img
+                  src={imageUrl}
+                  alt="Preview"
+                  style={{ width: 100, height: 100, objectFit: 'cover' }}
+                />
+              </div>
+            )}
+          </Form.Item>
         </Col>
         <Form.Item>
           <Popconfirm

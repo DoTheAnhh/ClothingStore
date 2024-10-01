@@ -21,4 +21,8 @@ public class Image extends PrimaryEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_detail_id")
     private ProductDetail productDetail;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 }

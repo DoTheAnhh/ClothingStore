@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,5 +29,11 @@ public class ProductResponse {
 
     private Date updateDate;
 
-    private Boolean deleted;
+    private List<String> imageUrls;
+
+    private List<String> colors;
+
+    private List<String> sizes;
+
+    private Float firstProductPrice;
 }

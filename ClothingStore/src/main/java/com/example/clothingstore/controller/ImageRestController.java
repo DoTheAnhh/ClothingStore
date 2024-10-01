@@ -1,7 +1,9 @@
 package com.example.clothingstore.controller;
 
-import com.example.clothingstore.dto.image.ImageRequest;
-import com.example.clothingstore.dto.image.ImageResponse;
+import com.example.clothingstore.dto.image.ImageCustomerRequest;
+import com.example.clothingstore.dto.image.ImageCustomerResponse;
+import com.example.clothingstore.dto.image.ImageProductDetailRequest;
+import com.example.clothingstore.dto.image.ImageProductDetailResponse;
 import com.example.clothingstore.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,32 +20,37 @@ public class ImageRestController {
     @Autowired
     private ImageService imageService;
 
+    //Product detail
     @GetMapping("/product-detail/{productDetailId}")
-    public List<ImageResponse> findImageByProductDetailId(@PathVariable Long productDetailId) {
+    public List<ImageProductDetailResponse> findImageByProductDetailId(@PathVariable Long productDetailId) {
         return imageService.getImagesByProductDetailId(productDetailId);
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity<Void> addImage(@RequestParam("file") MultipartFile file,
-                                         @RequestParam("productDetailId") Long productDetailId) throws IOException {
-        ImageRequest imageRequest = new ImageRequest();
-        imageRequest.setFile(file);
-        imageRequest.setProductDetailId(productDetailId);
-
-        imageService.insertImage(imageRequest);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/edit")
-    public ResponseEntity<Void> editImage(@RequestParam("file") MultipartFile file,
+    @PostMapping("/upload-image-product-detail")
+    public ResponseEntity<Void> uploadImageProductDetail(@RequestParam("file") MultipartFile file,
                                           @RequestParam("productDetailId") Long productDetailId) {
-        ImageRequest imageRequest = new ImageRequest();
-        imageRequest.setFile(file);
-        imageRequest.setProductDetailId(productDetailId);
+        ImageProductDetailRequest imageProductDetailRequest = new ImageProductDetailRequest();
+        imageProductDetailRequest.setFile(file);
+        imageProductDetailRequest.setProductDetailId(productDetailId);
 
-        imageService.updateImage(imageRequest);
+        imageService.uploadImageProductDetail(imageProductDetailRequest);
         return ResponseEntity.ok().build();
     }
 
+    //Customer
+    @GetMapping("/customer/{customerId}")
+    public List<ImageCustomerResponse> findImageByCustomerId(@PathVariable Long customerId) {
+        return imageService.getImagesByCustomerId(customerId);
+    }
 
+    @PostMapping("/upload-image-customer")
+    public ResponseEntity<Void> uploadImageCustomer(@RequestParam("file") MultipartFile file,
+                                                 @RequestParam("customerId") Long customerId) {
+        ImageCustomerRequest imageCustomerRequest = new ImageCustomerRequest();
+        imageCustomerRequest.setFile(file);
+        imageCustomerRequest.setCustomerId(customerId);
+
+        imageService.uploadImageCustomer(imageCustomerRequest);
+        return ResponseEntity.ok().build();
+    }
 }

@@ -35,4 +35,3 @@ public class Cart extends PrimaryEntity {
     @JoinColumn(name = "product_detail_id", referencedColumnName = "id")
     private ProductDetail productDetail;
 }
-

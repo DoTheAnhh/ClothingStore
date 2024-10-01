@@ -62,7 +62,7 @@ const ProductDetailForm: React.FC<ProductDetailProps> = ({ handleCancelProductDe
 
             try {
                 const response = await axios.post(
-                    `${LOCALHOST}${MAPPING_URL.IMAGE}/edit`,
+                    `${LOCALHOST}${MAPPING_URL.IMAGE}${API_URL.IMAGE.UPLOAD}`,
                     formData,
                     {
                         headers: {
@@ -203,14 +203,7 @@ const ProductDetailForm: React.FC<ProductDetailProps> = ({ handleCancelProductDe
                 id = response.data;
             }
 
-            const imageUrl = await uploadImage(id, token);
-            if (imageUrl) {
-                await axios.put(
-                    LOCALHOST + MAPPING_URL.IMAGE + API_URL.IMAGE.EDIT + `/${id}`,
-                    { imageUrl },
-                    config
-                );
-            }
+            await uploadImage(id, token);
 
             const qrCodeResponse = await axios.get(
                 `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${id}`,
@@ -231,6 +224,7 @@ const ProductDetailForm: React.FC<ProductDetailProps> = ({ handleCancelProductDe
                 setProductDetail((prev) => prev ? { ...prev, qrcode: base64data } : undefined);
                 handleCancelProductDetailModal();
             };
+            clearField()    
         } catch (error) {
             toast.error("Error insert/update", {
                 autoClose: 5000,

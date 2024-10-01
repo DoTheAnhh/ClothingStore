@@ -1,46 +1,58 @@
 import { Layout } from 'antd';
 import { Content, Footer, Header } from 'antd/es/layout/layout';
 import React from 'react';
-import UserPageHeader from './UserPageHeader';
+import UserPageHeader from './Header/UserPageHeader';
+import UserPageContent from './Content/UserPageContent';
+import UserPageNavbar from './Navbar/UserPageNavbar';
 
 const headerStyle: React.CSSProperties = {
   textAlign: 'center',
   color: '#fff',
-  height: 64,
+  height: 100,
   lineHeight: '64px',
   backgroundColor: '#ffff',
 };
 
 const contentStyle: React.CSSProperties = {
   textAlign: 'center',
-  flex: 1, // Giúp content chiếm hết không gian còn lại
-  color: '#fff',
-  backgroundColor: '#0958d9',
-  display: 'flex', // Flexbox để căn giữa nội dung
-  justifyContent: 'center',
-  alignItems: 'center',
+  flex: 1,
+  color: '#000',
+  padding: '20px 0',
+  backgroundColor: '#ffff',
 };
 
 const footerStyle: React.CSSProperties = {
   textAlign: 'center',
   color: '#fff',
   backgroundColor: '#4096ff',
+  position: 'relative',
+  bottom: -22,
+  width: '100%',
 };
 
 const layoutStyle: React.CSSProperties = {
   display: 'flex',
   flexDirection: 'column',
-  height: '100vh',
+  minHeight: '100vh',
 };
 
 const LayoutUser: React.FC = () => {
   return (
     <Layout style={layoutStyle}>
+
       <Header style={headerStyle}>
         <UserPageHeader />
       </Header>
-      <Content style={contentStyle}>Content</Content>
-      <Footer style={footerStyle}>Footer</Footer>
+
+      <UserPageNavbar />
+
+      <Content style={contentStyle}>
+        <UserPageContent />
+      </Content>
+
+      <Footer style={footerStyle}>
+        Footer
+      </Footer>
     </Layout>
   );
 };

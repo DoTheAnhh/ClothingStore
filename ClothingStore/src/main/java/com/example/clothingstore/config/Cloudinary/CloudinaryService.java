@@ -1,4 +1,4 @@
-package com.example.clothingstore.config.Security.Cloudinary;
+package com.example.clothingstore.config.Cloudinary;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;

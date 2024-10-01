@@ -14,7 +14,6 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
     @Query(value = "SELECT * FROM Image i WHERE i.product_detail_id = :productDetailId", nativeQuery = true)
     List<Image> findImagesByProductDetail(@Param("productDetailId") Long productDetailId);
 
-    @Modifying
-    @Query(value = "UPDATE image i SET i.image_url = :imageUrl WHERE i.product_detail_id = :productDetailId", nativeQuery = true)
-    void updateProductDetail(@Param("imageUrl") String imageUrl, @Param("productDetailId") Long productDetailId);
+    @Query(value = "SELECT * FROM Image i WHERE i.customer_id = :customerId", nativeQuery = true)
+    List<Image> findImagesByCustomer(@Param("customerId") Long customerId);
 }

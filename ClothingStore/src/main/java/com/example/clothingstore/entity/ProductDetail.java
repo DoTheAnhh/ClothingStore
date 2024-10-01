@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -22,7 +24,7 @@ public class ProductDetail extends PrimaryEntity {
 
     @Column(name = "product_price")
     @NotNull(message = "Giá sản phẩm không được để trống")
-    private float productPrice;
+    private Float productPrice;
 
     @Column(name = "QRcode", columnDefinition = "LONGTEXT")
     private String QRcode;
@@ -44,4 +46,7 @@ public class ProductDetail extends PrimaryEntity {
     @JoinColumn(name = "product_id")
     @NotNull(message = "Sản phẩm không được để trống")
     private Product product;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "productDetail")
+    private List<Image> images;
 }
