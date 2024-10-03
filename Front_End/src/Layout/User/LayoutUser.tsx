@@ -4,6 +4,7 @@ import React from 'react';
 import UserPageHeader from './Header/UserPageHeader';
 import UserPageContent from './Content/UserPageContent';
 import UserPageNavbar from './Navbar/UserPageNavbar';
+import UserPageFooter from './Footer/UserPageFooter';
 
 const headerStyle: React.CSSProperties = {
   textAlign: 'center',
@@ -51,7 +52,7 @@ const LayoutUser: React.FC = () => {
       </Content>
 
       <Footer style={footerStyle}>
-        Footer
+        <UserPageFooter />
       </Footer>
     </Layout>
   );

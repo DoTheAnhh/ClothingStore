@@ -1,11 +1,14 @@
 package com.example.clothingstore.service.impl;
 
+import com.example.clothingstore.dto.product_detail.FindProductDetailAddToCardRequest;
+import com.example.clothingstore.dto.product_detail.FindProductDetailToCartDTO;
 import com.example.clothingstore.dto.product_detail.ProductDetailRequest;
 import com.example.clothingstore.dto.product_detail.ProductDetailResponse;
 import com.example.clothingstore.entity.Color;
 import com.example.clothingstore.entity.Product;
 import com.example.clothingstore.entity.ProductDetail;
 import com.example.clothingstore.entity.Size;
+import com.example.clothingstore.exception.NotFoundException;
 import com.example.clothingstore.mapper.ProductDetailMapper;
 import com.example.clothingstore.repository.ColorRepository;
 import com.example.clothingstore.repository.ProductDetailRepository;
@@ -49,6 +52,12 @@ public class IProductDetailService implements ProductDetailService {
     public Optional<ProductDetailResponse> getProductDetailById(Long id) {
         Optional<ProductDetail> productDetail = productDetailRepository.findProductDetailById(id);
         return productDetail.map(productDetailMapper::toDto);
+    }
+
+    @Override
+    public Long findProductDetailToCart(FindProductDetailToCartDTO findProductDetailToCartDTO) {
+        Long productDetailId = productDetailRepository.findProductDetailAddToCart(findProductDetailToCartDTO.getColorId(), findProductDetailToCartDTO.getSizeId(), findProductDetailToCartDTO.getProductId());
+        return productDetailId;
     }
 
     @Override

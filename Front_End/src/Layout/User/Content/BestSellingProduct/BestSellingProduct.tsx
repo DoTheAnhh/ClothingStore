@@ -1,9 +1,8 @@
-import { ShoppingCartOutlined } from '@ant-design/icons'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { ProductResponse } from '../../../Interface/interface';
 import axios from 'axios';
-import { API_URL, LOCALHOST, MAPPING_URL } from '../../../APIs/API';
+import { ProductResponse } from '../../../../Interface/interface';
+import { API_URL, LOCALHOST, MAPPING_URL } from '../../../../APIs/API';
 
 const BestSellingProduct: React.FC = () => {
 
@@ -33,14 +32,14 @@ const BestSellingProduct: React.FC = () => {
 
     return (
         <div id='best-selling-product'>
-            <div style={{ color: 'black', fontWeight: 'initial', fontSize: "30px", paddingBottom: '20px' }}>
+            <div style={{ color: 'black', fontWeight: 'initial', fontSize: "30px", paddingBottom: '2%' }}>
                 Sản phẩm bán chạy nhất
             </div>
             <div style={{
                 display: 'flex',
                 justifyContent: 'flex-start',
                 flexWrap: 'wrap',
-                marginTop: 30,
+                marginTop: "2%",
                 margin: "0 130px",
                 overflow: 'hidden',
             }}>
@@ -54,7 +53,7 @@ const BestSellingProduct: React.FC = () => {
                             minHeight: '400px',
                             boxSizing: 'border-box',
                             position: 'relative',
-                            marginBottom: 50,
+                            marginBottom: "8%",
                             overflow: 'hidden',
                         }}>
                             <img
@@ -67,7 +66,17 @@ const BestSellingProduct: React.FC = () => {
                                 }}
                                 onClick={() => handleProductClick(product.id)}
                             />
-                            <div style={{ color: 'black', marginTop: 10, fontSize: 15, fontWeight: 'bolder' }}>
+                            <div style={{
+                                color: 'black',
+                                marginTop: 10,
+                                fontSize: 15,
+                                fontWeight: 'bolder',
+                                display: '-webkit-box',
+                                WebkitBoxOrient: 'vertical',
+                                overflow: 'hidden',
+                                WebkitLineClamp: 2,
+                                height: '40px',
+                            }}>
                                 {product.productName}
                             </div>
                             <div style={{ color: 'black', marginTop: 10, fontSize: 15 }}>

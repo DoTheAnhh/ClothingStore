@@ -278,7 +278,7 @@ const ProductDetailForm: React.FC<ProductDetailProps> = ({ handleCancelProductDe
 
     return (
         <Form layout="vertical">
-            <Row gutter={16}>
+            <Row gutter={55}>
                 <Col span={12}>
                     <Form.Item label="Product" required>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -304,7 +304,7 @@ const ProductDetailForm: React.FC<ProductDetailProps> = ({ handleCancelProductDe
                                 open={isOpenModalProduct}
                                 onCancel={handleCancelProductModal}
                                 footer={null}
-                                width={800}
+                                width={1200}
                             >
                                 <ListProduct />
                             </Modal>
@@ -390,7 +390,7 @@ const ProductDetailForm: React.FC<ProductDetailProps> = ({ handleCancelProductDe
                                 <img
                                     src={imageUrl}
                                     alt="Preview"
-                                    style={{ width: 100, height: 100, objectFit: 'cover' }}
+                                    style={{ width: 200, height: 220, objectFit: 'cover' }}
                                 />
                             </div>
                         )}

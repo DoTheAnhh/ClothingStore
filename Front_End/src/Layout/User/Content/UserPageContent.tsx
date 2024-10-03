@@ -1,19 +1,19 @@
 import React from 'react'
 import CarouselContent from './Carousel/Carousel'
-import NewProduct from '../NewProduct/NewProduct'
-import BestSellingProduct from '../BestSellingProduct/BestSellingProduct'
-import AllProduct from '../AllProduct/AllProduct'
+import AllProduct from './AllProduct/AllProduct'
+import BestSellingProduct from './BestSellingProduct/BestSellingProduct'
+import NewProduct from './NewProduct/NewProduct'
+
 
 const UserPageContent: React.FC = () => {
     return (
         <>
             <CarouselContent />
-            <AllProduct/>
-            <BestSellingProduct/>
+            <AllProduct />
+            <BestSellingProduct />
             <NewProduct />
         </>
 
     )
 }
-
 export default UserPageContent

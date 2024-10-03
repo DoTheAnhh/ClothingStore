@@ -1,5 +1,6 @@
 package com.example.clothingstore.controller;
 
+import com.example.clothingstore.dto.product_detail.FindProductDetailToCartDTO;
 import com.example.clothingstore.dto.product_detail.ProductDetailRequest;
 import com.example.clothingstore.dto.product_detail.ProductDetailResponse;
 import com.example.clothingstore.dto.qrcode_update.QRCodeUpdateRequest;
@@ -30,6 +31,12 @@ public class ProductDetailRestController {
     public ResponseEntity<ProductDetailResponse> getProductDetailById(@PathVariable Long id) {
         Optional<ProductDetailResponse> productDetailResponse = productDetailService.getProductDetailById(id);
         return productDetailResponse.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/find-product-detail-to-cart")
+    public Long findProductDetailToCart(@RequestBody FindProductDetailToCartDTO findProductDetailToCartDTO) {
+        Long productDetailId = productDetailService.findProductDetailToCart(findProductDetailToCartDTO);
+        return productDetailId;
     }
 
     @PostMapping("/insert")

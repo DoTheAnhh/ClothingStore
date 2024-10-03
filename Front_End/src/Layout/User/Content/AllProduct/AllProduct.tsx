@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { API_URL, LOCALHOST, MAPPING_URL } from '../../../APIs/API';
 import axios from 'axios';
-import { ProductResponse } from '../../../Interface/interface';
-import { ShoppingCartOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import { ProductResponse } from '../../../../Interface/interface';
+import { API_URL, LOCALHOST, MAPPING_URL } from '../../../../APIs/API';
 
 const AllProduct: React.FC = () => {
 
@@ -41,7 +40,7 @@ const AllProduct: React.FC = () => {
                     display: 'flex',
                     justifyContent: 'flex-start',
                     flexWrap: 'wrap',
-                    marginTop: 30,
+                    marginTop: "3%",
                     margin: "0 130px",
                     overflow: 'hidden',
                 }}>
@@ -51,10 +50,10 @@ const AllProduct: React.FC = () => {
                             <div className="product-card" key={product.id} style={{
                                 flex: '0 0 calc(25% - 20px)',
                                 margin: '0 10px',
-                                minHeight: '400px',
+                                minHeight: '100px',
                                 boxSizing: 'border-box',
                                 position: 'relative',
-                                marginBottom: 50,
+                                marginBottom: "8%",
                                 overflow: 'hidden',
                             }}>
                                 <img
@@ -67,7 +66,17 @@ const AllProduct: React.FC = () => {
                                     }}
                                     onClick={() => handleProductClick(product.id)}
                                 />
-                                <div style={{ color: 'black', marginTop: 10, fontSize: 15, fontWeight: 'bolder' }}>
+                                <div style={{
+                                    color: 'black',
+                                    marginTop: 10,
+                                    fontSize: 15,
+                                    fontWeight: 'bolder',
+                                    display: '-webkit-box',
+                                    WebkitBoxOrient: 'vertical',
+                                    overflow: 'hidden',
+                                    WebkitLineClamp: 2,
+                                    height: '40px',
+                                }}>
                                     {product.productName}
                                 </div>
                                 <div style={{ color: 'black', marginTop: 10, fontSize: 15 }}>
@@ -83,7 +92,7 @@ const AllProduct: React.FC = () => {
                             </div>
                         ))}
                     <div style={{ margin: "120px auto" }}>
-                        <a href="" style={{ textDecoration: 'none', color: 'black', fontSize: 20, fontWeight: 'bold' }}>Xem thêm</a>
+                        <a href="http://localhost:5173/user/all-product" style={{ textDecoration: 'none', color: 'black', fontSize: 20, fontWeight: 'bold' }}>Xem thêm</a>
                     </div>
                 </div>
             </div>

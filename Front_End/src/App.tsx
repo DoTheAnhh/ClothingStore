@@ -13,6 +13,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import ChangePassword from './Login/ChangePassword/ChangePassword';
 import UserPageProductDetail from './Layout/User/ProductDetail/UserPageProductDetail';
 import Profile from './Layout/Profile/Profile';
+import AllProductPage from './Layout/User/Content/AllProductPage/AllProductPage';
+import Cart from './Layout/User/Cart/Cart';
 
 interface RouteComponent {
   path: string;
@@ -54,6 +56,14 @@ function App() {
     {
       path: '/user/product-detail/:id',
       element: <UserPageProductDetail />,
+    },
+    {
+      path: '/user/cart',
+      element: <Cart />,
+    },
+    {
+      path: '/user/all-product',
+      element: <AllProductPage />,
     },
     {
       path: '/account/profile',

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Button, Checkbox, Form, Input, message, Spin } from 'antd';
+import { Button, Checkbox, Form, Input, message, notification, Spin } from 'antd';
 import { LockOutlined, MailOutlined, EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -61,8 +61,7 @@ const Login: React.FC = () => {
           navigate('/admin/');
         } else {
           navigate('/user');
-        }
-
+        } 
         toast.success('Login successfully', {
           autoClose: 5000,
         });

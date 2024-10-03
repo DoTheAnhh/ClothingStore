@@ -28,6 +28,11 @@ public class ProductRestController {
         return productResponse.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/type/{typeId}")
+    public List<ProductResponse> getProductsByType(@PathVariable Long typeId) {
+        return productService.getProductsByTypeId(typeId);
+    }
+
     @PostMapping("/insert")
     public void insertProduct(@RequestBody ProductRequest productRequest) {
         productService.insertProduct(productRequest);

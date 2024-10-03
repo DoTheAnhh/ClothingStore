@@ -1,7 +1,9 @@
 package com.example.clothingstore.mapper;
 
+import com.example.clothingstore.dto.color.ColorDTO;
 import com.example.clothingstore.dto.product.ProductRequest;
 import com.example.clothingstore.dto.product.ProductResponse;
+import com.example.clothingstore.dto.size.SizeDTO;
 import com.example.clothingstore.entity.Image;
 import com.example.clothingstore.entity.Product;
 import com.example.clothingstore.entity.ProductDetail;
@@ -54,19 +56,20 @@ public interface ProductMapper {
                 .orElse(null); // Trả về null nếu không có giá
     }
 
-    default List<String> mapAllSizes(Product product) {
+    default List<SizeDTO> mapAllSizes(Product product) {
         return product.getProductDetail().stream()
                 .filter(detail -> detail.getSize() != null)
-                .map(detail -> detail.getSize().getSizeName())
+                .map(detail -> new SizeDTO(detail.getSize().getId(), detail.getSize().getSizeName()))
                 .distinct()
                 .collect(Collectors.toList());
     }
 
-    default List<String> mapAllColors(Product product) {
+    default List<ColorDTO> mapAllColors(Product product) {
         return product.getProductDetail().stream()
                 .filter(detail -> detail.getColor() != null)
-                .map(detail -> detail.getColor().getColorName())
+                .map(detail -> new ColorDTO(detail.getColor().getId(), detail.getColor().getColorName()))
                 .distinct()
                 .collect(Collectors.toList());
     }
+
 }

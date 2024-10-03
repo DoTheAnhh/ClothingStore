@@ -207,6 +207,7 @@ const ListProductDetail: React.FC = () => {
                 open={isModalOpenProductDetail}
                 onCancel={handleCancelProductDetailModal}
                 footer={null}
+                width={1200}
             >
                 <ProductDetail
                     handleCancelProductDetailModal={handleCancelProductDetailModal}
@@ -218,6 +219,7 @@ const ListProductDetail: React.FC = () => {
                 columns={columns}
                 pagination={false}
                 rowKey="id"
+                
             />
             <Pagination
                 currentPage={currentPage}

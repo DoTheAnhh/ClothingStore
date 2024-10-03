@@ -1,5 +1,6 @@
 package com.example.clothingstore.repository;
 
+import com.example.clothingstore.dto.product_detail.FindProductDetailAddToCardRequest;
 import com.example.clothingstore.entity.ProductDetail;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,4 +21,7 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
     @Transactional
     @Query("update ProductDetail pd set pd.QRcode = :qrcode where pd.id = :id")
     void updateQRCode(Long id, String qrcode);
+
+    @Query("select pd.id from ProductDetail pd where pd.color.id = :colorId and pd.size.id = :sizeId and pd.product.id = :productId")
+    Long findProductDetailAddToCart(@Param("colorId") Long colorId, @Param("sizeId") Long sizeId, @Param("productId") Long productId);
 }

@@ -2,7 +2,7 @@ html {
   scroll-behavior: smooth;
 }
 
-ul {
+.nav-ul {
   display: flex;
   justify-content: space-evenly; /* Cách đều các mục */
   list-style: none;
@@ -11,14 +11,14 @@ ul {
   background-color: #ffff;
 }
 
-ul li {
+.nav-ul li {
   margin: 0; /* Không cần margin ở đây, sẽ được điều chỉnh bởi justify-content */
   padding: 10px;
   font-size: 14px;
   font-weight: bold;
 }
 
-ul li a {
+.nav-ul li a {
   color: black;
   text-decoration: none;
 }

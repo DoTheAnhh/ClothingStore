@@ -105,6 +105,7 @@ const ListProduct: React.FC = () => {
         open={isModalOpenProduct}
         onCancel={handleCancelProduct}
         footer={null}
+        width={1000}
       >
         <ProductForm
           handleCancelProductModal={handleCancelProduct}

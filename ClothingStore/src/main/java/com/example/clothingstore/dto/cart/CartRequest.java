@@ -12,4 +12,6 @@ public class CartRequest {
     private Long productDetailId;
 
     private int quantity;
+
+    private float productPrice;
 }

@@ -28,7 +28,6 @@ public class CartRestController {
             CartResponse cartResponse = cartService.addProductToCart(cartRequest);
             return new ResponseEntity<>(cartResponse, HttpStatus.OK);
         } catch (RuntimeException e) {
-            // Xử lý trường hợp không tìm thấy khách hàng hoặc sản phẩm
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }

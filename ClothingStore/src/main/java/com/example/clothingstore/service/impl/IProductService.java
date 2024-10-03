@@ -43,6 +43,13 @@ public class IProductService implements ProductService {
     }
 
     @Override
+    public List<ProductResponse> getProductsByTypeId(Long typeId) {
+        List<Product> products = productRepository.findProductByTypeId(typeId);
+
+        return productMapper.toDtoList(products);
+    }
+
+    @Override
     public void insertProduct(ProductRequest productRequest) {
         Product product = productMapper.toEntity(productRequest);
         productRepository.save(product);

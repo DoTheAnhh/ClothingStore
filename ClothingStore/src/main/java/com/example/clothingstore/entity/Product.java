@@ -27,6 +27,8 @@ public class Product extends PrimaryEntity {
     private String productName;
 
     @Column(name = "product_description")
+
+
     private String productDescription;
 
     @ManyToOne(fetch = FetchType.LAZY)

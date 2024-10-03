@@ -9,19 +9,22 @@ export const MAPPING_URL = {
     TYPE: '/type',
     BRAND: '/brand',
     CUSTOMER: '/customer',
+    CART: '/cart',
 }
 
 export const API_URL = {
     PRODUCT: {
         FIND_ALL_PRODUCT: '',
         EDIT: '/edit',
-        INSERT: '/insert'
+        INSERT: '/insert',
+        FIND_PRODUCT_BY_TYPE_ID: '/type'
     },
     PRODUCT_DETAIL: {
         FIND_ALL_PRODUCT_DETAIL: '',
         UPDATE_QR_CODE: '/update-qrcode',
         INSERT_PRODUCT_DETAIL: '/insert',
-        UPDATE_PRODUCT_DETAIL: '/edit'
+        UPDATE_PRODUCT_DETAIL: '/edit',
+        FIND_PRODUCT_DETAIL_ADD_TO_CART: '/find-product-detail-to-cart',
     },
     IMAGE: {
         FIND_IMAGE_BY_PRODUCT_DETAIL_ID: '/product-detail',
@@ -55,4 +58,8 @@ export const API_URL = {
         EDIT_RESET_TOKEN_FOR_CUSTOMER: '/edit-reset-token-for-customer',
         INSERT: '/insert'
     },
+    CART: {
+        ADD_PRODUCT_DETAIL_TO_CART: '/add-product-to-cart',
+        FIND_ALL_CART: ''
+    }
 }

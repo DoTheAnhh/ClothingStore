@@ -12,8 +12,8 @@ export interface ProductResponse {
   createDate: string;
   updateDate: string;
   imageUrls: string[]
-  colors: string[]
-  sizes: string[]
+  colors: ColorResponse[]
+  sizes: SizeResponse[]
   firstProductPrice: number
 }
 
@@ -121,4 +121,8 @@ export interface CustomerRequest {
   role?: string;
   createDate?: string;
   updateDate?: string;
+}
+
+export interface CartResponse {
+  productName: string
 }

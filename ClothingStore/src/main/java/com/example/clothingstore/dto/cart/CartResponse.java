@@ -11,8 +11,6 @@ public class CartResponse {
 
     private int quantity;
 
-    private String status;
-
     private float totalPrice;
 
     private String voucherCode;

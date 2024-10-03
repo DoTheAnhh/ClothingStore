@@ -37,9 +37,11 @@ public class SecurityConfig {
 
                                 .requestMatchers("/product").permitAll()
                                 .requestMatchers("/product/*").permitAll()
+                                .requestMatchers("/product/type/*").permitAll()
 
                                 .requestMatchers("/product-detail").permitAll()
                                 .requestMatchers("/product-detail/*").permitAll()
+                                .requestMatchers("/product-detail/find-product-detail-to-cart").permitAll()
 
                                 .requestMatchers("/brand").permitAll()
                                 .requestMatchers("/brand/*").permitAll()

@@ -1,4 +1,4 @@
-import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons'
+import { ShoppingCartOutlined } from '@ant-design/icons'
 import { Dropdown, Input, Menu } from 'antd'
 import React, { useCallback, useEffect, useState } from 'react'
 import { API_URL, LOCALHOST, MAPPING_URL } from '../../../APIs/API';
@@ -9,9 +9,11 @@ import { useNavigate } from 'react-router-dom';
 const UserPageHeader: React.FC = () => {
 
     const [loadedImages, setLoadedImages] = useState<number[]>([]);
-    const [imageUrl, setImageUrl] = useState<string>(''); // State for image URL
+    const [imageUrl, setImageUrl] = useState<string>('');
 
     const navigate = useNavigate();
+
+    const totalProducts = Number(localStorage.getItem('totalProducts')) || 0;
 
     const decodeJwt = (token: string) => {
         try {
@@ -85,23 +87,31 @@ const UserPageHeader: React.FC = () => {
         </Menu>
     );
 
+    const handleCart = () => {
+        navigate('/user/cart')
+    }
+
+    const handleHome = () => {
+        navigate('/user')
+    }
+
     useEffect(() => {
         findAllImageByCustomerId();
     }, []);
 
     return (
         <>
-            <div className='logo'>
-                <img width={110} style={{ marginTop: -10, marginLeft: 50 }} src="/src/assets/Do The Anh.jpg" alt="Logo" />
+            <div className='logo' style={{justifyContent: 'space-between'}}>
+                <img width={110} style={{ marginTop: -10, marginLeft: "5%" }} src="/src/assets/Do The Anh.jpg" alt="Logo" onClick={handleHome}/>
 
                 <Input
-                    style={{ width: 800, marginLeft: 100, marginBottom: -3 }}
+                    style={{ width: "65vh", marginBottom: -3, marginLeft: "30vh" }}
                     type="text"
                     placeholder='Tìm kiếm sản phẩm ...'
                 />
-                <ShoppingCartOutlined style={{ fontSize: 30, marginBottom: -3, marginLeft: 100 }} />
+                <ShoppingCartOutlined style={{ fontSize: 30, marginBottom: -3, marginLeft: "20vh", marginRight: "3vh" }} onClick={handleCart}/>
                 <Dropdown overlay={menu} trigger={['click']}>
-                    <img style={{ marginBottom: -3, marginLeft: 30, width: 50, height: 50, borderRadius: "50%" }} src={imageUrl} alt="Image customer" className='img-user' />
+                    <img style={{marginRight: "13vh", width: 50, height: 50, borderRadius: "50%" }} src={imageUrl} alt="Image customer" className='img-user' />
                 </Dropdown>
             </div>
         </>

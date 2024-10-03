@@ -15,4 +15,6 @@ public interface ProductService {
     void insertProduct(ProductRequest productRequest);
 
     void editProduct(ProductRequest productRequest, Long id);
+
+    List<ProductResponse> getProductsByTypeId(Long typeId);
 }

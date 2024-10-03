@@ -1,5 +1,7 @@
 package com.example.clothingstore.dto.product;
 
+import com.example.clothingstore.dto.color.ColorDTO;
+import com.example.clothingstore.dto.size.SizeDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,9 +33,9 @@ public class ProductResponse {
 
     private List<String> imageUrls;
 
-    private List<String> colors;
+    private List<ColorDTO> colors;
 
-    private List<String> sizes;
+    private List<SizeDTO> sizes;
 
     private Float firstProductPrice;
 }

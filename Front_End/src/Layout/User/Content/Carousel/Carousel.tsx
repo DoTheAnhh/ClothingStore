@@ -1,11 +1,11 @@
 import React from 'react'
 import { Carousel } from 'antd'
 
-const CarouselContent = () => {
+const CarouselContent: React.FC = () => {
 
     const carouselStyle: React.CSSProperties = {
-        width: '55%',
-        margin: '0 140px',
+        width: '80%',
+        margin: '0 10%',
     };
 
     const imageStyle: React.CSSProperties = {
@@ -28,14 +28,6 @@ const CarouselContent = () => {
                         <img style={imageStyle} src="https://cf.shopee.vn/file/sg-11134258-7rdx2-m0mukpbl8ow4c5_xxhdpi" alt="Slide 3" />
                     </div>
                 </Carousel>
-            </div>
-            <div style={{ float: "right", marginRight: 150, marginTop: -244 }}>
-                <div>
-                    <img src="https://cf.shopee.vn/file/sg-11134258-7rdxo-m0mtuvbm56guc5_xhdpi" width={368} height={120} alt="Side Image 1" />
-                </div>
-                <div>
-                    <img src="https://cf.shopee.vn/file/sg-11134258-7rdx6-m0mtuxzwchww37_xhdpi" width={368} height={120} alt="Side Image 2" />
-                </div>
             </div>
         </div>
     )
