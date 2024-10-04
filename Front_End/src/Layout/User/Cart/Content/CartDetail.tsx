@@ -7,8 +7,6 @@ import { CartResponse } from '../../../../Interface/interface';
 
 const CartDetail: React.FC = () => {
 
-    const [quantity, setQuantity] = useState<number>(1);
-
     const [carts, setCarts] = useState<CartResponse[]>([])
 
     const findAllCart = async () => {
@@ -20,7 +18,7 @@ const CartDetail: React.FC = () => {
         findAllCart()
     }, [])
 
-    console.log(carts);
+    console.log("carts", carts);
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '4vw', marginTop: '5vh' }}>
@@ -44,7 +42,7 @@ const CartDetail: React.FC = () => {
                     <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
                         <img
                             style={{ width: "16vh", marginTop: '3vh', marginRight: '-2vh' }}
-                            src='https://bizweb.dktcdn.net/thumb/compact/100/415/697/products/1-25d68549-e9a8-4da2-8097-b89d57bbed29.jpg'
+                            src={cartItem?.imageUrl}
                             alt="Image product"
                         />
                         <div style={{ marginLeft: '-25vh', flex: '1' }}>
@@ -64,8 +62,8 @@ const CartDetail: React.FC = () => {
                                 {cartItem.productName}
                             </div>
 
-                            <div style={{ marginLeft: '-18vh', marginTop: '-3vh' }}>Màu sắc: </div>
-                            <div style={{ marginLeft: '-16vh' }}>Kích thước: </div>
+                            <div style={{ marginLeft: '-10vh', marginTop: '-3vh' }}>Màu sắc: {cartItem?.colorName}</div>
+                            <div style={{ marginLeft: '-12vh' }}>Kích thước: {cartItem?.sizeName}</div>
                         </div>
                         <ul style={{
                             listStyleType: 'none',

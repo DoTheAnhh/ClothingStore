@@ -7,8 +7,6 @@ import lombok.Setter;
 @Getter
 public class CartResponse {
 
-    private String name;
-
     private int quantity;
 
     private float totalPrice;
@@ -18,4 +16,10 @@ public class CartResponse {
     private String productName;
 
     private float productPrice;
+
+    private String sizeName;
+
+    private String colorName;
+
+    private String imageUrl;
 }

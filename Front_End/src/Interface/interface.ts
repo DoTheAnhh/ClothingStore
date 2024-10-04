@@ -125,4 +125,8 @@ export interface CustomerRequest {
 
 export interface CartResponse {
   productName: string
+  totalPrice: number
+  sizeName: string
+  colorName: string
+  imageUrl: string
 }
