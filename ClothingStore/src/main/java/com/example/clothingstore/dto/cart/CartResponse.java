@@ -7,6 +7,10 @@ import lombok.Setter;
 @Getter
 public class CartResponse {
 
+    private Long cartId;
+
+    private Long productDetailId;
+
     private int quantity;
 
     private float totalPrice;

@@ -4,6 +4,7 @@ import { API_URL, LOCALHOST, MAPPING_URL } from '../../../../APIs/API';
 import axios from 'axios';
 import { DeleteOutlined } from '@ant-design/icons';
 import { CartResponse } from '../../../../Interface/interface';
+import { toast } from 'react-toastify';
 
 const CartDetail: React.FC = () => {
 
@@ -12,6 +13,28 @@ const CartDetail: React.FC = () => {
     const findAllCart = async () => {
         const res = await axios.get(LOCALHOST + MAPPING_URL.CART + API_URL.CART.FIND_ALL_CART);
         setCarts(res.data);
+    }
+
+    const updateProductQuantityInCart = async (productDetailId: number, quantity: number) => {
+
+        if (quantity < 1) {
+            toast.error("Số lượng phải lớn hơn hoặc bằng 1");
+        } else {
+            await axios.put(`${LOCALHOST}${MAPPING_URL.CART}${API_URL.CART.UPDATE_PRODUCT_QUANTITY_IN_CART}?productDetailId=${productDetailId}&quantity=${quantity}`);
+
+            setCarts(prevCarts =>
+                prevCarts.map(cartItem =>
+                    cartItem.productDetailId === productDetailId ? { ...cartItem, quantity } : cartItem
+                )
+            );
+        }
+        findAllCart();
+    }
+
+
+    const deleteProductQuantityInCart = async (id: number) => {
+        await axios.delete(`${LOCALHOST}${MAPPING_URL.CART}${API_URL.CART.DELETE_PRODUCT_QUANTITY_IN_CART}/${id}`);
+        findAllCart();
     }
 
     useEffect(() => {
@@ -62,8 +85,18 @@ const CartDetail: React.FC = () => {
                                 {cartItem.productName}
                             </div>
 
-                            <div style={{ marginLeft: '-10vh', marginTop: '-3vh' }}>Màu sắc: {cartItem?.colorName}</div>
-                            <div style={{ marginLeft: '-12vh' }}>Kích thước: {cartItem?.sizeName}</div>
+                            <div style={{ marginLeft: '30vh' }}>
+                                <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '-3vh' }}>
+                                    <div style={{ minWidth: '100px', textAlign: 'left', whiteSpace: 'nowrap' }}>
+                                        Màu sắc: {cartItem?.colorName}
+                                    </div>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '1vh' }}>
+                                    <div style={{ minWidth: '100px', textAlign: 'left', whiteSpace: 'nowrap' }}>
+                                        Kích thước: {cartItem?.sizeName}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <ul style={{
                             listStyleType: 'none',
@@ -77,20 +110,22 @@ const CartDetail: React.FC = () => {
                             flexWrap: 'wrap',
                         }}>
                             <li style={{ color: 'red', flex: '1', textAlign: 'center' }}>
-                                200.000 VND
+                                {cartItem?.productPrice.toLocaleString("vi-VN")} VND
                             </li>
                             <li style={{ flex: '1', textAlign: 'center', marginLeft: '2vh' }}>
                                 <InputNumber
                                     min={1}
                                     max={10}
                                     style={{ width: '40%' }}
+                                    value={cartItem?.quantity}
+                                    onChange={(value) => updateProductQuantityInCart(cartItem.productDetailId, value!)}
                                 />
                             </li>
                             <li style={{ color: 'red', flex: '1', textAlign: 'center', marginLeft: '4vh' }}>
-                                200.000 VND
+                                {cartItem?.totalPrice.toLocaleString("vi-VN")} VND
                             </li>
                             <li style={{ textAlign: 'center', marginRight: '2vh' }}>
-                                <DeleteOutlined style={{ cursor: 'pointer' }} />
+                                <DeleteOutlined style={{ cursor: 'pointer' }} onClick={() => deleteProductQuantityInCart(cartItem?.cartId)} />
                             </li>
                         </ul>
                     </div>

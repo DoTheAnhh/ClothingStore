@@ -17,10 +17,12 @@ public interface CartMapper {
 
     @Mapping(source = "voucher.voucherCode", target = "voucherCode")
     @Mapping(source = "productDetail.product.productName", target = "productName")
+    @Mapping(source = "productDetail.id", target = "productDetailId")
     @Mapping(source = "productDetail.productPrice", target = "productPrice")
     @Mapping(source = "productDetail.color.colorName", target = "colorName")
     @Mapping(source = "productDetail.size.sizeName", target = "sizeName")
     @Mapping(source = "productDetail", target = "imageUrl", qualifiedByName = "mapFirstImageUrl")
+    @Mapping(source = "id", target = "cartId")
     CartResponse toDto(Cart cart);
 
     List<CartResponse> toDtoList(List<Cart> carts);

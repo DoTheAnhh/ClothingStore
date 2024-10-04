@@ -10,10 +10,12 @@ import com.example.clothingstore.repository.CartRepository;
 import com.example.clothingstore.repository.CustomerRepository;
 import com.example.clothingstore.repository.ProductDetailRepository;
 import com.example.clothingstore.service.CartService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ICartService implements CartService {
@@ -75,4 +77,33 @@ public class ICartService implements CartService {
         }
     }
 
+    @Override
+    public void updateQuantityProductDetailInCart(Long productDetailId, int quantity) {
+        Optional<Cart> cartOptional = cartRepository.findByProductDetailId(productDetailId);
+
+        if (cartOptional.isPresent()) {
+            Cart cart = cartOptional.get();
+
+            // Cập nhật số lượng nếu số lượng hợp lệ (ví dụ số lượng >= 0)
+            if (quantity >= 0) {
+                cart.setQuantity(quantity);
+
+                // Tính toán lại tổng tiền
+                float newTotalPrice = cart.getProductDetail().getProductPrice() * quantity;
+                cart.setTotalPrice(newTotalPrice);
+
+                // Lưu cart đã cập nhật
+                cartRepository.save(cart);
+            } else {
+                throw new IllegalArgumentException("Số lượng không hợp lệ");
+            }
+        } else {
+            throw new EntityNotFoundException("Không tìm thấy cart với ProductDetailId: " + productDetailId);
+        }
+    }
+
+    @Override
+    public void deleteProductDetailInCart(Long id) {
+        cartRepository.deleteById(id);
+    }
 }

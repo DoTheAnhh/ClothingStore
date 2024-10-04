@@ -129,4 +129,8 @@ export interface CartResponse {
   sizeName: string
   colorName: string
   imageUrl: string
+  quantity: number
+  productDetailId: number
+  productPrice: number
+  cartId: number
 }
