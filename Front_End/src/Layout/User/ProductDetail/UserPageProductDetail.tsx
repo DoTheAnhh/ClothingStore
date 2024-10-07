@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import './css/index.css'
 import { toast } from 'react-toastify';
 
+
 const UserPageProductDetail: React.FC = () => {
     const { id } = useParams<{ id: any }>();
     const [product, setProduct] = useState<ProductResponse | undefined>(undefined);
@@ -15,10 +16,16 @@ const UserPageProductDetail: React.FC = () => {
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
     const [quantity, setQuantity] = useState<number>(1);
 
+    const [countProduct, setCountProduct] = useState<number>(0);
+
     const [selectedColorId, setSelectedColorId] = useState<number | null>(null);
-    const [selectedSizeId, setSelectedSizeId] = useState<number | null>(null);
 
     const [selectedProductId, setSelectedProductId] = useState<number>();
+
+    const countProductsInCart = async () => {
+        const res = await axios.get(LOCALHOST + MAPPING_URL.CART + API_URL.CART.COUNT + `?customerId=${userId}`)
+        setCountProduct(res.data)
+    }
 
     const handleQuantityChange = (value: number | null) => {
         if (value) setQuantity(value);
@@ -26,7 +33,6 @@ const UserPageProductDetail: React.FC = () => {
 
     const handleSizeClick = async (size: SizeResponse) => {
         setSelectedSize(size.sizeName);
-        setSelectedSizeId(size.id);
         findProductDetailAddToCart(size.id, selectedColorId);
 
     };
@@ -61,7 +67,6 @@ const UserPageProductDetail: React.FC = () => {
             console.error(err);
         }
     }
-
 
     const findProductById = async () => {
         try {
@@ -126,7 +131,7 @@ const UserPageProductDetail: React.FC = () => {
                 productDetailId: selectedProductId,
                 quantity: quantity,
             });
-
+            countProductsInCart()
             toast.success('Sản phẩm đã được thêm vào giỏ hàng!');
         } catch (error) {
             toast.error('Có lỗi xảy ra! Vui lòng thử lại.');
@@ -144,15 +149,18 @@ const UserPageProductDetail: React.FC = () => {
         }
     };
 
-
     useEffect(() => {
         findProductById();
     }, [id]);
 
+    useEffect(() => {
+        countProductsInCart()
+    }, [])
+
     return (
         <>
             <div style={{ width: "182vh", marginLeft: '7vh' }}>
-                <UserPageHeader />
+                <UserPageHeader countProductsInCart={countProduct} />
             </div>
             <div style={{ display: 'flex' }}>
                 {product ? (
@@ -233,8 +241,6 @@ const UserPageProductDetail: React.FC = () => {
                                     </div>
                                 </div>
 
-
-
                                 <div style={{ marginTop: 30, display: 'flex', alignItems: 'center' }}>
                                     <div style={{ marginRight: 25 }}>Số lượng:</div>
                                     <InputNumber
@@ -244,7 +250,6 @@ const UserPageProductDetail: React.FC = () => {
                                         onChange={handleQuantityChange}
                                     />
                                 </div>
-
 
                                 <div style={{ marginTop: 80, display: 'flex' }}>
                                     <Button style={{ backgroundColor: 'black', color: 'white', height: 50, width: 170, fontSize: 16, fontWeight: 'bold' }} onClick={handleAddProductDetailToCart}>Thêm vào giỏ hàng</Button>

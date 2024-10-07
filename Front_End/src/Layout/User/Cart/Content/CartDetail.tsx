@@ -7,11 +7,18 @@ import { CartResponse } from '../../../../Interface/interface';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
-const CartDetail: React.FC = () => {
+const CartDetail: React.FC<{ setCountProduct: (count: number) => void }> = ({ setCountProduct }) => {
 
     const [carts, setCarts] = useState<CartResponse[]>([])
 
     const navigate = useNavigate();
+
+    const countProductsInCart = async () => {
+        const res = await axios.get(LOCALHOST + MAPPING_URL.CART + API_URL.CART.COUNT + `?customerId=${customerId}`);
+        const productCount = res.data; 
+        setCountProduct(productCount);
+    };
+    
 
     const decodeJwt = (token: string) => {
         try {
@@ -63,14 +70,15 @@ const CartDetail: React.FC = () => {
         findAllCart();
     }
 
-
     const deleteProductQuantityInCart = async (id: number) => {
         await axios.delete(`${LOCALHOST}${MAPPING_URL.CART}${API_URL.CART.DELETE_PRODUCT_QUANTITY_IN_CART}/${id}`);
         findAllCart();
+        countProductsInCart()
     }
 
     useEffect(() => {
         findAllCart()
+        countProductsInCart()
     }, [])
 
     const totalAmount = carts.reduce((total, cartItem) => total + cartItem.totalPrice, 0);

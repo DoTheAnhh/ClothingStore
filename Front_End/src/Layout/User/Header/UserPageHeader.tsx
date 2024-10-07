@@ -1,18 +1,23 @@
 import { ShoppingCartOutlined } from '@ant-design/icons'
-import { Dropdown, Input, Menu } from 'antd'
+import { Badge, Dropdown, Input, Menu } from 'antd'
 import React, { useCallback, useEffect, useState } from 'react'
 import { API_URL, LOCALHOST, MAPPING_URL } from '../../../APIs/API';
 import { ImageResponse } from '../../../Interface/interface';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const UserPageHeader: React.FC = () => {
+interface UserPageHeaderProps {
+    countProductsInCart: number | null
+}
 
+const UserPageHeader: React.FC<UserPageHeaderProps> = ({ countProductsInCart }) => {
     const [loadedImages, setLoadedImages] = useState<number[]>([]);
     const [imageUrl, setImageUrl] = useState<string>('');
 
+
     const navigate = useNavigate();
 
+    // Decode JWT token
     const decodeJwt = (token: string) => {
         try {
             const base64Url = token.split('.')[1];
@@ -31,13 +36,13 @@ const UserPageHeader: React.FC = () => {
     if (!token) {
         console.error('No token found');
         navigate('/login');
-        return;
+        return null;
     }
 
     const decodedToken = decodeJwt(token);
     if (!decodedToken) {
         console.error('Invalid token');
-        return;
+        return null;
     }
 
     const customerId = decodedToken.id;
@@ -58,7 +63,7 @@ const UserPageHeader: React.FC = () => {
         }
     }, [customerId, loadedImages]);
 
-
+    // Handle menu actions
     const handleMenuClick = ({ key }: { key: string }) => {
         if (key === 'logout') {
             localStorage.removeItem("refreshToken");
@@ -74,47 +79,61 @@ const UserPageHeader: React.FC = () => {
 
     const menu = (
         <Menu onClick={handleMenuClick}>
-            <Menu.Item key="profile">
-                Thông tin tài khoản
-            </Menu.Item>
-            <Menu.Item key="changePassword">
-                Đổi mật khẩu
-            </Menu.Item>
-            <Menu.Item key="logout">
-                Đăng xuất
-            </Menu.Item>
+            <Menu.Item key="profile">Thông tin tài khoản</Menu.Item>
+            <Menu.Item key="changePassword">Đổi mật khẩu</Menu.Item>
+            <Menu.Item key="logout">Đăng xuất</Menu.Item>
         </Menu>
     );
 
+    // Navigate to cart page
     const handleCart = () => {
-        navigate('/user/cart')
-    }
+        navigate('/user/cart');
+    };
 
+    // Navigate to home page
     const handleHome = () => {
-        navigate('/user')
-    }
+        navigate('/user');
+    };
+
+
 
     useEffect(() => {
         findAllImageByCustomerId();
     }, [customerId, findAllImageByCustomerId]);
 
     return (
-        <>
-            <div className='logo' style={{ justifyContent: 'space-between' }}>
-                <img width={110} style={{ marginTop: -10, marginLeft: "5%" }} src="/src/assets/Do The Anh.jpg" alt="Logo" onClick={handleHome} />
+        <div className='logo' style={{ justifyContent: 'space-between' }}>
+            <img
+                width={110}
+                style={{ marginTop: -10, marginLeft: "5%" }}
+                src="/src/assets/Do The Anh.jpg"
+                alt="Logo"
+                onClick={handleHome}
+            />
 
-                <Input
-                    style={{ width: "65vh", marginBottom: -3, marginLeft: "30vh" }}
-                    type="text"
-                    placeholder='Tìm kiếm sản phẩm ...'
+            <Input
+                style={{ width: "65vh", marginBottom: -3, marginLeft: "30vh" }}
+                type="text"
+                placeholder='Tìm kiếm sản phẩm ...'
+            />
+
+            <Badge count={countProductsInCart}>
+                <ShoppingCartOutlined
+                    style={{ fontSize: 30, marginBottom: -3, marginLeft: "20vh", marginRight: "3vh" }}
+                    onClick={handleCart}
                 />
-                <ShoppingCartOutlined style={{ fontSize: 30, marginBottom: -3, marginLeft: "20vh", marginRight: "3vh" }} onClick={handleCart} />
-                <Dropdown overlay={menu} trigger={['click']}>
-                    <img style={{ marginRight: "13vh", width: 50, height: 50, borderRadius: "50%" }} src={imageUrl || "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"} alt="Image customer" className='img-user' />
-                </Dropdown>
-            </div>
-        </>
-    )
-}
+            </Badge>
 
-export default UserPageHeader
+            <Dropdown overlay={menu} trigger={['click']}>
+                <img
+                    style={{ marginRight: "13vh", width: 50, height: 50, borderRadius: "50%" }}
+                    src={imageUrl || "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"}
+                    alt="Customer"
+                    className='img-user'
+                />
+            </Dropdown>
+        </div>
+    );
+};
+
+export default UserPageHeader;

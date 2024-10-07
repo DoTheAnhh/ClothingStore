@@ -63,6 +63,7 @@ export const API_URL = {
         ADD_PRODUCT_DETAIL_TO_CART: '/add-product-to-cart',
         FIND_ALL_CART: '',
         UPDATE_PRODUCT_QUANTITY_IN_CART: '/update-quantity',
-        DELETE_PRODUCT_QUANTITY_IN_CART: '/delete-product-detail-in-cart'
+        DELETE_PRODUCT_QUANTITY_IN_CART: '/delete-product-detail-in-cart',
+        COUNT: '/count'
     }
 }

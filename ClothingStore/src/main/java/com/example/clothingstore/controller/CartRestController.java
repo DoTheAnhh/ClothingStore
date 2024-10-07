@@ -51,4 +51,9 @@ public class CartRestController {
     public void deleteProductDetailInCart(@PathVariable Long id) {
         cartService.deleteProductDetailInCart(id);
     }
+
+    @GetMapping("/count")
+    public Long countProductsInCart(@RequestParam Long customerId) {
+        return cartService.countProductDetailInCart(customerId);
+    }
 }

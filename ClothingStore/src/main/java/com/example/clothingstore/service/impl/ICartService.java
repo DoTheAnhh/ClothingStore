@@ -106,4 +106,9 @@ public class ICartService implements CartService {
     public void deleteProductDetailInCart(Long id) {
         cartRepository.deleteById(id);
     }
+
+    @Override
+    public Long countProductDetailInCart(Long customerId){
+        return cartRepository.countProductDetailInCart(customerId);
+    }
 }

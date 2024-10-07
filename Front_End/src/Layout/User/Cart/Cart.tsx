@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import UserPageHeader from '../Header/UserPageHeader'
 import { Layout } from 'antd';
 import { Content, Footer, Header } from 'antd/es/layout/layout';
 import CartDetail from './Content/CartDetail';
 
 const Cart: React.FC = () => {
+
+    const [countProduct, setCountProduct] = useState(0);
 
     const headerStyle: React.CSSProperties = {
         textAlign: 'center',
@@ -40,18 +42,15 @@ const Cart: React.FC = () => {
     return (
         <>
             <Layout style={layoutStyle}>
-
-                <Header style={headerStyle}>
-                    <UserPageHeader />
-                </Header>
-
-                <Content style={contentStyle}>
-                    <CartDetail />
-                </Content>
-
-                <Footer style={footerStyle}>
-                </Footer>
-            </Layout>
+            <Header style={headerStyle}>
+                <UserPageHeader countProductsInCart={countProduct} /> {/* Truyền số lượng sản phẩm vào UserPageHeader */}
+            </Header>
+            <Content style={contentStyle}>
+                <CartDetail setCountProduct={setCountProduct} /> {/* Truyền hàm setCountProduct vào CartDetail */}
+            </Content>
+            <Footer style={footerStyle}>
+            </Footer>
+        </Layout>
         </>
     )
 }

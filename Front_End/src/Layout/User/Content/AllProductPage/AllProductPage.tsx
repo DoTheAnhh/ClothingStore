@@ -5,6 +5,8 @@ import { Layout } from 'antd';
 import FilterProduct from './FilterProduct/FilterProduct';
 import ShowAllProduct from './ShowAllProduct/ShowAllProduct';
 import { ProductResponse } from '../../../../Interface/interface';
+import axios from 'axios';
+import { API_URL, LOCALHOST, MAPPING_URL } from '../../../../APIs/API';
 
 const AllProductPage: React.FC = () => {
 
@@ -63,20 +65,59 @@ const AllProductPage: React.FC = () => {
     setTypeName(newType);
   };
 
+  const [countProduct, setCountProduct] = useState<number>(0);
+
+  const decodeJwt = (token: string) => {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+      return JSON.parse(jsonPayload);
+    } catch (error) {
+      console.error("Invalid token");
+      return null;
+    }
+  };
+
+  const token = localStorage.getItem('token');
+  if (!token) {
+    console.error('No token found');
+    return;
+  }
+
+  const decodedToken = decodeJwt(token);
+  if (!decodedToken) {
+    console.error('Invalid token');
+    return;
+  }
+
+  const userId = decodedToken.id;
+
+  const countProductsInCart = async () => {
+    const res = await axios.get(LOCALHOST + MAPPING_URL.CART + API_URL.CART.COUNT + `?customerId=${userId}`)
+    setCountProduct(res.data)
+  }
+
+  useEffect(() => {
+    countProductsInCart()
+  }, [])
+
   return (
     <>
       <Layout style={layoutStyle}>
         <Header style={headerStyle}>
-          <UserPageHeader />
+          <UserPageHeader countProductsInCart={countProduct} />
         </Header>
 
         <Content style={contentStyle}>
           <div style={{ display: 'flex', flexDirection: 'row', marginLeft: '20vh' }}>
             <div style={{ marginRight: '20vh' }}>
-              <FilterProduct onTypeChange={handleTypeChange}  setProducts={setProducts} />
+              <FilterProduct onTypeChange={handleTypeChange} setProducts={setProducts} />
             </div>
             <div style={{ marginLeft: '-20vh' }}>
-              <ShowAllProduct typeName={typeName} products={products}/>
+              <ShowAllProduct typeName={typeName} products={products} />
             </div>
           </div>
         </Content>
