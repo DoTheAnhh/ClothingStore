@@ -25,6 +25,7 @@ export const API_URL = {
         INSERT_PRODUCT_DETAIL: '/insert',
         UPDATE_PRODUCT_DETAIL: '/edit',
         FIND_PRODUCT_DETAIL_ADD_TO_CART: '/find-product-detail-to-cart',
+        FIND_SIZES_ID_BY_COLOR_ID_IN_PRODUCT_DETAIL: '/find-sizes-by-color-in-product-detail',
     },
     IMAGE: {
         FIND_IMAGE_BY_PRODUCT_DETAIL_ID: '/product-detail',

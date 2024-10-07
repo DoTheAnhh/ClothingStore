@@ -1,17 +1,49 @@
-import { InputNumber } from 'antd';
+import { Button, InputNumber } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { API_URL, LOCALHOST, MAPPING_URL } from '../../../../APIs/API';
 import axios from 'axios';
 import { DeleteOutlined } from '@ant-design/icons';
 import { CartResponse } from '../../../../Interface/interface';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const CartDetail: React.FC = () => {
 
     const [carts, setCarts] = useState<CartResponse[]>([])
 
+    const navigate = useNavigate();
+
+    const decodeJwt = (token: string) => {
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        } catch (error) {
+            console.error("Invalid token");
+            return null;
+        }
+    };
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+        console.error('No token found');
+        navigate('/login');
+        return;
+    }
+
+    const decodedToken = decodeJwt(token);
+    if (!decodedToken) {
+        console.error('Invalid token');
+        return;
+    }
+
+    const customerId = decodedToken.id;
+
     const findAllCart = async () => {
-        const res = await axios.get(LOCALHOST + MAPPING_URL.CART + API_URL.CART.FIND_ALL_CART);
+        const res = await axios.get(LOCALHOST + MAPPING_URL.CART + API_URL.CART.FIND_ALL_CART + `?customerId=${customerId}`);
         setCarts(res.data);
     }
 
@@ -41,7 +73,7 @@ const CartDetail: React.FC = () => {
         findAllCart()
     }, [])
 
-    console.log("carts", carts);
+    const totalAmount = carts.reduce((total, cartItem) => total + cartItem.totalPrice, 0);
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '4vw', marginTop: '5vh' }}>
@@ -131,6 +163,17 @@ const CartDetail: React.FC = () => {
                     </div>
                 ))}
             </div>
+
+            <div style={{ marginLeft: '50vw', marginTop: '3vh', fontSize: '15px', fontWeight: 'bold', alignItems: 'center' }}>
+                <div style={{ display: 'flex', marginLeft: '10vw', flexGrow: 1 }}>
+                    Tổng tiền:
+                    <p style={{ marginLeft: '10vw', marginBottom: 0, color: 'red' }}>{totalAmount.toLocaleString("vi-VN")} VND</p>
+                </div>
+                <div style={{ marginLeft: '-2vw', marginTop: '2vh' }}>
+                    <Button style={{ width: '23vw', background: 'black', color: 'white', padding: '20px 0' }}>Thanh toán</Button>
+                </div>
+            </div>
+
         </div>
     );
 }

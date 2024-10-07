@@ -30,11 +30,21 @@ const UserPageProductDetail: React.FC = () => {
         findProductDetailAddToCart(size.id, selectedColorId);
     };
 
-    const handleColorClick = (color: ColorResponse) => {
+    const handleColorClick = async (color: ColorResponse) => {
         setSelectedColor(color.colorName);
         setSelectedColorId(color.id);
-        findProductDetailAddToCart(selectedSizeId, color.id);
+
+        const sizes = await findSizesByColorId(color.id);
+
+        // Cập nhật lại product.sizes với danh sách kích thước tương ứng
+        setProduct(prevProduct => ({
+            ...prevProduct!,
+            sizes: sizes,
+        }));
+        console.log(sizes);
+
     };
+
 
     const findProductById = async () => {
         try {
@@ -102,11 +112,21 @@ const UserPageProductDetail: React.FC = () => {
 
             toast.success('Sản phẩm đã được thêm vào giỏ hàng!');
         } catch (error) {
-            // Hiển thị thông báo lỗi nếu có
             toast.error('Có lỗi xảy ra! Vui lòng thử lại.');
             console.error('Error adding product to cart:', error);
         }
     };
+
+    const findSizesByColorId = async (colorId: number) => {
+        try {
+            const res = await axios.get(`${LOCALHOST}${MAPPING_URL.PRODUCT_DETAIL}${API_URL.PRODUCT_DETAIL.FIND_SIZES_ID_BY_COLOR_ID_IN_PRODUCT_DETAIL}/${colorId}`);
+            return res.data;
+        } catch (error) {
+            console.error('Error fetching sizes:', error);
+            return [];
+        }
+    };
+
 
     useEffect(() => {
         findProductById();
@@ -114,7 +134,9 @@ const UserPageProductDetail: React.FC = () => {
 
     return (
         <>
-            <UserPageHeader />
+            <div style={{ width: "182vh", marginLeft: '7vh' }}>
+                <UserPageHeader />
+            </div>
             <div style={{ display: 'flex' }}>
                 {product ? (
                     <>
@@ -170,6 +192,10 @@ const UserPageProductDetail: React.FC = () => {
                                     Kích thước:
                                     <div style={{ marginTop: 10 }}>
                                         {Array.from(new Set(product.sizes.map(size => size.sizeName)))
+                                            .sort((a, b) => {
+                                                const order = ['S', 'M', 'L', 'XL', 'XXL']; // Định nghĩa thứ tự sắp xếp
+                                                return order.indexOf(a) - order.indexOf(b);
+                                            })
                                             .map(sizeName => {
                                                 const size = product.sizes.find(s => s.sizeName === sizeName);
                                                 return (
@@ -186,7 +212,6 @@ const UserPageProductDetail: React.FC = () => {
                                                     </Button>
                                                 );
                                             })}
-
                                     </div>
                                 </div>
 

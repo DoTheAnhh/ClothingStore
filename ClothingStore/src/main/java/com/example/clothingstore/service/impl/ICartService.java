@@ -32,8 +32,8 @@ public class ICartService implements CartService {
     private final CartMapper cartMapper = CartMapper.INSTANCE;
 
     @Override
-    public List<CartResponse> getAllCart() {
-        List<Cart> carts = cartRepository.findAll();
+    public List<CartResponse> getAllCartByCustomerId(Long customerId) {
+        List<Cart> carts = cartRepository.findCartByCustomerId(customerId);
         return cartMapper.toDtoList(carts);
     }
 

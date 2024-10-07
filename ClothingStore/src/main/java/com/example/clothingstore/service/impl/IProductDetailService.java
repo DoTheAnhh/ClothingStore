@@ -1,14 +1,13 @@
 package com.example.clothingstore.service.impl;
 
-import com.example.clothingstore.dto.product_detail.FindProductDetailAddToCardRequest;
 import com.example.clothingstore.dto.product_detail.FindProductDetailToCartDTO;
 import com.example.clothingstore.dto.product_detail.ProductDetailRequest;
 import com.example.clothingstore.dto.product_detail.ProductDetailResponse;
+import com.example.clothingstore.dto.size.SizeDTO;
 import com.example.clothingstore.entity.Color;
 import com.example.clothingstore.entity.Product;
 import com.example.clothingstore.entity.ProductDetail;
 import com.example.clothingstore.entity.Size;
-import com.example.clothingstore.exception.NotFoundException;
 import com.example.clothingstore.mapper.ProductDetailMapper;
 import com.example.clothingstore.repository.ColorRepository;
 import com.example.clothingstore.repository.ProductDetailRepository;
@@ -17,7 +16,6 @@ import com.example.clothingstore.repository.SizeRepository;
 import com.example.clothingstore.service.ProductDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +56,11 @@ public class IProductDetailService implements ProductDetailService {
     public Long findProductDetailToCart(FindProductDetailToCartDTO findProductDetailToCartDTO) {
         Long productDetailId = productDetailRepository.findProductDetailAddToCart(findProductDetailToCartDTO.getColorId(), findProductDetailToCartDTO.getSizeId(), findProductDetailToCartDTO.getProductId());
         return productDetailId;
+    }
+
+    @Override
+    public List<SizeDTO> findSizeIdsByColorIdInProductDetail(Long colorId) {
+        return productDetailRepository.findSizeIdByColorIdInProductDetail(colorId);
     }
 
     @Override
@@ -102,4 +105,5 @@ public class IProductDetailService implements ProductDetailService {
     public void updateQRCode(Long id, String qrcode) {
         productDetailRepository.updateQRCode(id, qrcode);
     }
+
 }

@@ -4,6 +4,7 @@ import com.example.clothingstore.dto.product_detail.FindProductDetailToCartDTO;
 import com.example.clothingstore.dto.product_detail.ProductDetailRequest;
 import com.example.clothingstore.dto.product_detail.ProductDetailResponse;
 import com.example.clothingstore.dto.qrcode_update.QRCodeUpdateRequest;
+import com.example.clothingstore.dto.size.SizeDTO;
 import com.example.clothingstore.entity.ProductDetail;
 import com.example.clothingstore.service.ProductDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -37,6 +39,12 @@ public class ProductDetailRestController {
     public Long findProductDetailToCart(@RequestBody FindProductDetailToCartDTO findProductDetailToCartDTO) {
         Long productDetailId = productDetailService.findProductDetailToCart(findProductDetailToCartDTO);
         return productDetailId;
+    }
+
+    @GetMapping("/find-sizes-by-color-in-product-detail/{colorId}")
+    public ResponseEntity<List<SizeDTO>> getSizeIdsByColorId(@PathVariable Long colorId) {
+        List<SizeDTO> sizeDTOs = productDetailService.findSizeIdsByColorIdInProductDetail(colorId);
+        return ResponseEntity.ok(sizeDTOs);
     }
 
     @PostMapping("/insert")

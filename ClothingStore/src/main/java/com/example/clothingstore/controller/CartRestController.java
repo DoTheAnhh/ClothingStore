@@ -19,8 +19,8 @@ public class CartRestController {
     private CartService cartService;
 
     @GetMapping
-    public ResponseEntity<List<CartResponse>> getAllCart() {
-        return new ResponseEntity<>(cartService.getAllCart(), HttpStatus.OK);
+    public ResponseEntity<List<CartResponse>> getAllCartByCustomerId(@RequestParam Long customerId) {
+        return new ResponseEntity<>(cartService.getAllCartByCustomerId(customerId), HttpStatus.OK);
     }
 
     @PostMapping("/add-product-to-cart")
