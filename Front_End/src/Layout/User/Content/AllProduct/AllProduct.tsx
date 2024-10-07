@@ -23,7 +23,7 @@ const AllProduct: React.FC = () => {
     }, []);
 
     const handleProductClick = (productId: number) => {
-        navigate(`/user/product-detail/${productId}`);
+        navigate(`/user/product/${productId}`);
     };
 
     useEffect(() => {

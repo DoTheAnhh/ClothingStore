@@ -1,12 +1,10 @@
 package com.example.clothingstore.service;
 
-import com.example.clothingstore.dto.image.ImageCustomerRequest;
-import com.example.clothingstore.dto.image.ImageCustomerResponse;
-import com.example.clothingstore.dto.image.ImageProductDetailRequest;
-import com.example.clothingstore.dto.image.ImageProductDetailResponse;
+import com.example.clothingstore.dto.image.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public interface ImageService {
     List<ImageProductDetailResponse> getImagesByProductDetailId(Long productDetailId);
@@ -16,4 +14,6 @@ public interface ImageService {
     List<ImageCustomerResponse> getImagesByCustomerId(Long customerId);
 
     void uploadImageCustomer(ImageCustomerRequest imageCustomerRequest);
+
+    List<String> findImageUrlsByColorIdAndProductId(Long colorId, Long productId);
 }

@@ -1,10 +1,7 @@
 package com.example.clothingstore.service.impl;
 
 import com.example.clothingstore.config.Cloudinary.CloudinaryService;
-import com.example.clothingstore.dto.image.ImageCustomerRequest;
-import com.example.clothingstore.dto.image.ImageCustomerResponse;
-import com.example.clothingstore.dto.image.ImageProductDetailRequest;
-import com.example.clothingstore.dto.image.ImageProductDetailResponse;
+import com.example.clothingstore.dto.image.*;
 import com.example.clothingstore.entity.Customer;
 import com.example.clothingstore.entity.Image;
 import com.example.clothingstore.entity.ProductDetail;
@@ -15,8 +12,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class IImageService implements ImageService {
@@ -105,6 +101,15 @@ public class IImageService implements ImageService {
             }
             imageRepository.save(newImage);
         }
+    }
+
+    @Override
+    public List<String> findImageUrlsByColorIdAndProductId(Long colorId, Long productId) {
+        // Lấy danh sách URL hình ảnh từ repository
+        List<String> imageUrls = imageRepository.findImageUrlsByColorIdAndProductId(colorId, productId);
+
+        // Nếu không có hình ảnh nào, có thể trả về một danh sách rỗng
+        return imageUrls.isEmpty() ? Collections.emptyList() : imageUrls;
     }
 
 }

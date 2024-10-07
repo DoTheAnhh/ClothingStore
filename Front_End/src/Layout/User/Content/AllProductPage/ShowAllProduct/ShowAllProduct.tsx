@@ -12,7 +12,7 @@ const ShowAllProduct: React.FC<ShowAllProductProps> = ({ typeName, products }) =
     const navigate = useNavigate()
 
     const handleProductClick = (productId: number) => {
-        navigate(`/user/product-detail/${productId}`);
+        navigate(`/user/product/${productId}`);
     };
 
     return (

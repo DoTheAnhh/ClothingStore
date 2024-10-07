@@ -24,10 +24,11 @@ const UserPageProductDetail: React.FC = () => {
         if (value) setQuantity(value);
     };
 
-    const handleSizeClick = (size: SizeResponse) => {
+    const handleSizeClick = async (size: SizeResponse) => {
         setSelectedSize(size.sizeName);
         setSelectedSizeId(size.id);
         findProductDetailAddToCart(size.id, selectedColorId);
+
     };
 
     const handleColorClick = async (color: ColorResponse) => {
@@ -36,14 +37,30 @@ const UserPageProductDetail: React.FC = () => {
 
         const sizes = await findSizesByColorId(color.id);
 
-        // Cập nhật lại product.sizes với danh sách kích thước tương ứng
+
         setProduct(prevProduct => ({
             ...prevProduct!,
             sizes: sizes,
         }));
-        console.log(sizes);
-
     };
+
+    const handleOnMouseEnter = async (color: ColorResponse) => {
+        const newImageUrls = await findImageByColorIdAndProductId(color.id, id);
+        setProduct(prevProduct => ({
+            ...prevProduct!,
+            imageUrls: [...newImageUrls, ...prevProduct!.imageUrls]
+        }));
+    }
+
+
+    const findImageByColorIdAndProductId = async (colorId: number, productId: number) => {
+        try {
+            const res = await axios.get(LOCALHOST + MAPPING_URL.IMAGE + `/color/${colorId}/product/${productId}`);
+            return res.data;
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
 
     const findProductById = async () => {
@@ -140,8 +157,8 @@ const UserPageProductDetail: React.FC = () => {
             <div style={{ display: 'flex' }}>
                 {product ? (
                     <>
-                        <Carousel autoplay autoplaySpeed={5000} style={{ marginLeft: 140, width: 750 }} arrows>
-                            {product.imageUrls?.map((imageUrl, index) => (
+                        <Carousel style={{ marginLeft: 140, width: 750 }} arrows>
+                            {product.imageUrls?.map((imageUrl: string, index: number) => (
                                 <div key={index}>
                                     <img
                                         src={imageUrl}
@@ -155,6 +172,7 @@ const UserPageProductDetail: React.FC = () => {
                                 </div>
                             ))}
                         </Carousel>
+
                         <div style={{ marginLeft: 50, fontSize: 26, fontWeight: 'bold', width: 350, marginTop: 60 }}>
                             {product.productName}
                             <hr style={{ marginTop: 20 }} />
@@ -175,6 +193,7 @@ const UserPageProductDetail: React.FC = () => {
                                                     <Button
                                                         key={color?.id}
                                                         onClick={() => handleColorClick(color!)}
+                                                        onMouseEnter={() => handleOnMouseEnter(color!)}
                                                         style={{
                                                             margin: '0 10px',
                                                             backgroundColor: selectedColor === color?.colorName ? 'black' : 'white',
@@ -191,29 +210,30 @@ const UserPageProductDetail: React.FC = () => {
                                 <div style={{ marginTop: 30 }}>
                                     Kích thước:
                                     <div style={{ marginTop: 10 }}>
-                                        {Array.from(new Set(product.sizes.map(size => size.sizeName)))
-                                            .sort((a, b) => {
-                                                const order = ['S', 'M', 'L', 'XL', 'XXL']; // Định nghĩa thứ tự sắp xếp
-                                                return order.indexOf(a) - order.indexOf(b);
-                                            })
-                                            .map(sizeName => {
-                                                const size = product.sizes.find(s => s.sizeName === sizeName);
-                                                return (
-                                                    <Button
-                                                        key={size?.id}
-                                                        onClick={() => handleSizeClick(size!)}
-                                                        style={{
-                                                            margin: '0 10px',
-                                                            backgroundColor: selectedSize === size?.sizeName ? 'black' : 'white',
-                                                            color: selectedSize === size?.sizeName ? 'white' : 'black',
-                                                        }}
-                                                    >
-                                                        {size?.sizeName}
-                                                    </Button>
-                                                );
-                                            })}
+                                        {['S', 'M', 'L', 'XL', 'XXL'].map(sizeName => {
+                                            const size = product.sizes.find(s => s.sizeName === sizeName);
+                                            const isDisabled = !size;
+
+                                            return (
+                                                <Button
+                                                    key={sizeName}
+                                                    onClick={() => !isDisabled && handleSizeClick(size!)}
+                                                    style={{
+                                                        margin: '0 10px',
+                                                        backgroundColor: selectedSize === sizeName ? 'black' : (isDisabled ? 'lightgray' : 'white'),
+                                                        color: selectedSize === sizeName ? 'white' : (isDisabled ? 'darkgray' : 'black'),
+                                                        cursor: isDisabled ? 'not-allowed' : 'pointer'
+                                                    }}
+                                                    disabled={isDisabled}
+                                                >
+                                                    {sizeName}
+                                                </Button>
+                                            );
+                                        })}
                                     </div>
                                 </div>
+
+
 
                                 <div style={{ marginTop: 30, display: 'flex', alignItems: 'center' }}>
                                     <div style={{ marginRight: 25 }}>Số lượng:</div>

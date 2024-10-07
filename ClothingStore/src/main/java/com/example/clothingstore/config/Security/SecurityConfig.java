@@ -52,6 +52,7 @@ public class SecurityConfig {
 
                                 .requestMatchers("/image/product-detail/*").permitAll()
                                 .requestMatchers("/image/customer/*").permitAll()
+                                .requestMatchers("/image/color/*/product/*").permitAll()
 
                                 .requestMatchers("/size").permitAll()
                                 .requestMatchers("/size/*").permitAll()

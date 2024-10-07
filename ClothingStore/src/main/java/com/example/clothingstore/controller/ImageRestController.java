@@ -53,4 +53,15 @@ public class ImageRestController {
         imageService.uploadImageCustomer(imageCustomerRequest);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/color/{colorId}/product/{productId}")
+    public ResponseEntity<List<String>> getImageUrlsByColorAndProduct(
+            @PathVariable Long colorId,
+            @PathVariable Long productId) {
+
+        List<String> imageUrls = imageService.findImageUrlsByColorIdAndProductId(colorId, productId);
+
+        // Trả về danh sách URL hình ảnh
+        return ResponseEntity.ok(imageUrls);
+    }
 }

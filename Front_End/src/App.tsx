@@ -54,7 +54,7 @@ function App() {
       element: <ProtectedRoute element={<LayoutUser />} requiredRole="USER" />,
     },
     {
-      path: '/user/product-detail/:id',
+      path: '/user/product/:id',
       element: <UserPageProductDetail />,
     },
     {
