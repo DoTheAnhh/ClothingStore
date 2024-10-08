@@ -3,7 +3,6 @@ package com.example.clothingstore.controller;
 import com.example.clothingstore.dto.customer.CustomerRequest;
 import com.example.clothingstore.dto.customer.CustomerResponse;
 import com.example.clothingstore.dto.login.CheckPasswordRequest;
-import com.example.clothingstore.entity.Customer;
 import com.example.clothingstore.repository.CustomerRepository;
 import com.example.clothingstore.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 

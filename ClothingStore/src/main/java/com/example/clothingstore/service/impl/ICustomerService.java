@@ -67,6 +67,7 @@ public class ICustomerService implements CustomerService {
             // Cập nhật thông tin khách hàng
             existingCustomer.setName(customerResponse.getName());
             existingCustomer.setAge(customerResponse.getAge());
+            existingCustomer.setPhoneNumber(customerResponse.getPhoneNumber());
             existingCustomer.setGender(customerResponse.isGender());
             existingCustomer.setBirthday(customerResponse.getBirthday());
             existingCustomer.setLocation(customerResponse.getLocation());

@@ -76,6 +76,10 @@ const CartDetail: React.FC<{ setCountProduct: (count: number) => void }> = ({ se
         countProductsInCart()
     }
 
+    const nextToPayment = () => {
+        navigate('/payment')
+    }
+
     useEffect(() => {
         findAllCart()
         countProductsInCart()
@@ -178,7 +182,7 @@ const CartDetail: React.FC<{ setCountProduct: (count: number) => void }> = ({ se
                     <p style={{ marginLeft: '10vw', marginBottom: 0, color: 'red' }}>{totalAmount.toLocaleString("vi-VN")} VND</p>
                 </div>
                 <div style={{ marginLeft: '-2vw', marginTop: '2vh' }}>
-                    <Button style={{ width: '23vw', background: 'black', color: 'white', padding: '20px 0' }}>Thanh toán</Button>
+                    <Button style={{ width: '23vw', background: 'black', color: 'white', padding: '20px 0' }} onClick={nextToPayment}>Thanh toán</Button>
                 </div>
             </div>
 

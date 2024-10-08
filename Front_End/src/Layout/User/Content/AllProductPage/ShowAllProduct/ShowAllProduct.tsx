@@ -38,7 +38,9 @@ const ShowAllProduct: React.FC<ShowAllProductProps> = ({ typeName, products }) =
 
                     {products
                         .map((product) => (
-                            <div className="product-card" style={{
+                            <div className="product-card" 
+                            key={product.id}
+                            style={{
                                 flex: '0 0 calc(25% - 20px)',
                                 margin: '0 10px',
                                 minHeight: '400px',

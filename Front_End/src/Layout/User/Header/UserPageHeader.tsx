@@ -1,19 +1,18 @@
-import { ShoppingCartOutlined } from '@ant-design/icons'
-import { Badge, Dropdown, Input, Menu } from 'antd'
-import React, { useCallback, useEffect, useState } from 'react'
+import { ShoppingCartOutlined } from '@ant-design/icons';
+import { Badge, Dropdown, Input, Menu } from 'antd';
+import React, { useCallback, useEffect, useState } from 'react';
 import { API_URL, LOCALHOST, MAPPING_URL } from '../../../APIs/API';
 import { ImageResponse } from '../../../Interface/interface';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 interface UserPageHeaderProps {
-    countProductsInCart: number | null
+    countProductsInCart: number | null;
 }
 
 const UserPageHeader: React.FC<UserPageHeaderProps> = ({ countProductsInCart }) => {
     const [loadedImages, setLoadedImages] = useState<number[]>([]);
     const [imageUrl, setImageUrl] = useState<string>('');
-
 
     const navigate = useNavigate();
 
@@ -77,6 +76,7 @@ const UserPageHeader: React.FC<UserPageHeaderProps> = ({ countProductsInCart }) 
         }
     };
 
+    // Định nghĩa menu
     const menu = (
         <Menu onClick={handleMenuClick}>
             <Menu.Item key="profile">Thông tin tài khoản</Menu.Item>
@@ -94,8 +94,6 @@ const UserPageHeader: React.FC<UserPageHeaderProps> = ({ countProductsInCart }) 
     const handleHome = () => {
         navigate('/user');
     };
-
-
 
     useEffect(() => {
         findAllImageByCustomerId();

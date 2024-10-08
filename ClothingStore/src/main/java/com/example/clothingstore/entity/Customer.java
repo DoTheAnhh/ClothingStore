@@ -26,6 +26,9 @@ public class Customer extends PrimaryEntity implements UserDetails {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "phoneNumber")
+    private String phoneNumber;
+
     @Column(name = "age")
     private int age;
 

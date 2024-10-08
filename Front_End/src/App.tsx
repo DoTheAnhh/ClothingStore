@@ -15,6 +15,7 @@ import UserPageProductDetail from './Layout/User/ProductDetail/UserPageProductDe
 import Profile from './Layout/Profile/Profile';
 import AllProductPage from './Layout/User/Content/AllProductPage/AllProductPage';
 import Cart from './Layout/User/Cart/Cart';
+import Payment from './Layout/User/Payment/Payment';
 
 interface RouteComponent {
   path: string;
@@ -68,6 +69,10 @@ function App() {
     {
       path: '/account/profile',
       element: <Profile />,
+    },
+    {
+      path: '/payment',
+      element: <Payment />,
     },
   ];
 

@@ -108,6 +108,7 @@ export interface CustomerResponse {
   role: string;
   createDate: string;
   updateDate: string;
+  phoneNumber: string
 }
 
 export interface CustomerRequest {
@@ -121,6 +122,7 @@ export interface CustomerRequest {
   role?: string;
   createDate?: string;
   updateDate?: string;
+  phoneNumber?: string
 }
 
 export interface CartResponse {
