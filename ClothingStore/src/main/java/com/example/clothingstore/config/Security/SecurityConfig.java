@@ -42,7 +42,7 @@ public class SecurityConfig {
                                 .requestMatchers("/product-detail").permitAll()
                                 .requestMatchers("/product-detail/*").permitAll()
                                 .requestMatchers("/product-detail/find-product-detail-to-cart").permitAll()
-                                .requestMatchers("/product-detail/find-sizes-by-color-in-product-detail/*").permitAll()
+                                .requestMatchers("/product-detail/find-sizes-by-color-in-product-detail/color/*/product/*").permitAll()
 
                                 .requestMatchers("/brand").permitAll()
                                 .requestMatchers("/brand/*").permitAll()

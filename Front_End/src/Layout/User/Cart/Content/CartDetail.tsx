@@ -72,9 +72,7 @@ const CartDetail: React.FC<{ setCountProduct: (count: number) => void }> = ({ se
             // Gọi hàm findAllCart để làm mới giỏ hàng sau khi cập nhật
             findAllCart();
         } catch (error) {
-            // Kiểm tra xem lỗi có phản hồi từ server hay không
             if (axios.isAxiosError(error) && error.response) {
-                // Hiển thị thông báo lỗi từ server
                 toast.error(error.response.data || "Đã xảy ra lỗi khi cập nhật số lượng sản phẩm.");
             } else {
                 // Hiển thị thông báo lỗi chung

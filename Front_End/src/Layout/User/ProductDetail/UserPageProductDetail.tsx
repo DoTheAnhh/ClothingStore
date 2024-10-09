@@ -146,7 +146,7 @@ const UserPageProductDetail: React.FC = () => {
 
     const findSizesByColorId = async (colorId: number) => {
         try {
-            const res = await axios.get(`${LOCALHOST}${MAPPING_URL.PRODUCT_DETAIL}${API_URL.PRODUCT_DETAIL.FIND_SIZES_ID_BY_COLOR_ID_IN_PRODUCT_DETAIL}/${colorId}`);
+            const res = await axios.get(`${LOCALHOST}${MAPPING_URL.PRODUCT_DETAIL}${API_URL.PRODUCT_DETAIL.FIND_SIZES_ID_BY_COLOR_ID_IN_PRODUCT_DETAIL}/color/${colorId}/product/${id}`);
             return res.data;
         } catch (error) {
             console.error('Error fetching sizes:', error);

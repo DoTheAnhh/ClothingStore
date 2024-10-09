@@ -41,9 +41,9 @@ public class ProductDetailRestController {
         return productDetailId;
     }
 
-    @GetMapping("/find-sizes-by-color-in-product-detail/{colorId}")
-    public ResponseEntity<List<SizeDTO>> getSizeIdsByColorId(@PathVariable Long colorId) {
-        List<SizeDTO> sizeDTOs = productDetailService.findSizeIdsByColorIdInProductDetail(colorId);
+    @GetMapping("/find-sizes-by-color-in-product-detail/color/{colorId}/product/{productId}")
+    public ResponseEntity<List<SizeDTO>> getSizeIdsByColorId(@PathVariable Long colorId, @PathVariable Long productId) {
+        List<SizeDTO> sizeDTOs = productDetailService.findSizeIdsByColorIdInProductDetail(colorId, productId);
         return ResponseEntity.ok(sizeDTOs);
     }
 

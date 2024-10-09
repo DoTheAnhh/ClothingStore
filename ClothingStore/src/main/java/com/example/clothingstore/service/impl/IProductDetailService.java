@@ -59,8 +59,8 @@ public class IProductDetailService implements ProductDetailService {
     }
 
     @Override
-    public List<SizeDTO> findSizeIdsByColorIdInProductDetail(Long colorId) {
-        return productDetailRepository.findSizeIdByColorIdInProductDetail(colorId);
+    public List<SizeDTO> findSizeIdsByColorIdInProductDetail(Long colorId, Long productId) {
+        return productDetailRepository.findSizeIdByColorIdInProductDetail(colorId,productId);
     }
 
     @Override

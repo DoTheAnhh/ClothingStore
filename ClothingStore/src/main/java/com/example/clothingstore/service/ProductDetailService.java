@@ -18,7 +18,7 @@ public interface ProductDetailService {
 
     Long findProductDetailToCart(FindProductDetailToCartDTO findProductDetailToCartDTO);
 
-    List<SizeDTO> findSizeIdsByColorIdInProductDetail(Long colorId);
+    List<SizeDTO> findSizeIdsByColorIdInProductDetail(Long colorId, Long productId);
 
     Long insertProductDetail(ProductDetailRequest productDetailRequest);
 
