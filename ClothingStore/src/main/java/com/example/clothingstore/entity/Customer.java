@@ -26,9 +26,6 @@ public class Customer extends PrimaryEntity implements UserDetails {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "phoneNumber")
-    private String phoneNumber;
-
     @Column(name = "age")
     private int age;
 
@@ -38,9 +35,6 @@ public class Customer extends PrimaryEntity implements UserDetails {
 
     @Column(name = "gender")
     private boolean gender = true;
-
-    @Column(name = "location")
-    private String location;
 
     @Column(name = "email", unique = true, nullable = false)
     @NotNull(message = "Email không được để trống")
@@ -55,6 +49,9 @@ public class Customer extends PrimaryEntity implements UserDetails {
 
     @Column(name = "reset_token")
     private String resetToken;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+    private List<ShippingAddress> shippingAddresses;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

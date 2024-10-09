@@ -15,13 +15,9 @@ public class CustomerResponse {
 
     private int age;
 
-    private String phoneNumber;
-
     private Date birthday;
 
     private boolean gender;
-
-    private String location;
 
     private String email;
 

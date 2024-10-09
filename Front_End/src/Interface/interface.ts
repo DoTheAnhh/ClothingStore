@@ -11,10 +11,10 @@ export interface ProductResponse {
   typeName: string;
   createDate: string;
   updateDate: string;
-  imageUrls: string[]
-  colors: ColorResponse[]
-  sizes: SizeResponse[]
-  firstProductPrice: number
+  imageUrls: string[];
+  colors: ColorResponse[];
+  sizes: SizeResponse[];
+  firstProductPrice: number;
 }
 
 export interface ProductRequest {
@@ -102,13 +102,11 @@ export interface CustomerResponse {
   age: number;
   birthday: any;
   gender: boolean;
-  location: any;
   email: string;
   password: string;
   role: string;
   createDate: string;
   updateDate: string;
-  phoneNumber: string
 }
 
 export interface CustomerRequest {
@@ -116,23 +114,41 @@ export interface CustomerRequest {
   age?: number;
   birthday?: string;
   gender?: boolean;
-  location?: string;
   email?: string;
   password?: string;
   role?: string;
   createDate?: string;
   updateDate?: string;
-  phoneNumber?: string
 }
 
 export interface CartResponse {
-  productName: string
-  totalPrice: number
-  sizeName: string
-  colorName: string
-  imageUrl: string
-  quantity: number
-  productDetailId: number
-  productPrice: number
-  cartId: number
+  productName: string;
+  totalPrice: number;
+  sizeName: string;
+  colorName: string;
+  imageUrl: string;
+  quantity: number;
+  productDetailId: number;
+  productPrice: number;
+  cartId: number;
+}
+
+export interface ShippingAddressResponse {
+  shippingAddressId: number
+  userName: string;
+  phoneNumber: string;
+  provinceName: string;
+  districtName: string;
+  wardName: string;
+  addressDetail: string;
+}
+
+export interface ShippingAddressRequest {
+  userName: string;
+  phoneNumber: string;
+  provinceName: string;
+  districtName: string;
+  wardName: string;
+  addressDetail: string;
+  customerId: string
 }

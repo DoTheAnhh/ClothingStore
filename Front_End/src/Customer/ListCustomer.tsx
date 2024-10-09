@@ -123,18 +123,6 @@ const ListCustomer: React.FC = () => {
       render: (gender) => (gender ? 'Nam' : 'Nữ')
     },
     {
-      title: 'Phone number',
-      dataIndex: 'phoneNumber',
-      key: 'phoneNumber',
-      align: 'center',
-    },
-    {
-      title: 'Location',
-      dataIndex: 'location',
-      key: 'location',
-      align: 'center',
-    },
-    {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',

@@ -217,18 +217,6 @@ const CustomerForm: React.FC<CustomerProps> = ({ handleCancelCustomerModal, sele
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item label="Phone number" required>
-            <Input
-              value={customer?.phoneNumber}
-              onChange={(e) => handleChangeSingleField("phoneNumber")(e.target.value)}
-            ></Input>
-          </Form.Item>
-          <Form.Item label="Location" required>
-            <Input
-              value={customer?.location}
-              onChange={(e) => handleChangeSingleField("location")(e.target.value)}
-            ></Input>
-          </Form.Item>
           <Form.Item label="Email" required>
             <Input
               value={customer?.email}

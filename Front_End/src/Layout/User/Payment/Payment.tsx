@@ -5,14 +5,19 @@ import React, { useEffect, useState } from 'react'
 import UserPageFooter from '../Footer/UserPageFooter'
 import axios from 'axios'
 import { API_URL, LOCALHOST, MAPPING_URL } from '../../../APIs/API'
-import { CartResponse, CustomerResponse } from '../../../Interface/interface'
-import { useNavigate } from 'react-router-dom'
-import PaymentCustomerForm from './CustomerForm/PaymentCustomerForm'
+import { CartResponse, ShippingAddressResponse } from '../../../Interface/interface'
+import { useLocation, useNavigate } from 'react-router-dom'
+import ListShippingAddress from '../ShippingAddress/ListShippingAddress'
 
 const Payment: React.FC = () => {
 
+    const location = useLocation();
+
     const [carts, setCarts] = useState<CartResponse[]>([])
-    const [customer, setCustomer] = useState<CustomerResponse>()
+
+    const selectedAddress = location.state?.selectedAddress;
+
+    const [shippingAddress, setShippingAddress] = useState<ShippingAddressResponse>()
 
     const [isModalChangeLocation, setIsModalChangeLocation] = useState(false);
 
@@ -23,6 +28,11 @@ const Payment: React.FC = () => {
     const handleCancel = () => {
         setIsModalChangeLocation(false);
     };
+
+    const findShippingAddressById = async () => {
+        const res = await axios.get(LOCALHOST + MAPPING_URL.SHIPPING_ADDRESS + API_URL.SHIPPING_ADDRESS.FIND_ALL_SHIPPING_ADDRESS + `/${selectedAddress}`)
+        setShippingAddress(res.data)
+    }
 
     const navigate = useNavigate();
 
@@ -86,11 +96,6 @@ const Payment: React.FC = () => {
 
     const customerId = decodedToken.id;
 
-    const findCustomerById = async () => {
-        const res = await axios.get(LOCALHOST + MAPPING_URL.CUSTOMER + API_URL.CUSTOMER.FIND_ALL_CUSTOMER + `/${customerId}`)
-        setCustomer(res.data)
-    }
-
     const findAllCart = async () => {
         const res = await axios.get(LOCALHOST + MAPPING_URL.CART + API_URL.CART.FIND_ALL_CART + `?customerId=${customerId}`);
         setCarts(res.data);
@@ -98,8 +103,12 @@ const Payment: React.FC = () => {
 
     useEffect(() => {
         findAllCart()
-        findCustomerById()
+        findShippingAddressById()
     }, [])
+
+    useEffect(() => {
+        findShippingAddressById()
+    }, [selectedAddress])
 
     const totalAmount = carts.reduce((total, cartItem) => total + cartItem.totalPrice, 0);
 
@@ -122,22 +131,23 @@ const Payment: React.FC = () => {
                             </div>
                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: '10px' }}>
                                 <div style={{ fontWeight: 'bold' }}>
-                                    Người nhận: {customer?.name} - {customer?.phoneNumber}
+                                    Người nhận: {shippingAddress?.userName} - {shippingAddress?.phoneNumber}
                                 </div>
                                 <div style={{ marginTop: '10px' }}>
-                                    Địa chỉ nhận: {customer?.location}
+                                    Địa chỉ nhận: {shippingAddress?.addressDetail}, {shippingAddress?.wardName}, {shippingAddress?.districtName}, {shippingAddress?.provinceName}
                                 </div>
                             </div>
                         </div>
                         <div style={{ textAlign: 'center', fontWeight: 'bold' }}>
                             <a onClick={showModal}>Thay đổi</a>
                             <Modal title="Chọn địa chỉ nhận hàng" visible={isModalChangeLocation} footer={false} onCancel={handleCancel}>
+                                <ListShippingAddress handleCancel={handleCancel}/>
                             </Modal>
                         </div>
                     </div>
 
-                    <div style={{ marginLeft: '20vh', backgroundColor: 'white', padding: 20, width: '80%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '2vh', borderRadius: '20px 20px 0 0' }}>
-                        <div style={{ flex: '0 0 auto' }}>Sản phẩm</div>
+                    <div style={{ marginLeft: '20vh', backgroundColor: 'white', padding: 20, width: '80%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '2vh', borderRadius: '20px 20px 0 0' , borderBottom: '1px solid black'}}>
+                        <div style={{ flex: '0 0 auto'}}>Sản phẩm</div>
 
                         <ul style={{ display: 'flex', justifyContent: 'space-between', flex: '1', listStyleType: 'none', marginLeft: '30vw' }}>
                             <li style={{ flex: 1, textAlign: 'center' }}>Đơn giá</li>

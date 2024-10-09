@@ -71,6 +71,9 @@ public class SecurityConfig {
                                 .requestMatchers("/cart/delete-product-detail-in-cart/*").permitAll()
                                 .requestMatchers("/cart/count").permitAll()
 
+                                .requestMatchers("/shipping-address/customer/*").permitAll()
+                                .requestMatchers("/shipping-address/*").permitAll()
+
                                 .requestMatchers("/v3/api-docs/**", "/v3/api-docs.yaml", "/swagger-ui.html", "/swagger-ui/**").permitAll()
 
                                 //ADMIN

@@ -10,6 +10,7 @@ export const MAPPING_URL = {
     BRAND: '/brand',
     CUSTOMER: '/customer',
     CART: '/cart',
+    SHIPPING_ADDRESS: '/shipping-address',
 }
 
 export const API_URL = {
@@ -65,5 +66,9 @@ export const API_URL = {
         UPDATE_PRODUCT_QUANTITY_IN_CART: '/update-quantity',
         DELETE_PRODUCT_QUANTITY_IN_CART: '/delete-product-detail-in-cart',
         COUNT: '/count'
+    },
+    SHIPPING_ADDRESS: {
+        FIND_SHIPPING_ADDRESS_BY_CUSTOMER_ID: '/customer',
+        FIND_ALL_SHIPPING_ADDRESS: '',
     }
 }
