@@ -30,4 +30,7 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
             "FROM ProductDetail pd JOIN pd.size s " +
             "WHERE pd.color.id = :colorId and pd.product.id = :productId")
     List<SizeDTO> findSizeIdByColorIdInProductDetail(@Param("colorId") Long colorId, @Param("productId") Long productId);
+
+    @Query("select pd.productPrice from ProductDetail pd where pd.color.id = :colorId and pd.product.id = :productId and pd.quantity > 0")
+    Float findProductDetailPriceByColorIdAndProductId(@Param("colorId") Long colorId, @Param("productId") Long productId);
 }

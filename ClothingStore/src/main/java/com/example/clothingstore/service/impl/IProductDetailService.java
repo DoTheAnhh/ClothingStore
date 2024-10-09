@@ -106,4 +106,8 @@ public class IProductDetailService implements ProductDetailService {
         productDetailRepository.updateQRCode(id, qrcode);
     }
 
+    @Override
+    public Float findProductDetailPriceByColorIdAndProductId(Long colorId, Long productId) {
+        return productDetailRepository.findProductDetailPriceByColorIdAndProductId(colorId, productId);
+    }
 }

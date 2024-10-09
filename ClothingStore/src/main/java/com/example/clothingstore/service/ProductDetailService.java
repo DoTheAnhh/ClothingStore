@@ -26,4 +26,5 @@ public interface ProductDetailService {
 
     void updateQRCode(Long id, String qrcode);
 
+    Float findProductDetailPriceByColorIdAndProductId(Long colorId, Long productId);
 }

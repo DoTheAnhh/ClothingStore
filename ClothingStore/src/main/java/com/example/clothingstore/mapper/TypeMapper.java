@@ -18,6 +18,4 @@ public interface TypeMapper {
     Type toEntity(TypeRequest typeRequest);
 
     List<TypeResponse> toDtoList(List<Type> types);
-
-    List<Type> toEntityList(List<TypeResponse> typeResponses);
 }

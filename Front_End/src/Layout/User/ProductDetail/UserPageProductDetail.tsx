@@ -16,6 +16,8 @@ const UserPageProductDetail: React.FC = () => {
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
     const [quantity, setQuantity] = useState<number>(1);
 
+    const [productPrice, setProductPrice] = useState<number>(0)
+
     const [countProduct, setCountProduct] = useState<number>(0);
 
     const [selectedColorId, setSelectedColorId] = useState<number | null>(null);
@@ -41,6 +43,7 @@ const UserPageProductDetail: React.FC = () => {
         // Cập nhật màu đã chọn và ID màu
         setSelectedColor(color.colorName);
         setSelectedColorId(color.id);
+        findProductDetailPriceByColorIdAndProductId(color.id)
 
         // Tìm kiếm kích thước theo ID màu
         const sizes = await findSizesByColorId(color.id);
@@ -154,6 +157,11 @@ const UserPageProductDetail: React.FC = () => {
         }
     };
 
+    const findProductDetailPriceByColorIdAndProductId = async (colorId: number) => {
+        const res = await axios.get(LOCALHOST + MAPPING_URL.PRODUCT_DETAIL + API_URL.PRODUCT_DETAIL.FIND_PRODUCT_DETAIL_PRICE_BY_COLOR_ID_AND_PRODUCT_ID + `?colorId=${colorId}&productId=${id}`)
+        setProductPrice(res.data);
+    }
+
     useEffect(() => {
         findProductById();
     }, [id]);
@@ -191,7 +199,7 @@ const UserPageProductDetail: React.FC = () => {
                             <hr style={{ marginTop: 20 }} />
                             <div style={{ display: 'flex', marginTop: 30 }}>
                                 <div style={{ fontWeight: 'lighter', color: 'red', paddingRight: 15 }}>
-                                    {product.firstProductPrice.toLocaleString("vi-VN")} VND
+                                    {productPrice ? productPrice.toLocaleString("vi-VN") : product.firstProductPrice.toLocaleString("vi-VN")} VND
                                 </div>
                                 <del style={{ fontSize: '18px', marginTop: 8, fontWeight: 'lighter' }}>{(product.firstProductPrice * 1.25).toLocaleString("vi-VN")} VND</del>
                             </div>

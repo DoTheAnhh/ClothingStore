@@ -18,6 +18,4 @@ public interface SizeMapper {
     Size toEntity(SizeRequest sizeRequest);
 
     List<SizeResponse> toDtoList(List<Size> sizes);
-
-    List<Size> toEntityList(List<SizeResponse> sizeResponse);
 }

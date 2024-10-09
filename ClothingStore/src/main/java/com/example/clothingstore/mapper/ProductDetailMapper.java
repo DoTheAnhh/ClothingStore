@@ -25,6 +25,4 @@ public interface ProductDetailMapper {
     ProductDetail toEntity(ProductDetailRequest productDetailRequest);
 
     List<ProductDetailResponse> toDtoList(List<ProductDetail> productDetails);
-
-    List<ProductDetail> toEntityList(List<ProductDetailResponse> productDetailResponses);
 }

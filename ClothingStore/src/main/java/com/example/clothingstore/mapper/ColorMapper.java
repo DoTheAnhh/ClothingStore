@@ -18,6 +18,4 @@ public interface ColorMapper {
     Color toEntity(ColorRequest colorRequest);
 
     List<ColorResponse> toDtoList(List<Color> colors);
-
-    List<Color> toEntityList(List<ColorResponse> colorResponse);
 }

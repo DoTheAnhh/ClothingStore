@@ -5,7 +5,6 @@ import com.example.clothingstore.dto.product_detail.ProductDetailRequest;
 import com.example.clothingstore.dto.product_detail.ProductDetailResponse;
 import com.example.clothingstore.dto.qrcode_update.QRCodeUpdateRequest;
 import com.example.clothingstore.dto.size.SizeDTO;
-import com.example.clothingstore.entity.ProductDetail;
 import com.example.clothingstore.service.ProductDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -64,5 +63,11 @@ public class ProductDetailRestController {
     @PutMapping("/update-qrcode")
     public void updateQRCode(@RequestBody QRCodeUpdateRequest request) {
         productDetailService.updateQRCode(request.getId(), request.getQrcode());
+    }
+
+    @GetMapping("/find-product-detail-price-by-colorId-and-productId")
+    public ResponseEntity<Float> findProductDetailPriceByColorIdAndProductId(@RequestParam Long colorId, @RequestParam Long productId) {
+        Float productPrice = productDetailService.findProductDetailPriceByColorIdAndProductId(colorId, productId);
+        return ResponseEntity.ok(productPrice);
     }
 }

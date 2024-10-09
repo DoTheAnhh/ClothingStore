@@ -18,6 +18,4 @@ public interface CustomerMapper {
     Customer toEntity(CustomerRequest customerRequest);
 
     List<CustomerResponse> toDtoList(List<Customer> customer);
-
-    List<Customer> toEntityList(List<CustomerRequest> customerRequest);
 }

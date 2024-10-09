@@ -18,6 +18,4 @@ public interface BrandMapper {
     Brand toEntity(BrandRequest brandRequest);
 
     List<BrandResponse> toDtoList(List<Brand> brands);
-
-    List<Brand> toEntityList(List<BrandResponse> brandResponses);
 }

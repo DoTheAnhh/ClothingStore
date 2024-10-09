@@ -21,6 +21,4 @@ public interface ShippingAddressMapper {
     ShippingAddress toEntity(ShippingAddressRequest shippingAddressRequest);
 
     List<ShippingAddressResponse> toDtoList(List<ShippingAddress> shippingAddresses);
-
-    List<ShippingAddress> toEntityList(List<ShippingAddressResponse> shippingAddressResponses);
 }
