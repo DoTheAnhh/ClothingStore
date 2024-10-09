@@ -1,5 +1,5 @@
 import { EnvironmentOutlined, TagOutlined } from '@ant-design/icons'
-import { Layout, Modal } from 'antd'
+import { Button, Layout, Modal } from 'antd'
 import { Content, Footer, Header } from 'antd/es/layout/layout'
 import React, { useEffect, useState } from 'react'
 import UserPageFooter from '../Footer/UserPageFooter'
@@ -15,7 +15,7 @@ const Payment: React.FC = () => {
 
     const [carts, setCarts] = useState<CartResponse[]>([])
 
-    const selectedAddress = location.state?.selectedAddress ?? 1;
+    const selectedAddress = location.state?.selectedAddress;
 
     const [shippingAddress, setShippingAddress] = useState<ShippingAddressResponse>()
 
@@ -101,6 +101,31 @@ const Payment: React.FC = () => {
         setCarts(res.data);
     }
 
+    const handlePayment = async () => {
+        if (!shippingAddress) {
+            Modal.error({
+                title: 'Chưa có địa chỉ giao hàng',
+                content: 'Vui lòng chọn địa chỉ giao hàng trước khi thanh toán.',
+            });
+            return;
+        }
+
+        try {
+            const response = await axios.post(`http://localhost:8080/submitOrder?amount=${totalAmount}&orderInfo="Mua đồ"`)
+
+            if (response.status === 200) {
+                const vnpayUrl = response.data;
+                window.location.href = vnpayUrl;
+            }
+        } catch (error) {
+            console.error('Lỗi thanh toán:', error);
+            Modal.error({
+                title: 'Lỗi thanh toán',
+                content: 'Đã xảy ra lỗi trong quá trình thanh toán. Vui lòng thử lại sau.',
+            });
+        }
+    };
+
     useEffect(() => {
         findAllCart()
         findShippingAddressById()
@@ -140,14 +165,19 @@ const Payment: React.FC = () => {
                         </div>
                         <div style={{ textAlign: 'center', fontWeight: 'bold' }}>
                             <a onClick={showModal}>Thay đổi</a>
-                            <Modal title="Chọn địa chỉ nhận hàng" visible={isModalChangeLocation} footer={false} onCancel={handleCancel}>
-                                <ListShippingAddress handleCancel={handleCancel}/>
+                            <Modal
+                                title="Chọn địa chỉ nhận hàng"
+                                visible={isModalChangeLocation}
+                                footer={false}
+                                onCancel={handleCancel}
+                            >
+                                <ListShippingAddress handleCancel={handleCancel} />
                             </Modal>
                         </div>
                     </div>
 
-                    <div style={{ marginLeft: '20vh', backgroundColor: 'white', padding: 20, width: '80%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '2vh', borderRadius: '20px 20px 0 0' , borderBottom: '1px solid black'}}>
-                        <div style={{ flex: '0 0 auto'}}>Sản phẩm</div>
+                    <div style={{ marginLeft: '20vh', backgroundColor: 'white', padding: 20, width: '80%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '2vh', borderRadius: '20px 20px 0 0', borderBottom: '1px solid black' }}>
+                        <div style={{ flex: '0 0 auto' }}>Sản phẩm</div>
 
                         <ul style={{ display: 'flex', justifyContent: 'space-between', flex: '1', listStyleType: 'none', marginLeft: '30vw' }}>
                             <li style={{ flex: 1, textAlign: 'center' }}>Đơn giá</li>
@@ -277,6 +307,7 @@ const Payment: React.FC = () => {
                             </div>
                         </div>
                     </div>
+
                     <div style={{
                         marginLeft: '20vh',
                         backgroundColor: 'white',
@@ -284,7 +315,6 @@ const Payment: React.FC = () => {
                         width: '80%',
                         display: 'flex',
                         justifyContent: 'flex-end',
-                        borderRadius: '0 0 20px 20px'
                     }}>
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginRight: "-2vh" }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', padding: 10 }}>
@@ -300,6 +330,22 @@ const Payment: React.FC = () => {
                                 <span style={{ fontSize: 20, color: 'red', paddingLeft: "5vw" }}>500.000 VND</span>
                             </div>
                         </div>
+                    </div>
+
+                    <div style={{
+                        marginLeft: '20vh',
+                        backgroundColor: 'white',
+                        padding: 20,
+                        width: '80%',
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        borderRadius: '0 0 20px 20px'
+                    }}>
+                        <Button
+                            onClick={handlePayment}
+                        >
+                            Thanh toán
+                        </Button>
                     </div>
                 </Content>
                 <Footer style={footerStyle}>

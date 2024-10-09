@@ -77,6 +77,9 @@ public class SecurityConfig {
                                 .requestMatchers("/shipping-address/insert").permitAll()
                                 .requestMatchers("/shipping-address/edit/*").permitAll()
 
+                                .requestMatchers("/submitOrder").permitAll()
+                                .requestMatchers("/vnpay-payment-return").permitAll()
+
                                 .requestMatchers("/v3/api-docs/**", "/v3/api-docs.yaml", "/swagger-ui.html", "/swagger-ui/**").permitAll()
 
                                 //ADMIN

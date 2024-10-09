@@ -1,4 +1,4 @@
-package com.example.clothingstore.config.Swagger.VNPay;
+package com.example.clothingstore.config.VNPay;
 
 import jakarta.servlet.http.HttpServletRequest;
 

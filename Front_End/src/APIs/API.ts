@@ -11,6 +11,7 @@ export const MAPPING_URL = {
     CUSTOMER: '/customer',
     CART: '/cart',
     SHIPPING_ADDRESS: '/shipping-address',
+    PAYMENT: '/payment',
 }
 
 export const API_URL = {
@@ -72,5 +73,8 @@ export const API_URL = {
         FIND_ALL_SHIPPING_ADDRESS: '',
         EDIT: '/edit',
         INSERT: '/insert'
+    },
+    PAYMENT: {
+        
     }
 }
