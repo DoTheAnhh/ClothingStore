@@ -70,6 +70,7 @@ public class SecurityConfig {
                                 .requestMatchers("/cart/update-quantity").permitAll()
                                 .requestMatchers("/cart/delete-product-detail-in-cart/*").permitAll()
                                 .requestMatchers("/cart/count").permitAll()
+                                .requestMatchers("/cart/clear-cart-and-update-product-detail-quantity").permitAll()
 
                                 .requestMatchers("/shipping-address/customer/*").permitAll()
                                 .requestMatchers("/shipping-address/*").permitAll()

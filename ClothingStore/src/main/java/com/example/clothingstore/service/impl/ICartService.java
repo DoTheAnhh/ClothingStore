@@ -84,23 +84,33 @@ public class ICartService implements CartService {
         if (cartOptional.isPresent()) {
             Cart cart = cartOptional.get();
 
-            // Cập nhật số lượng nếu số lượng hợp lệ (ví dụ số lượng >= 0)
-            if (quantity >= 0) {
-                cart.setQuantity(quantity);
+            // Lấy thông tin về product detail
+            ProductDetail productDetail = cart.getProductDetail();
 
-                // Tính toán lại tổng tiền
-                float newTotalPrice = cart.getProductDetail().getProductPrice() * quantity;
-                cart.setTotalPrice(newTotalPrice);
-
-                // Lưu cart đã cập nhật
-                cartRepository.save(cart);
-            } else {
+            // Kiểm tra số lượng hợp lệ
+            if (quantity < 0) {
                 throw new IllegalArgumentException("Số lượng không hợp lệ");
             }
+
+            // Kiểm tra số lượng không được lớn hơn số lượng hiện có của product detail
+            if (quantity > productDetail.getQuantity()) { // Giả sử getAvailableQuantity() trả về số lượng hiện có
+                throw new IllegalArgumentException("Số lượng cập nhật không được lớn hơn số lượng hiện có: " + productDetail.getQuantity());
+            }
+
+            // Cập nhật số lượng
+            cart.setQuantity(quantity);
+
+            // Tính toán lại tổng tiền
+            float newTotalPrice = productDetail.getProductPrice() * quantity;
+            cart.setTotalPrice(newTotalPrice);
+
+            // Lưu cart đã cập nhật
+            cartRepository.save(cart);
         } else {
             throw new EntityNotFoundException("Không tìm thấy cart với ProductDetailId: " + productDetailId);
         }
     }
+
 
     @Override
     public void deleteProductDetailInCart(Long id) {
@@ -110,5 +120,30 @@ public class ICartService implements CartService {
     @Override
     public Long countProductDetailInCart(Long customerId){
         return cartRepository.countProductDetailInCart(customerId);
+    }
+
+    @Override
+    public void clearCartAndUpdateProductDetailQuantity(Long customerId) {
+        List<Cart> cartItems = cartRepository.findCartByCustomerId(customerId);
+
+        for (Cart cartItem : cartItems) {
+            // Lấy ProductDetail từ cartItem
+            ProductDetail productDetail = cartItem.getProductDetail();
+
+            // Kiểm tra số lượng trong cart không vượt quá số lượng hiện có
+            if (cartItem.getQuantity() > productDetail.getQuantity()) {
+                throw new IllegalArgumentException("Số lượng trong giỏ hàng chỉ còn lại: " + productDetail.getId() + " sản phẩm");
+            }
+
+            // Trừ đi quantity trong cart từ quantity của productDetail
+            int newQuantity = productDetail.getQuantity() - cartItem.getQuantity();
+
+            // Cập nhật lại số lượng của ProductDetail
+            productDetail.setQuantity(newQuantity);
+            productDetailRepository.save(productDetail);
+        }
+
+        // Xóa tất cả các productDetail trong cart của customerId
+        cartRepository.deleteAll(cartItems);
     }
 }

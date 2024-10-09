@@ -56,4 +56,14 @@ public class CartRestController {
     public Long countProductsInCart(@RequestParam Long customerId) {
         return cartService.countProductDetailInCart(customerId);
     }
+
+    @DeleteMapping("/clear-cart-and-update-product-detail-quantity")
+    public ResponseEntity<String> clearCartAndUpdateProductDetail(@RequestParam("customerId") Long customerId) {
+        try {
+            cartService.clearCartAndUpdateProductDetailQuantity(customerId);
+            return new ResponseEntity<>("Cart cleared and product quantities updated successfully.", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("An error occurred while clearing the cart.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

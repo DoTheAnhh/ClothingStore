@@ -15,10 +15,10 @@ const CartDetail: React.FC<{ setCountProduct: (count: number) => void }> = ({ se
 
     const countProductsInCart = async () => {
         const res = await axios.get(LOCALHOST + MAPPING_URL.CART + API_URL.CART.COUNT + `?customerId=${customerId}`);
-        const productCount = res.data; 
+        const productCount = res.data;
         setCountProduct(productCount);
     };
-    
+
 
     const decodeJwt = (token: string) => {
         try {
@@ -55,10 +55,12 @@ const CartDetail: React.FC<{ setCountProduct: (count: number) => void }> = ({ se
     }
 
     const updateProductQuantityInCart = async (productDetailId: number, quantity: number) => {
-
         if (quantity < 1) {
             toast.error("Số lượng phải lớn hơn hoặc bằng 1");
-        } else {
+            return; // Dừng hàm nếu số lượng không hợp lệ
+        }
+
+        try {
             await axios.put(`${LOCALHOST}${MAPPING_URL.CART}${API_URL.CART.UPDATE_PRODUCT_QUANTITY_IN_CART}?productDetailId=${productDetailId}&quantity=${quantity}`);
 
             setCarts(prevCarts =>
@@ -66,9 +68,20 @@ const CartDetail: React.FC<{ setCountProduct: (count: number) => void }> = ({ se
                     cartItem.productDetailId === productDetailId ? { ...cartItem, quantity } : cartItem
                 )
             );
+
+            // Gọi hàm findAllCart để làm mới giỏ hàng sau khi cập nhật
+            findAllCart();
+        } catch (error) {
+            // Kiểm tra xem lỗi có phản hồi từ server hay không
+            if (axios.isAxiosError(error) && error.response) {
+                // Hiển thị thông báo lỗi từ server
+                toast.error(error.response.data || "Đã xảy ra lỗi khi cập nhật số lượng sản phẩm.");
+            } else {
+                // Hiển thị thông báo lỗi chung
+                toast.error("Đã xảy ra lỗi. Vui lòng thử lại.");
+            }
         }
-        findAllCart();
-    }
+    };
 
     const deleteProductQuantityInCart = async (id: number) => {
         await axios.delete(`${LOCALHOST}${MAPPING_URL.CART}${API_URL.CART.DELETE_PRODUCT_QUANTITY_IN_CART}/${id}`);

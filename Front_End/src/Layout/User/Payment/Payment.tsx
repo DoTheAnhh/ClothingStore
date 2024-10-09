@@ -102,6 +102,13 @@ const Payment: React.FC = () => {
     }
 
     const handlePayment = async () => {
+        if (totalAmount === 0) {
+            Modal.error({
+                title: 'Tổng tiền thanh toán phải lớn hơn 0',
+                content: 'Tổng tiền thanh toán phải lớn hơn 0.',
+            });
+            return;
+        }
         if (!shippingAddress) {
             Modal.error({
                 title: 'Chưa có địa chỉ giao hàng',
@@ -319,7 +326,7 @@ const Payment: React.FC = () => {
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginRight: "-2vh" }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', padding: 10 }}>
                                 <span>Tổng tiền hàng:</span>
-                                <span style={{ color: 'red', paddingLeft: "5vw" }}>500.000 VND</span>
+                                <span style={{ color: 'red', paddingLeft: "5vw" }}>{totalAmount.toLocaleString('vi-VN')} VND</span>
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', padding: 10 }}>
                                 <span>Phí vận chuyển:</span>
@@ -327,7 +334,7 @@ const Payment: React.FC = () => {
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', padding: 10 }}>
                                 <span>Tổng thanh toán:</span>
-                                <span style={{ fontSize: 20, color: 'red', paddingLeft: "5vw" }}>500.000 VND</span>
+                                <span style={{ fontSize: 20, color: 'red', paddingLeft: "5vw" }}>{totalAmount.toLocaleString('vi-VN')} VND</span>
                             </div>
                         </div>
                     </div>
@@ -339,9 +346,16 @@ const Payment: React.FC = () => {
                         width: '80%',
                         display: 'flex',
                         justifyContent: 'flex-end',
-                        borderRadius: '0 0 20px 20px'
+                        borderRadius: '0 0 20px 20px',
+                        marginTop: '-3svh'
                     }}>
                         <Button
+                            style={{
+                                backgroundColor: 'black',
+                                color:'white',
+                                width: "25vh",
+                                height: '6vh'
+                            }}
                             onClick={handlePayment}
                         >
                             Thanh toán

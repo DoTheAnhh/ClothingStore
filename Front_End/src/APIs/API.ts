@@ -66,7 +66,8 @@ export const API_URL = {
         FIND_ALL_CART: '',
         UPDATE_PRODUCT_QUANTITY_IN_CART: '/update-quantity',
         DELETE_PRODUCT_QUANTITY_IN_CART: '/delete-product-detail-in-cart',
-        COUNT: '/count'
+        COUNT: '/count',
+        CLEAR_CART_AND_UPDATE_PRODUCT_QUANTITY: '/clear-cart-and-update-product-detail-quantity'
     },
     SHIPPING_ADDRESS: {
         FIND_SHIPPING_ADDRESS_BY_CUSTOMER_ID: '/customer',

@@ -16,6 +16,7 @@ import Profile from './Layout/Profile/Profile';
 import AllProductPage from './Layout/User/Content/AllProductPage/AllProductPage';
 import Cart from './Layout/User/Cart/Cart';
 import Payment from './Layout/User/Payment/Payment';
+import PaymentReturn from './Layout/User/Payment/PaymentReturn/PaymentReturn';
 
 interface RouteComponent {
   path: string;
@@ -73,6 +74,10 @@ function App() {
     {
       path: '/payment',
       element: <Payment />,
+    },
+    {
+      path: '/vnpay-payment-return',
+      element: <PaymentReturn />,
     },
   ];
 

@@ -33,21 +33,26 @@ const UserPageProductDetail: React.FC = () => {
 
     const handleSizeClick = async (size: SizeResponse) => {
         setSelectedSize(size.sizeName);
-        findProductDetailAddToCart(size.id, selectedColorId);
-
+        // Gọi hàm để thêm sản phẩm vào giỏ hàng với kích thước đã chọn và màu sắc hiện tại
+        await findProductDetailAddToCart(size.id, selectedColorId);
     };
 
     const handleColorClick = async (color: ColorResponse) => {
+        // Cập nhật màu đã chọn và ID màu
         setSelectedColor(color.colorName);
         setSelectedColorId(color.id);
 
+        // Tìm kiếm kích thước theo ID màu
         const sizes = await findSizesByColorId(color.id);
 
-
+        // Cập nhật sản phẩm với kích thước mới
         setProduct(prevProduct => ({
             ...prevProduct!,
             sizes: sizes,
         }));
+
+        // Reset kích thước khi chọn màu mới
+        setSelectedSize(null);
     };
 
     const handleOnMouseEnter = async (color: ColorResponse) => {

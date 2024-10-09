@@ -1,33 +1,52 @@
+import axios from 'axios';
 import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { API_URL, LOCALHOST, MAPPING_URL } from '../../../../APIs/API';
+import { useNavigate } from 'react-router-dom';
 
 const PaymentReturn: React.FC = () => {
-    const location = useLocation();
+
+    const navigate = useNavigate();
+
+    const decodeJwt = (token: string) => {
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        } catch (error) {
+            console.error("Invalid token");
+            return null;
+        }
+    };
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+        console.error('No token found');
+        navigate('/login');
+        return;
+    }
+
+    const decodedToken = decodeJwt(token);
+    if (!decodedToken) {
+        console.error('Invalid token');
+        return;
+    }
+
+    const customerId = decodedToken.id;
+
+    const clearCartAndUpdateProductDetail = async () => {
+        await axios.delete(LOCALHOST + MAPPING_URL.CART + API_URL.CART.CLEAR_CART_AND_UPDATE_PRODUCT_QUANTITY + `?customerId=${customerId}`)
+    }
 
     useEffect(() => {
-        const queryParams = new URLSearchParams(location.search);
-        const amount = queryParams.get('vnp_Amount');
-        const orderInfo = queryParams.get('vnp_OrderInfo');
-        const transactionId = queryParams.get('vnp_TransactionNo');
-        const responseCode = queryParams.get('vnp_ResponseCode');
-        const transactionStatus = queryParams.get('vnp_TransactionStatus');
-
-        // Xử lý kết quả thanh toán
-        if (responseCode === '00' && transactionStatus === '00') {
-            // Thanh toán thành công
-            console.log('Thanh toán thành công:', { orderInfo, transactionId, amount });
-            // Thực hiện hành động sau khi thanh toán thành công
-        } else {
-            // Thanh toán thất bại
-            console.log('Thanh toán thất bại:', { responseCode, transactionStatus });
-            // Thực hiện hành động khi thanh toán thất bại
-        }
-    }, [location]);
+        clearCartAndUpdateProductDetail()
+    }, [])
 
     return (
         <div>
             <h1>Kết quả thanh toán</h1>
-            {/* Có thể thêm giao diện cho kết quả thanh toán */}
         </div>
     );
 };
