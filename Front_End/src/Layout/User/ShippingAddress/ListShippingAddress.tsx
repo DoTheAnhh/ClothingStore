@@ -5,6 +5,7 @@ import { API_URL, LOCALHOST, MAPPING_URL } from '../../../APIs/API'
 import { useNavigate } from 'react-router-dom'
 import { Button, Modal, Radio } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
+import ShippingAddressForm from './ShippingAddressForm'
 
 interface ListShippingAddressProps {
   handleCancel: () => void
@@ -16,6 +17,8 @@ const ListShippingAddress: React.FC<ListShippingAddressProps> = ({ handleCancel 
 
   const [selectedAddress, setSelectedAddress] = useState<number>();
 
+  const [selected, setSelected] = useState<number | null>(null);
+
   const [isModalChangeLocation, setIsModalChangeLocation] = useState(false);
 
   const handleConfirm = () => {
@@ -24,11 +27,19 @@ const ListShippingAddress: React.FC<ListShippingAddressProps> = ({ handleCancel 
   };
 
   const showModal = () => {
+    setSelected(null)
+    setIsModalChangeLocation(true);
+  };
+
+  const showModalById = (shippingAddressId: number) => {
+    setSelected(shippingAddressId)
     setIsModalChangeLocation(true);
   };
 
   const handleCancelAddOrUpdate = () => {
     setIsModalChangeLocation(false);
+    setSelected(null);
+    findShippingAddressesByCustomerId();
   };
 
   const handleRadioChange = (e: any) => {
@@ -85,7 +96,7 @@ const ListShippingAddress: React.FC<ListShippingAddressProps> = ({ handleCancel 
         Thêm địa chỉ mới
       </Button>
       <Modal visible={isModalChangeLocation} footer={false} onCancel={handleCancelAddOrUpdate}>
-
+        <ShippingAddressForm handleCancelShippingAddressModal={handleCancelAddOrUpdate} selectedShippingAddress={selected} />
       </Modal>
       {shippingAddresses.map((shippingAddress) => {
         return (
@@ -100,6 +111,7 @@ const ListShippingAddress: React.FC<ListShippingAddressProps> = ({ handleCancel 
             <div style={{ padding: '10px 0' }}>
               {shippingAddress?.addressDetail}, {shippingAddress?.wardName}, {shippingAddress?.districtName}, {shippingAddress?.provinceName}
             </div>
+            <div style={{ padding: '0 0 10px 0', color: '#4096FF' }} onClick={() => showModalById(shippingAddress.shippingAddressId)}>Thay đổi địa chỉ</div>
             <hr />
           </div>
         )

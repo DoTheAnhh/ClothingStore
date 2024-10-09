@@ -74,6 +74,9 @@ public class SecurityConfig {
                                 .requestMatchers("/shipping-address/customer/*").permitAll()
                                 .requestMatchers("/shipping-address/*").permitAll()
 
+                                .requestMatchers("/shipping-address/insert").permitAll()
+                                .requestMatchers("/shipping-address/edit/*").permitAll()
+
                                 .requestMatchers("/v3/api-docs/**", "/v3/api-docs.yaml", "/swagger-ui.html", "/swagger-ui/**").permitAll()
 
                                 //ADMIN
@@ -102,6 +105,8 @@ public class SecurityConfig {
 
                                 .requestMatchers("/customer/insert").hasAnyAuthority("ADMIN")
                                 .requestMatchers("/customer/edit/*").hasAnyAuthority("ADMIN")
+
+
 
                                 .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

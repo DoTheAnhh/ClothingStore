@@ -15,7 +15,7 @@ const Payment: React.FC = () => {
 
     const [carts, setCarts] = useState<CartResponse[]>([])
 
-    const selectedAddress = location.state?.selectedAddress;
+    const selectedAddress = location.state?.selectedAddress ?? 1;
 
     const [shippingAddress, setShippingAddress] = useState<ShippingAddressResponse>()
 

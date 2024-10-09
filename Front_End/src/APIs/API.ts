@@ -70,5 +70,7 @@ export const API_URL = {
     SHIPPING_ADDRESS: {
         FIND_SHIPPING_ADDRESS_BY_CUSTOMER_ID: '/customer',
         FIND_ALL_SHIPPING_ADDRESS: '',
+        EDIT: '/edit',
+        INSERT: '/insert'
     }
 }

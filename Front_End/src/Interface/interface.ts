@@ -144,11 +144,11 @@ export interface ShippingAddressResponse {
 }
 
 export interface ShippingAddressRequest {
-  userName: string;
-  phoneNumber: string;
-  provinceName: string;
-  districtName: string;
-  wardName: string;
-  addressDetail: string;
-  customerId: string
+  userName?: string;
+  phoneNumber?: string;
+  provinceName?: string;
+  districtName?: string;
+  wardName?: string;
+  addressDetail?: string;
+  customerId?: string
 }
