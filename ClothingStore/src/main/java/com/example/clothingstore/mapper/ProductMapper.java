@@ -58,7 +58,7 @@ public interface ProductMapper {
 
     default List<SizeDTO> mapAllSizes(Product product) {
         return product.getProductDetail().stream()
-                .filter(detail -> detail.getSize() != null)
+                .filter(detail -> detail.getSize() != null && detail.getQuantity() > 0)
                 .map(detail -> new SizeDTO(detail.getSize().getId(), detail.getSize().getSizeName()))
                 .distinct()
                 .collect(Collectors.toList());
@@ -66,10 +66,9 @@ public interface ProductMapper {
 
     default List<ColorDTO> mapAllColors(Product product) {
         return product.getProductDetail().stream()
-                .filter(detail -> detail.getColor() != null)
+                .filter(detail -> detail.getColor() != null && detail.getQuantity() > 0)
                 .map(detail -> new ColorDTO(detail.getColor().getId(), detail.getColor().getColorName()))
                 .distinct()
                 .collect(Collectors.toList());
     }
-
 }
